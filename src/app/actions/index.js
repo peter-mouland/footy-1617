@@ -1,4 +1,4 @@
-import shop from '../../server/api/shop'
+import shop from '../services/shop'
 import * as types from '../constants/ActionTypes'
 
 function receiveProducts(products) {

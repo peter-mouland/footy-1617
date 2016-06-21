@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { addToCart } from '../../actions'
 import { getVisibleProducts } from '../../reducers/products'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import ProductsList from '../../components/ProductList/ProductsList'
 
 class ProductsContainer extends Component {
-  
+
   static propTypes = {
     products: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -16,7 +16,7 @@ class ProductsContainer extends Component {
     })).isRequired,
     addToCart: PropTypes.func.isRequired
   };
-  
+
   render() {
     const { products } = this.props;
     return (

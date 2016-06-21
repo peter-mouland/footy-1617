@@ -1,13 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import debug from 'debug';
 import { copy } from './homepage-copy';
 import ProductsContainer from '../ProductsContainer/ProductsContainer';
 import CartContainer from '../CartContainer/CartContainer';
+import { getAllProducts } from '../../actions'
 
 debug('lego:Homepage.jsx');
 
 export default class Homepage extends React.Component {
+
+  static requestData(params, domain = '') {
+    this.props.getAllProducts();
+  }
 
   render() {
     return (
@@ -30,3 +36,15 @@ export default class Homepage extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    products: getVisibleProducts(state.products)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  { getAllProducts }
+)(Homepage)
+
