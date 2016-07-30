@@ -1,21 +1,20 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import Html from '../templates/Html';
-import configureStore from '../../app/store/configureStore';
-// import { getAllProducts } from '../../app/actions'
+import debug from 'debug';
+
+const log = debug('lego:render-app');
 
 export default function renderAppWrapper(assets) {
-  const store = configureStore({});
-  // store.dispatch(getAllProducts());
-  
+
   return function renderApp(req, res) {
+    log(res.initialState)
     try {
       res.send(res.renderPageToString(
         <Html
-          initialState={store.getState()}
+          initialState={res.initialState}
           scripts={assets.javascript}
           stylesheets={assets.styles}
-          content={<Provider store={store}>{res.routerContext}</Provider>}
+          content={res.routerContext}
         />
       ));
     } catch (error) {

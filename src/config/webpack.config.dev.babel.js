@@ -38,6 +38,11 @@ export default {
   module: {
     loaders: [
       {
+        test: /\.json$/,
+        include: [/src/],
+        loader: 'json'
+      },
+      {
         test: /\.jsx?$/,
         include: [/src/],
         loader: 'babel'

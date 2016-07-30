@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import DocumentMeta from 'react-document-meta';
+import debug from 'debug';
+
 import { findRoute } from '../utils';
 import { routes } from '../routes';
-
 import './mainLayout.scss';
+
+const log = debug('lego:MainLayout')
 
 export default class MainLayout extends Component {
   static propTypes = {
@@ -11,6 +14,8 @@ export default class MainLayout extends Component {
   };
 
   render() {
+    log('render')
+    log(location)
     const { children, location } = this.props;
     const cfg = findRoute(location.pathname);
     const route = cfg || routes.homepage;

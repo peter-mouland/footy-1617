@@ -32,13 +32,15 @@ class ProductsContainer extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    products: getVisibleProducts(state.products)
-  }
-}
+// function mapStateToProps(state) {
+//   return {
+//     products: getVisibleProducts(state.products)
+//   }
+// }
+//
+// export default connect(
+//   mapStateToProps,
+//   { addToCart }
+// )(ProductsContainer)
 
-export default connect(
-  mapStateToProps,
-  { addToCart }
-)(ProductsContainer)
+export default ProductsContainer;

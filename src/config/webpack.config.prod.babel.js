@@ -44,6 +44,11 @@ export default {
     }],
     loaders: [
       {
+        test: /\.json$/,
+        include: [/src/],
+        loader: 'json'
+      },
+      {
         test: /\.jsx?$/,
         include: [/src/],
         loader: 'babel'

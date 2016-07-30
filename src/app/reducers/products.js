@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import { RECEIVE_PRODUCTS, ADD_TO_CART } from '../constants/ActionTypes'
 
 function products(state, action) {
@@ -12,7 +11,7 @@ function products(state, action) {
   }
 }
 
-function byId(state = {}, action) {
+export function byId(state = {}, action) {
   switch (action.type) {
     case RECEIVE_PRODUCTS:
       return Object.assign({},
@@ -33,7 +32,7 @@ function byId(state = {}, action) {
   }
 }
 
-function visibleIds(state = [], action) {
+export function visibleIds(state = [], action) {
   switch (action.type) {
     case RECEIVE_PRODUCTS:
       return action.products.map(product => product.id)
@@ -41,11 +40,6 @@ function visibleIds(state = [], action) {
       return state
   }
 }
-
-export default combineReducers({
-  byId,
-  visibleIds
-})
 
 export function getProduct(state, id) {
   return state.byId[id]

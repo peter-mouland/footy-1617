@@ -1,13 +1,14 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import debug from 'debug';
+import objectAssign from 'object-assign';
 
 import MainLayout from './Layouts/MainLayout';
 import Homepage from './containers/Homepage/Homepage';
 import Search from './containers/Search/Search';
 import NotFound from './containers/NotFound/NotFound';
 
-debug('lego:routes');
+const log = debug('lego:routes');
 
 export const routes = {
   homepage: {
@@ -28,10 +29,10 @@ export const routes = {
   }
 };
 
-// todo : make ie compatible
-const indexRoute = (route) => Object.assign({}, route, { path: null });
+const indexRoute = (route) => objectAssign({}, route, { path: null });
 
 export function makeRoutes() {
+  log('makeRoutes')
   return (
     <Route path="/" component={ MainLayout }>
       <IndexRoute { ...indexRoute(routes.homepage) } />
