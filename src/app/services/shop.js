@@ -6,7 +6,7 @@ import debug from 'debug'
 
 const log = debug('lego:services/shop');
 
-const TIMEOUT = 100;
+const TIMEOUT = 1000;
 
 export default {
   getProducts(timeout) {
