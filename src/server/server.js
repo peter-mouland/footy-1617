@@ -34,7 +34,7 @@ Object.assign(express.response, {
   },
   render500(e) {
     log('render500', e);
-    this.status(500).send(this.renderPageToString(<Error500 />));
+    return this.status(500).send(this.renderPageToString(<Error500 error={ e } />));
   }
 });
 

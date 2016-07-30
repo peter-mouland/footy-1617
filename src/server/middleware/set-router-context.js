@@ -42,7 +42,7 @@ const setRouterContext = (req, res, next) => {
 
       fetchComponentData(store.dispatch, renderProps.components, renderProps.params)
         .then(setContext)
-        .catch((err) => res.status(500).send(err));
+        .catch((err) => res.render500(err));
     }
   });
 };

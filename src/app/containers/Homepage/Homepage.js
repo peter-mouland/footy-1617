@@ -21,6 +21,8 @@ class Homepage extends React.Component {
     if (isLoading) {
       return <h3>Loading planets...</h3>;
     }
+    log(`this.state : ${this.state}`);
+    log(`this.props : ${Object.keys(this.state)}`);
     log(`this.props : ${Object.keys(this.props.products)}`);
     log(`isLoading : ${isLoading}`);
     log(`items : ${results}`);
@@ -54,7 +56,7 @@ class Homepage extends React.Component {
 }
 
 export default connect(
-  (state) => ({ products: state.products }),
+  (state) => { log(state); return { products: state.products };},
   actions
 )(Homepage);
 
