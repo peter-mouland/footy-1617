@@ -1,13 +1,8 @@
 import React from 'react';
 import Html from '../templates/Html';
-import debug from 'debug';
-
-const log = debug('lego:render-app');
 
 export default function renderAppWrapper(assets) {
-
   return function renderApp(req, res) {
-    log(res.initialState)
     try {
       res.send(res.renderPageToString(
         <Html

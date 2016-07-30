@@ -1,10 +1,7 @@
-import debug from 'debug';
 import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
 // import cart, * as fromCart from './cart'
 // import products, * as fromProducts from './products'
-
-const log = debug('lego:reducers/index');
 
 // function getAddedIds(state) {
 //   return fromCart.getAddedIds(state.cart)
@@ -35,22 +32,10 @@ const log = debug('lego:reducers/index');
 //   ))
 // }
 
-const defaultState = {
-  count: 0,
-  results: []
-}
-
-export default function products(state = defaultState, action) {
-  log('type', action.type, action.res);
+export default function products(state = {}, action) {
   switch(action.type) {
     case 'GET_PRODUCTS':
       return action.res;
-    case 'CREATE_TODO':
-      return state.concat(action.res.data.text);
-    case 'EDIT_TODO':
-      return state.set(action.id, action.text);
-    case 'DELETE_TODO':
-      return state.delete(action.id);
     default:
       return state;
   }

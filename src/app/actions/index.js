@@ -1,7 +1,4 @@
 import shop from '../services/shop'
-import debug from 'debug'
-
-const log = debug('lego:actions/index');
 
 export const ADD_TO_CART = 'ADD_TO_CART';
 // export const CHECKOUT_REQUEST = 'CHECKOUT_REQUEST';
@@ -20,7 +17,6 @@ const loadingProducts = ({
 });
 
 export function getProducts() {
-  log('getProducts')
   return {
     type: GET_PRODUCTS,
     promise: shop.getProducts()

@@ -5,7 +5,7 @@ const log = debug('lego:promiseMiddleware');
 export default function promiseMiddleware() {
   return next => action => {
     const { promise, type, ...rest } = action;
-    log('FETCH', !!promise)
+    log('FETCH with promise', !!promise)
     if (!promise) return next(action);
 
     const SUCCESS = type;
@@ -16,12 +16,12 @@ export default function promiseMiddleware() {
 
     return promise
       .then(res => {
-        log(`SUCCESS`, res)
+        log(`SUCCESS`);
         next({ ...rest, res, loading: false, type: SUCCESS });
         return true;
       })
       .catch(error => {
-        log(`FAILURE`, error)
+        log(`FAILURE`, error);
         next({ ...rest, error, loading: false,  type: FAILURE });
         return false;
       });

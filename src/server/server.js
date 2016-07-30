@@ -29,7 +29,6 @@ server.enable('strict routing');
 
 Object.assign(express.response, {
   renderPageToString(page) {
-    log('renderPageToString')
     return `<!doctype html>${renderToString(page)}`;
   },
   render500(e) {

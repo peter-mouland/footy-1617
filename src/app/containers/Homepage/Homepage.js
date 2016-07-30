@@ -1,14 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
-import debug from 'debug';
 import {copy} from './homepage-copy';
 import ProductsContainer from '../ProductsContainer/ProductsContainer';
 import CartContainer from '../CartContainer/CartContainer';
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import * as actions from '../../actions'
 
-const log = debug('lego:Homepage.js');
 
 class Homepage extends React.Component {
 
@@ -19,14 +17,8 @@ class Homepage extends React.Component {
   render() {
     const { results, isLoading } = this.props.products;
     if (isLoading) {
-      return <h3>Loading planets...</h3>;
+      return <h3>Loading products...</h3>;
     }
-    log(`this.state : ${this.state}`);
-    log(`this.props : ${this.props}`);
-    log(`this.props : ${this.props.products}`);
-    log(`this.props : ${this.props.products ? this.props.products.results : null}`);
-    log(`isLoading : ${isLoading}`);
-    log(`items : ${results}`);
     return (
       <div id="homepage">
         <banner className="header">
@@ -37,15 +29,7 @@ class Homepage extends React.Component {
         <div>
           <h2>Shopping Cart Example</h2>
           <hr/>
-          {[].concat(results).map((item = {}) => {
-            log(item)
-            const id = item.id;
-            return (
-              <Link to={`/product/${id}`} key={id} style={{display: 'block'}}>
-                {item.title}
-              </Link>
-            );
-          })}
+          <ProductsContainer products={ results } addToCart={()=>{}} />
           <hr/>
           {/*<CartContainer />*/}
         </div>
@@ -57,7 +41,6 @@ class Homepage extends React.Component {
 }
 
 function mapStateToProps(state) {
-  log('mapState', state)
   return {
     products: state.products
   };
