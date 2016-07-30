@@ -14,10 +14,10 @@ const middleware = [
   })
 ];
 
-export default function configureStore(preloadedState) {
+export default function configureStore(initialState) {
   return createStore(
     reducers,
-    preloadedState,
+    initialState,
     applyMiddleware(...middleware)
   )
 }

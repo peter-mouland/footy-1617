@@ -35,18 +35,16 @@ const log = debug('lego:reducers/index');
 //   ))
 // }
 
-import Immutable from 'immutable';
-
-const defaultState = new Immutable.Map({
+const defaultState = {
   count: 0,
-  results: new Immutable.List()
-});
+  results: []
+}
 
 export default function products(state = defaultState, action) {
   log('type', action.type, action.res);
   switch(action.type) {
     case 'GET_PRODUCTS':
-      return new Immutable.Map(action.res);
+      return action.res;
     case 'CREATE_TODO':
       return state.concat(action.res.data.text);
     case 'EDIT_TODO':

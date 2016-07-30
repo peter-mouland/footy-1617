@@ -12,17 +12,17 @@ export default function promiseMiddleware() {
     const FETCH = type + '_FETCH';
     const FAILURE = type + '_FETCH_FAILURE';
 
-    next({ ...rest, type: FETCH });
+    next({ ...rest, loading: true, type: FETCH });
 
     return promise
       .then(res => {
         log(`SUCCESS`, res)
-        next({ ...rest, res, type: SUCCESS });
+        next({ ...rest, res, loading: false, type: SUCCESS });
         return true;
       })
       .catch(error => {
         log(`FAILURE`, error)
-        next({ ...rest, error, type: FAILURE });
+        next({ ...rest, error, loading: false,  type: FAILURE });
         return false;
       });
   };

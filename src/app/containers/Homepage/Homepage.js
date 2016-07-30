@@ -17,13 +17,14 @@ class Homepage extends React.Component {
   ];
 
   render() {
-    const {results, isLoading} = this.props.products;
+    const { results, isLoading } = this.props.products;
     if (isLoading) {
       return <h3>Loading planets...</h3>;
     }
     log(`this.state : ${this.state}`);
-    // log(`this.props : ${Object.keys(this.state)}`);
-    log(`this.props : ${Object.keys(this.props.products)}`);
+    log(`this.props : ${this.props}`);
+    log(`this.props : ${this.props.products}`);
+    log(`this.props : ${this.props.products ? this.props.products.results : null}`);
     log(`isLoading : ${isLoading}`);
     log(`items : ${results}`);
     return (
