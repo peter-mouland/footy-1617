@@ -2,28 +2,43 @@ import debug from 'debug';
 
 const log = debug('lego:promiseMiddleware');
 
+function delay(time) {
+  return new Promise(function (fulfill) {
+    setTimeout(fulfill, time);
+  });
+}
+
 export default function promiseMiddleware() {
   return next => action => {
     const { promise, type, ...rest } = action;
     log('FETCH with promise', !!promise)
     if (!promise) return next(action);
 
+    const timeoutMs = 10000;
     const SUCCESS = type;
     const FETCH = type + '_FETCH';
     const FAILURE = type + '_FETCH_FAILURE';
+    const TIMEOUT = type + '_FETCH_TIMEOUT';
 
-    next({ ...rest, loading: true, type: FETCH });
+    next({ ...rest, type: FETCH });
 
-    return promise
+    const fetchData = promise
       .then(res => {
         log(`SUCCESS`);
-        next({ ...rest, res, loading: false, type: SUCCESS });
+        next({ ...rest, res, type: SUCCESS });
         return true;
       })
       .catch(error => {
         log(`FAILURE`, error);
-        next({ ...rest, error, loading: false,  type: FAILURE });
+        next({ ...rest, error, type: FAILURE });
         return false;
       });
+
+    const dataTimeout = delay(timeoutMs).then(() => {
+      log(`TIMEOUT`);
+      next({ ...rest, type: TIMEOUT });
+    });
+
+    return Promise.race([fetchData, dataTimeout]);
   };
 }

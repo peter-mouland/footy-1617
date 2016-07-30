@@ -35,7 +35,12 @@ import { routerReducer as routing } from 'react-router-redux'
 export default function products(state = {}, action) {
   switch(action.type) {
     case 'GET_PRODUCTS':
-      return action.res;
+      return {
+        ...state,
+        isLoading: false,
+        isTimeout: false,
+        data: action.res
+      };
     default:
       return state;
   }

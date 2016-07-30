@@ -6,7 +6,9 @@ import ProductsContainer from '../ProductsContainer/ProductsContainer';
 import CartContainer from '../CartContainer/CartContainer';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../actions'
+import debug from 'debug';
 
+const log = debug('lego:Homepage.js');
 
 class Homepage extends React.Component {
 
@@ -15,9 +17,13 @@ class Homepage extends React.Component {
   ];
 
   render() {
-    const { results, isLoading } = this.props.products;
+    log(this.props)
+    const { data, isLoading, isTimeout } = this.props.products;
     if (isLoading) {
       return <h3>Loading products...</h3>;
+    }
+    if (isTimeout) {
+      return <h3>products... Timeout!</h3>;
     }
     return (
       <div id="homepage">
@@ -29,7 +35,7 @@ class Homepage extends React.Component {
         <div>
           <h2>Shopping Cart Example</h2>
           <hr/>
-          <ProductsContainer products={ results } addToCart={()=>{}} />
+          <ProductsContainer products={ data.results } addToCart={()=>{}} />
           <hr/>
           {/*<CartContainer />*/}
         </div>
