@@ -4,26 +4,26 @@ import {connect} from 'react-redux';
 import {copy} from './homepage-copy';
 import ProductsContainer from '../ProductsContainer/ProductsContainer';
 import CartContainer from '../CartContainer/CartContainer';
-import { bindActionCreators } from 'redux';
-import * as actions from '../../actions'
+import { getProducts } from '../../actions'
 import debug from 'debug';
 
-const log = debug('lego:Homepage.js');
+const log = debug('lego:Homepage.js'); //eslint-disable-line
 
 class Homepage extends React.Component {
 
-  static needs = [
-    actions.getProducts
-  ];
+  static needs = [ getProducts ];
+
+  componentDidMount(){
+    const { products } = this.props;
+    if (products.isTimeout){
+      this.props.getProducts()
+    }
+  }
 
   render() {
-    log(this.props)
     const { data, isLoading, isTimeout } = this.props.products;
-    if (isLoading) {
+    if (isLoading || isTimeout) {
       return <h3>Loading products...</h3>;
-    }
-    if (isTimeout) {
-      return <h3>products... Timeout!</h3>;
     }
     return (
       <div id="homepage">
@@ -52,14 +52,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  };
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  { getProducts }
 )(Homepage);
 

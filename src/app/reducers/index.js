@@ -45,7 +45,10 @@ export default function products(state = {}, action) {
         ...action
       };
     default:
-      return state;
+      return {
+        ...state,
+        ...action
+      };
   }
 }
 

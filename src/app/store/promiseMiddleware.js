@@ -19,7 +19,7 @@ export default function promiseMiddleware() {
 
     if (!promise) return next(action);
 
-    const timeoutMs = 10000;
+    const timeoutMs = 1;
     const SUCCESS = type;
     const FETCH = type + '_FETCH';
     const FAILURE = type + '_FETCH_FAILURE';
