@@ -17,20 +17,14 @@ export const FETCH_PRODUCTS_FAILED = 'FETCH_PRODUCTS_FAILED';
 
 const loadingProducts = ({
   type: FETCH_PRODUCTS_AWAIT,
-  isLoading: true,
-  isTimeout: false
 });
 const timeoutProducts = ({
   type: TIMEOUT,
-  isLoading: false,
-  isTimeout: true
 });
 
 export function getProducts() {
   return {
     type: GET_PRODUCTS,
-    isLoading: true,
-    isTimeout: false,
     promise: shop.getProducts()
   }
 }

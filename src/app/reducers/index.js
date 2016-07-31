@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
+import debug from 'debug'
+
+const log = debug('lego:reducers/index');
+
 // import cart, * as fromCart from './cart'
 // import products, * as fromProducts from './products'
 
@@ -33,13 +37,12 @@ import { routerReducer as routing } from 'react-router-redux'
 // }
 
 export default function products(state = {}, action) {
+  log(action.type)
   switch(action.type) {
     case 'GET_PRODUCTS':
       return {
         ...state,
-        isLoading: false,
-        isTimeout: false,
-        data: action.res
+        ...action
       };
     default:
       return state;
