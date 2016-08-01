@@ -7,9 +7,7 @@ const defaultStatus = {
 };
 
 function delay(time) {
-  return new Promise(function (fulfill) {
-    setTimeout(fulfill, time);
-  });
+  return new Promise((fulfill) => setTimeout(fulfill, time));
 }
 
 export default function promiseMiddleware() {
@@ -21,26 +19,26 @@ export default function promiseMiddleware() {
 
     const timeoutMs = 1;
     const SUCCESS = type;
-    const FETCH = type + '_FETCH';
-    const FAILURE = type + '_FETCH_FAILURE';
-    const TIMEOUT = type + '_FETCH_TIMEOUT';
+    const FETCH = `${type}_FETCH`;
+    const FAILURE = `${type}_FETCH_FAILURE`;
+    const TIMEOUT = `${type}_FETCH_TIMEOUT`;
 
     next({ ...rest, ...defaultStatus, isLoading: true, type: FETCH });
 
     const fetchData = promise
       .then(data => {
-        log(`SUCCESS`);
+        log('SUCCESS');
         next({ ...rest, ...defaultStatus, data, type: SUCCESS });
         return true;
       })
       .catch(error => {
-        log(`FAILURE`, error);
+        log('FAILURE', error);
         next({ ...rest, ...defaultStatus, error, type: FAILURE });
         return false;
       });
 
     const dataTimeout = delay(timeoutMs).then(() => {
-      log(`TIMEOUT`);
+      log('TIMEOUT');
       next({ ...rest, ...defaultStatus, isTimeout: true, type: TIMEOUT });
     });
 

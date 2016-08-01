@@ -32,7 +32,7 @@ export const routes = {
 const indexRoute = (route) => objectAssign({}, route, { path: null });
 
 export function makeRoutes() {
-  log('makeRoutes')
+  log('makeRoutes');
   return (
     <Route path="/" component={ MainLayout }>
       <IndexRoute { ...indexRoute(routes.homepage) } />

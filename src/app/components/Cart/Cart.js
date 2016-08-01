@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react'
-import Product from '../Product/Product'
+import React, { Component, PropTypes } from 'react';
+import Product from '../Product/Product';
 
 export default class Cart extends Component {
 
@@ -10,9 +10,9 @@ export default class Cart extends Component {
   };
 
   render() {
-    const { products, total, onCheckoutClicked } = this.props
+    const { products, total, onCheckoutClicked } = this.props;
 
-    const hasProducts = products.length > 0
+    const hasProducts = products.length > 0;
     const nodes = !hasProducts ?
       <em>Please add some products to cart.</em> :
       products.map(product =>
@@ -33,6 +33,6 @@ export default class Cart extends Component {
           Checkout
         </button>
       </div>
-    )
+    );
   }
 }

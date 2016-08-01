@@ -29,7 +29,7 @@ const setRouterContext = (req, res, next) => {
             <RouterContext {...renderProps} />
           </Provider>
         );
-        res.initialState = store.getState();
+        res.initialState = store.getState(); // eslint-disable-line
         res.status(isNotFound ? 404 : 200); // eslint-disable-line
         res.routerContext = res.renderPageToString(InitialComponent); // eslint-disable-line
         next();

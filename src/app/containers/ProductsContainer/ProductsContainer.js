@@ -1,9 +1,7 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux';
-import { addToCart } from '../../actions'
-import { getVisibleProducts } from '../../reducers/products'
-import ProductItem from '../../components/ProductItem/ProductItem'
-import ProductsList from '../../components/ProductList/ProductsList'
+import React, { Component, PropTypes } from 'react';
+// import { addToCart } from '../../actions';
+import ProductItem from '../../components/ProductItem/ProductItem';
+import ProductsList from '../../components/ProductList/ProductsList';
 
 class ProductsContainer extends Component {
 
@@ -28,7 +26,7 @@ class ProductsContainer extends Component {
             onAddToCartClicked={() => this.props.addToCart(product.id)} />
         )}
       </ProductsList>
-    )
+    );
   }
 }
 

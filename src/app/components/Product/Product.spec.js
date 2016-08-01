@@ -1,6 +1,4 @@
-import expect from 'expect'
-import React from 'react'
-import { shallow } from 'enzyme'
+import { expect, shallow, React } from '../../../../tests/support/test.helper';
 import Product from './Product'
 
 function setup(props) {

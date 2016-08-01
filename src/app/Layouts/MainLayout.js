@@ -3,6 +3,7 @@ import DocumentMeta from 'react-document-meta';
 
 import { findRoute } from '../utils';
 import { routes } from '../routes';
+
 import './mainLayout.scss';
 
 export default class MainLayout extends Component {

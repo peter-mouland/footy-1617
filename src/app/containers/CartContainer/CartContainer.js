@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { checkout } from '../../actions'
-import { getTotal, getCartProducts } from '../../reducers'
-import Cart from '../../components/Cart/Cart'
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { checkout } from '../../actions';
+import { getTotal, getCartProducts } from '../../reducers';
+import Cart from '../../components/Cart/Cart';
 
 class CartContainer extends Component {
   static propTypes = {
@@ -15,7 +15,7 @@ class CartContainer extends Component {
     total: PropTypes.string,
     checkout: PropTypes.func.isRequired
   };
-  
+
   render() {
     const { products, total } = this.props;
 
@@ -24,18 +24,18 @@ class CartContainer extends Component {
         products={products}
         total={total}
         onCheckoutClicked={() => this.props.checkout()} />
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   return {
     products: getCartProducts(state),
     total: getTotal(state)
-  }
+  };
 }
 
 export default connect(
   mapStateToProps,
   { checkout }
-)(CartContainer)
+)(CartContainer);

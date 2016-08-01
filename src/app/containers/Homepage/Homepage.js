@@ -1,22 +1,22 @@
 import React from 'react';
-import {Link} from 'react-router';
-import {connect} from 'react-redux';
-import {copy} from './homepage-copy';
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { copy } from './homepage-copy';
 import ProductsContainer from '../ProductsContainer/ProductsContainer';
-import CartContainer from '../CartContainer/CartContainer';
-import { getProducts } from '../../actions'
+// import CartContainer from '../CartContainer/CartContainer';
+import { getAllProducts } from '../../actions';
 import debug from 'debug';
 
 const log = debug('lego:Homepage.js'); //eslint-disable-line
 
 class Homepage extends React.Component {
 
-  static needs = [ getProducts ];
+  static needs = [getAllProducts];
 
-  componentDidMount(){
+  componentDidMount() {
     const { products } = this.props;
-    if (products.isTimeout){
-      this.props.getProducts()
+    if (products.isTimeout) {
+      this.props.getAllProducts();
     }
   }
 
@@ -35,9 +35,9 @@ class Homepage extends React.Component {
         <div>
           <h2>Shopping Cart Example</h2>
           <hr/>
-          <ProductsContainer products={ data.results } addToCart={()=>{}} />
+          <ProductsContainer products={ data.results } addToCart={() => {}} />
           <hr/>
-          {/*<CartContainer />*/}
+          {/* <CartContainer />*/}
         </div>
 
         <Link to='/search'>search</Link>
@@ -54,6 +54,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { getProducts }
+  { getAllProducts }
 )(Homepage);
 

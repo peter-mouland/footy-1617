@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
-import reducers from '../reducers'
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import createLogger from 'redux-logger';
+import reducers from '../reducers';
 import promiseMiddleware from './promiseMiddleware';
 
 const inBrowser = typeof window === 'object';
@@ -19,5 +19,5 @@ export default function configureStore(initialState) {
     reducers,
     initialState,
     applyMiddleware(...middleware)
-  )
+  );
 }
