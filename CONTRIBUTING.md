@@ -28,16 +28,6 @@ PhantomJS v2 i required for tests.  If you haven't already got it installed plea
 4. Ensure you branch includes at least one new test
 6. Create a pull request.
 
-### Adding a new technology
-
-1. Raise an issue if there is not already one.
-2. Only one new tech per branch (and PR)
-3. Create a new branch with your feature.
- * If there are prerequisites, branch of the required branch
- * if there is no branch that matches the prerequisite, you must create it fist
- * If there are no prerequisites, branch from master
-4. Ensure you branch includes at least one new test
-6. Create a pull request.
 
 ### Developing
 
