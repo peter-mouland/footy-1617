@@ -3,19 +3,27 @@ import skyPlayers from './sky-players'
 
 export default {
   fetchPlayers() {
+    const unknownPlayers = [];
+
     return Promise.all([ffPlayers(), skyPlayers()])
       .then((results) => {
         const [ ffResults, skyResults ] = results;
-        const merged = skyResults.players.map((player) => {
+        const mergedPlayers = skyResults.players.map((player) => {
           const key =  player.fName
             ? `${player.sName}, ${player.fName}`
             : `${player.sName}`;
+          if (!ffResults[key]){
+            unknownPlayers.push(key)
+          }
           return {
             ...player,
-            pos: ffResults[key] ? ffResults[key].pos : key
+            pos: ffResults[key]
           }
         });
-        return merged;
+        return {
+          unknown: unknownPlayers,
+          players: mergedPlayers
+        };
       });
   }
 }

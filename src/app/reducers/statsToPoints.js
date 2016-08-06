@@ -8,8 +8,9 @@ const CLEAN_SHEETS = 7;
 const CONCEEDED = 8;
 const SAVED_PENALTIES = 10;
 
-export default function points(stats){
-  this.players = this.calculatePlayers(stats);
+export default function points(data){
+  this.players = this.calculatePlayers(data.players);
+  this.unknown = data.unknown;
 };
 
 points.prototype.calculatePlayers = function(players){

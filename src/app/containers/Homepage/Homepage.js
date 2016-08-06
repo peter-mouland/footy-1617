@@ -36,10 +36,19 @@ class Homepage extends React.Component {
         </banner>
 
         <div>
-          <h2>Player Stats</h2>
-
-          <textarea value={JSON.stringify(data)} readOnly="readOnly"/>
-
+          <h1>FF</h1>
+          <h2>unknown players</h2>
+          <ul>
+            {data.unknown.map(u => (
+              <li key={u}>{u}</li>
+            ))}
+          </ul>
+          <h2>players points</h2>
+          <ul>
+            {data.players.map(u => (
+              <li key={u.id}>{JSON.stringify(u)}</li>
+            ))}
+          </ul>
         </div>
 
         <Link to='/search'>search</Link>

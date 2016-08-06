@@ -5,9 +5,11 @@ var fs = require('fs');
 var mkdirp = require("mkdirp");
 var getDirName = require("path").dirname;
 
+const secretSquirellStuff = {"web":{"client_id":"1031181206488-99j3vqarkq2987qu6qivlcrc2ql12l37.apps.googleusercontent.com","project_id":"footy-1617","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"lQY7ncIdwYErIWA0MF-9mM0w"}}
+
 gsjson({
     spreadsheetId: '17Wl0UlbBfbd5xgrqC2kJcuSq0M76-yDiqb4xU5C9l-0',
-    token: 'ya29.Ci83A9Z7ALUBK7Qt6enXht0tiHApiW1A3MW91vok7Q8RdLXJPR-hJMsJ9-s9-gl6rw',
+    token: 'ya29.Ci83A18pu3r7zPdAW77LF1DXZ9UWv75roPDvo8hAYz9b-SY4bp8hv7enxRIHQsJV2Q',
     hash: 'player',
   })
   .then(function(result) {
