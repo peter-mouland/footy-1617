@@ -25,9 +25,9 @@ export default class MainLayout extends Component {
         <div className="layout__content">
           {children}
         </div>
-        <footer className="layout__footer">
-          footer
-        </footer>
+        {/*<footer className="layout__footer">*/}
+          {/*footer*/}
+        {/*</footer>*/}
       </div>
     );
   }

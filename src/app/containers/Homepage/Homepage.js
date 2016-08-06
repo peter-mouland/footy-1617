@@ -28,6 +28,8 @@ class Homepage extends React.Component {
         <p>{error.message}</p>
       </div>
     }
+
+    console.log(`data.players[0]`, data.players[0])
     return (
       <div id="homepage">
         <banner className="header">
@@ -36,7 +38,6 @@ class Homepage extends React.Component {
         </banner>
 
         <div>
-          <h1>FF</h1>
           <h2>unknown players</h2>
           <ul>
             {data.unknown.map(u => (
@@ -44,14 +45,36 @@ class Homepage extends React.Component {
             ))}
           </ul>
           <h2>players points</h2>
-          <ul>
-            {data.players.map(u => (
-              <li key={u.id}>{JSON.stringify(u)}</li>
-            ))}
-          </ul>
+          <table>
+            <thead>
+              <tr>
+                 <th>code</th>
+                 <th>position</th>
+                 <th>player</th>
+                 <th>club</th>
+                {Object.keys(data.players[0].ffPoints).map((key,i) => (
+                  <th key={i}>{key}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+            {
+              data.players.map(player => (
+                <tr key={player.id}>
+                  <td>{player.code}</td>
+                  <td>{player.pos}</td>
+                  <td>{player.fullName}</td>
+                  <td>{player.tName}</td>
+                  {Object.keys(player.ffPoints).map((key,i) => (
+                    <td key={i}>{player.ffPoints[key]}</td>
+                  ))}
+                </tr>
+              ))
+            }
+            </tbody>
+          </table>
+          {/*<textarea defaultValue={JSON.stringify(data.players)}/>*/}
         </div>
-
-        <Link to='/search'>search</Link>
       </div>
     );
   }

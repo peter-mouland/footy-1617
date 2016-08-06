@@ -15,24 +15,28 @@ export default function points(data){
 
 points.prototype.calculatePlayers = function(players){
   return players.map((player) => {
+    const points = this.calculatePlayer(player.stats.season, player.pos);
     return {
       ...player,
-      total: this.calculatePlayer(player.stats.season, player.pos)
+      ffPoints: { ...points }
     };
   });
 };
 
 points.prototype.calculatePlayer = function(stats, pos){
-  var forGoals = this.forGoals(stats[GOALS], pos);
-  var forYellowCards = this.forYellowCards(stats[YELLOW_CARDS], pos);
-  var forRedCards = this.forRedCards(stats[RED_CARDS], pos);
-  var forStarting = this.forStarting( stats[STARTING_XI], pos);
-  var forSub = this.forSub( stats[SUBS], pos);
-  var forAssists = this.forAssists( stats[ASSISTS], pos);
-  var forCleanSheet = this.forCleanSheet(stats[CLEAN_SHEETS], pos);
-  var forGoalAgainst = this.forConceeded(stats[CONCEEDED], pos);
-  var forPenaltiesSaved = this.forPenaltiesSaved(stats[CONCEEDED], pos);
-  return forGoals + forYellowCards + forRedCards + forStarting + forSub + forAssists + forCleanSheet + forGoalAgainst;
+  var goals = this.forGoals(stats[GOALS], pos);
+  var yells = this.forYellowCards(stats[YELLOW_CARDS], pos);
+  var reds = this.forRedCards(stats[RED_CARDS], pos);
+  var starts = this.forStarting( stats[STARTING_XI], pos);
+  var subs = this.forSub( stats[SUBS], pos);
+  var asts = this.forAssists( stats[ASSISTS], pos);
+  var cs = this.forCleanSheet(stats[CLEAN_SHEETS], pos);
+  var con = this.forConceeded(stats[CONCEEDED], pos);
+  var penSvd = this.forPenaltiesSaved(stats[SAVED_PENALTIES], pos);
+  var total = goals + yells + reds + starts + subs + asts + cs + con;
+  return {
+    starts, subs, goals,  asts, cs, con, penSvd, yells, reds, total
+  }
 };
 
 
@@ -46,7 +50,7 @@ points.prototype.forSub = function(subs, position){ //sub = 1 point
 };
 
 points.prototype.forGoals = function(goals, position){//depends on position
-  var multiplier;
+  var multiplier = 0;
   if (position == 'GK'){
     multiplier = 10;
   } else  if (position == 'FB' || position == 'CB'){
@@ -55,8 +59,6 @@ points.prototype.forGoals = function(goals, position){//depends on position
     multiplier = 6;
   } else if (position == 'STR'){
     multiplier = 4;
-  } else {
-    console.log(position);
   }
   return goals * multiplier;
 };
@@ -66,11 +68,11 @@ points.prototype.forAssists = function(assists, position){//assist = 3 points
 };
 
 points.prototype.forYellowCards = function(yc, position){ //-2
-  return yc * 2;
+  return yc * -2;
 };
 
 points.prototype.forRedCards = function(rc, position){ //-5
-  return rc * 5;
+  return rc * -5;
 };
 
 points.prototype.forCleanSheet = function(cs, position){ //5

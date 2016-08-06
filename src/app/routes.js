@@ -13,12 +13,12 @@ const log = debug('lego:routes');
 export const routes = {
   homepage: {
     path: '/',
-    title: 'React Lego',
+    title: 'FF Footy 16/17',
     component: Homepage
   },
   search: {
     path: 'search',
-    title: 'React Lego - Search',
+    title: 'FF Footy 16/17 - Search',
     breadcrumb: '/home',
     component: Search
   },

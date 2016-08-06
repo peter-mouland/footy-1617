@@ -17,7 +17,9 @@ export default {
           }
           return {
             ...player,
-            pos: ffResults[key]
+            fullName: key,
+            code: ffResults[key] ? ffResults[key].code : null,
+            pos: ffResults[key] ? ffResults[key].pos : null
           }
         });
         return {
