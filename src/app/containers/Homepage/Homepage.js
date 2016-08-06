@@ -13,9 +13,9 @@ class Homepage extends React.Component {
 
   componentDidMount() {
     const { stats } = this.props;
-    if (stats.isTimeout) {
-      this.props.fetchPlayers();
-    }
+    // if (stats.isTimeout) {
+    //   this.props.fetchPlayers();
+    // }
   }
 
   render() {
@@ -38,7 +38,7 @@ class Homepage extends React.Component {
         <div>
           <h2>Player Stats</h2>
           <hr/>
-
+          <textarea value={JSON.stringify(data)} />
           <hr/>
         </div>
 

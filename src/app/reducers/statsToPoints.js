@@ -9,18 +9,28 @@ const CONCEEDED = 8;
 const SAVED_PENALTIES = 10;
 
 export default function points(stats){
-  this.total = this.calculatePlayer(stats);
+  this.players = this.calculatePlayers(stats);
 };
 
-points.prototype.calculatePlayer = function(stats){
-  var forGoals = this.forGoals(stats[GOALS], stats['pos']);
-  var forYellowCards = this.forYellowCards(stats[YELLOW_CARDS], stats['pos']);
-  var forRedCards = this.forRedCards(stats[RED_CARDS], stats['pos']);
-  var forStarting = this.forStarting( stats[STARTING_XI], stats['pos']);
-  var forSub = this.forSub( stats[SUBS], stats['pos']);
-  var forAssists = this.forAssists( stats[ASSISTS], stats['pos']);
-  var forCleanSheet = this.forCleanSheet(stats[CLEAN_SHEETS], stats['pos']);
-  var forGoalAgainst = this.forConceeded(stats[CONCEEDED], stats['pos']);
+points.prototype.calculatePlayers = function(players){
+  return players.map((player) => {
+    return {
+      ...player,
+      total: this.calculatePlayer(player.stats.season, player.pos)
+    };
+  });
+};
+
+points.prototype.calculatePlayer = function(stats, pos){
+  var forGoals = this.forGoals(stats[GOALS], pos);
+  var forYellowCards = this.forYellowCards(stats[YELLOW_CARDS], pos);
+  var forRedCards = this.forRedCards(stats[RED_CARDS], pos);
+  var forStarting = this.forStarting( stats[STARTING_XI], pos);
+  var forSub = this.forSub( stats[SUBS], pos);
+  var forAssists = this.forAssists( stats[ASSISTS], pos);
+  var forCleanSheet = this.forCleanSheet(stats[CLEAN_SHEETS], pos);
+  var forGoalAgainst = this.forConceeded(stats[CONCEEDED], pos);
+  var forPenaltiesSaved = this.forPenaltiesSaved(stats[CONCEEDED], pos);
   return forGoals + forYellowCards + forRedCards + forStarting + forSub + forAssists + forCleanSheet + forGoalAgainst;
 };
 
@@ -42,10 +52,10 @@ points.prototype.forGoals = function(goals, position){//depends on position
     multiplier = 8;
   } else if (position == 'WM' || position == 'CM'){
     multiplier = 6;
-  } else if (position == 'FWD'){
+  } else if (position == 'STR'){
     multiplier = 4;
   } else {
-    console.log('Position not found : ', position);
+    console.log(position);
   }
   return goals * multiplier;
 };
@@ -80,4 +90,9 @@ points.prototype.forConceeded = function(ga, position){ //-1
     multiplier = 0;
   }
   return ga * multiplier;
+};
+
+points.prototype.forPenaltiesSaved = function(ps, position){ //-1
+  var multiplier = 5;
+  return ps * multiplier;
 };

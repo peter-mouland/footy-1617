@@ -1,16 +1,21 @@
-import { PLAYER_STATS } from '../../config/paths'
-import fetch from 'isomorphic-fetch';
+import ffPlayers from './ff-players'
+import skyPlayers from './sky-players'
 
 export default {
   fetchPlayers() {
-    return fetch(PLAYER_STATS).then(function(response) {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
-      return response.json();
-    })
-      .then(function(stats) {
-        return stats;
+    return Promise.all([ffPlayers(), skyPlayers()])
+      .then((results) => {
+        const [ ffResults, skyResults ] = results;
+        const merged = skyResults.players.map((player) => {
+          const key =  player.fName
+            ? `${player.sName}, ${player.fName}`
+            : `${player.sName}`;
+          return {
+            ...player,
+            pos: ffResults[key] ? ffResults[key].pos : key
+          }
+        });
+        return merged;
       });
   }
-};
+}
