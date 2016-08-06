@@ -25,6 +25,7 @@ export default {
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
+        BROWSER: JSON.stringify(true),
         PORT: JSON.stringify(process.env.PORT),
         DEBUG: JSON.stringify(process.env.DEBUG),
         NODE_ENV: JSON.stringify(process.env.NODE_ENV)

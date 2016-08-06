@@ -27,6 +27,7 @@ export default {
     new webpack.optimize.UglifyJsPlugin({ minimize: true }),
     new webpack.DefinePlugin({
       'process.env': {
+        BROWSER: JSON.stringify(true),
         PORT: JSON.stringify(process.env.PORT),
         DEBUG: JSON.stringify(process.env.DEBUG),
         NODE_ENV: JSON.stringify('production')
