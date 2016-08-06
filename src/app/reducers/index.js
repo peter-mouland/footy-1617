@@ -1,18 +1,16 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-import { GET_PRODUCTS, ADD_TO_CART } from '../actions';
+import { FETCH_PLAYERS } from '../actions';
 
-function products(state = {}, action) {
+
+
+function stats(state = {}, action) {
   switch (action.type) {
-    case GET_PRODUCTS:
+    case FETCH_PLAYERS:
       return {
         ...state,
-        ...action
-      };
-    case ADD_TO_CART:
-      return {
-        ...state,
-        inventory: state.inventory - 1
+        data: action.data,
+        status: action.status
       };
     default:
       return {
@@ -23,6 +21,6 @@ function products(state = {}, action) {
 }
 
 export default combineReducers({
-  products,
+  stats,
   routing
 });

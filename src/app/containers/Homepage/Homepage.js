@@ -2,28 +2,31 @@ import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { copy } from './homepage-copy';
-import ProductsContainer from '../ProductsContainer/ProductsContainer';
-// import CartContainer from '../CartContainer/CartContainer';
-import { getAllProducts } from '../../actions';
+import { fetchPlayers } from '../../actions';
 import debug from 'debug';
 
 const log = debug('lego:Homepage.js'); //eslint-disable-line
 
 class Homepage extends React.Component {
 
-  static needs = [getAllProducts];
+  static needs = [ fetchPlayers ];
 
   componentDidMount() {
-    const { products } = this.props;
-    if (products.isTimeout) {
-      this.props.getAllProducts();
+    const { stats } = this.props;
+    if (stats.isTimeout) {
+      this.props.fetchPlayers();
     }
   }
 
   render() {
-    const { data, isLoading, isTimeout } = this.props.products;
-    if (isLoading || isTimeout) {
-      return <h3>Loading products...</h3>;
+    const { data, status, error} = this.props.stats;
+    if (status.isLoading || status.isTimeout) {
+      return <h3>Loading Player Stats...</h3>;
+    } else if (status.isError ) {
+      return <div>
+        <h3>ERROR Loading Player Stats...</h3>
+        <p>{error.message}</p>
+      </div>
     }
     return (
       <div id="homepage">
@@ -33,11 +36,10 @@ class Homepage extends React.Component {
         </banner>
 
         <div>
-          <h2>Shopping Cart Example</h2>
+          <h2>Player Stats</h2>
           <hr/>
-          <ProductsContainer products={ data.results } addToCart={() => {}} />
+
           <hr/>
-          {/* <CartContainer />*/}
         </div>
 
         <Link to='/search'>search</Link>
@@ -48,12 +50,12 @@ class Homepage extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    products: state.products
+    stats: state.stats
   };
 }
 
 export default connect(
   mapStateToProps,
-  { getAllProducts }
+  { fetchPlayers }
 )(Homepage);
 

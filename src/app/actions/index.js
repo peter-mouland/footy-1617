@@ -1,11 +1,10 @@
-import shop from '../api/shop';
+import stats from '../api/stats';
 
-export const GET_PRODUCTS = 'FETCH_PRODUCTS';
-export const ADD_TO_CART = 'ADD_TO_CART';
+export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 
-export function getAllProducts() {
+export function fetchPlayers() {
   return {
-    type: GET_PRODUCTS,
-    promise: shop.getProducts()
+    type: FETCH_PLAYERS,
+    promise: stats.fetchPlayers()
   };
 }
