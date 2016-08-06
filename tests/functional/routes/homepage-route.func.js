@@ -2,7 +2,7 @@ import { mount, expect } from '../../support/test.helper';
 import { history, router } from '../../../src/client-entry';
 import { copy } from '../../../src/app/containers/Homepage/homepage-copy';
 
-describe('Search Route', function () {
+describe('SendToGoogle Route', function () {
 
   before(() => {
     this.wrapper = mount(router);

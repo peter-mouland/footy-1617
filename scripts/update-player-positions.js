@@ -9,7 +9,7 @@ const secretSquirellStuff = {"web":{"client_id":"1031181206488-99j3vqarkq2987qu6
 
 gsjson({
     spreadsheetId: '17Wl0UlbBfbd5xgrqC2kJcuSq0M76-yDiqb4xU5C9l-0',
-    token: 'ya29.Ci83A18pu3r7zPdAW77LF1DXZ9UWv75roPDvo8hAYz9b-SY4bp8hv7enxRIHQsJV2Q',
+    token: 'ya29.Ci83A3H7Ie-F5wMKX0dGT1N8iSteGrPIiROhsLq0y_EOqWOQXkop9J8DpqM4OIB5uQ',
     hash: 'player',
   })
   .then(function(result) {

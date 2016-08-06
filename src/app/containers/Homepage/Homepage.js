@@ -1,15 +1,54 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import fetch from 'isomorphic-fetch';
 import { copy } from './homepage-copy';
 import { fetchPlayers } from '../../actions';
 import debug from 'debug';
 
 const log = debug('lego:Homepage.js'); //eslint-disable-line
 
+function checkStatus(response) {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    var error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+}
+
+function parseJSON(response) {
+  return response.json()
+}
+
 class Homepage extends React.Component {
 
   static needs = [ fetchPlayers ];
+
+  constructor(props){
+    super(props);
+    this.sendToGoogle = this.sendToGoogle.bind(this);
+  }
+
+  sendToGoogle() {
+    const data = this.props.stats.data;
+    fetch('/save-data', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(checkStatus)
+      .then(parseJSON)
+      .then(function(data) {
+        console.log('request succeeded with JSON response', data)
+      }).catch(function(error) {
+      console.log('request failed', error)
+    });
+    this.sendToGoogle = null;
+  }
 
   componentDidMount() {
     const { stats } = this.props;
@@ -29,7 +68,6 @@ class Homepage extends React.Component {
       </div>
     }
 
-    console.log(`data.players[0]`, data.players[0])
     return (
       <div id="homepage">
         <banner className="header">
@@ -61,7 +99,7 @@ class Homepage extends React.Component {
             {
               data.players.map(player => (
                 <tr key={player.id}>
-                  <td>{player.code}</td>
+                  <td>{player.code || player.id}</td>
                   <td>{player.pos}</td>
                   <td>{player.fullName}</td>
                   <td>{player.tName}</td>
@@ -73,8 +111,8 @@ class Homepage extends React.Component {
             }
             </tbody>
           </table>
-          {/*<textarea defaultValue={JSON.stringify(data.players)}/>*/}
         </div>
+        <a onClick={this.sendToGoogle}>send-to-google</a>
       </div>
     );
   }

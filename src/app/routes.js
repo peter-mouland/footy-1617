@@ -5,7 +5,7 @@ import objectAssign from 'object-assign';
 
 import MainLayout from './Layouts/MainLayout';
 import Homepage from './containers/Homepage/Homepage';
-import Search from './containers/Search/Search';
+import SendToGoogle from './containers/SendToGoogle/SendToGoogle';
 import NotFound from './containers/NotFound/NotFound';
 
 const log = debug('lego:routes');
@@ -16,11 +16,11 @@ export const routes = {
     title: 'FF Footy 16/17',
     component: Homepage
   },
-  search: {
-    path: 'search',
-    title: 'FF Footy 16/17 - Search',
+  sendToGoogle: {
+    path: 'send-to-google',
+    title: 'FF Footy 16/17 - update google',
     breadcrumb: '/home',
-    component: Search
+    component: SendToGoogle
   },
   notFound: {
     path: '*', // path * will return a 404
@@ -36,7 +36,7 @@ export function makeRoutes() {
   return (
     <Route path="/" component={ MainLayout }>
       <IndexRoute { ...indexRoute(routes.homepage) } />
-      <Route { ...routes.search } />
+      <Route { ...routes.sendToGoogle } />
       <Route { ...routes.notFound } />
     </Route>
   );

@@ -9,7 +9,7 @@ function stats(state = {}, action) {
     case FETCH_PLAYERS:
       return {
         ...state,
-        data: new statsToPoints(action.data),
+        data: new statsToPoints(action.data, action.timeFrame),
         status: action.status
       };
     default:

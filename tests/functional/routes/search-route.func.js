@@ -3,7 +3,7 @@ import { history, router } from '../../../src/client-entry';
 import { copy } from '../../../src/app/containers/Search/search-copy';
 import { routes } from '../../../src/app/routes';
 
-describe('Search Route', function () {
+describe('SendToGoogle Route', function () {
 
   before(() => {
     this.wrapper = mount(router);

@@ -8,14 +8,14 @@ const CLEAN_SHEETS = 7;
 const CONCEEDED = 8;
 const SAVED_PENALTIES = 10;
 
-export default function points(data){
-  this.players = this.calculatePlayers(data.players);
+export default function points(data, timeFrame){
+  this.players = this.calculatePlayers(data.players, timeFrame);
   this.unknown = data.unknown;
 };
 
-points.prototype.calculatePlayers = function(players){
+points.prototype.calculatePlayers = function(players, timeFrame = 'season'){
   return players.map((player) => {
-    const points = this.calculatePlayer(player.stats.season, player.pos);
+    const points = this.calculatePlayer(player.stats[timeFrame], player.pos);
     return {
       ...player,
       ffPoints: { ...points }
