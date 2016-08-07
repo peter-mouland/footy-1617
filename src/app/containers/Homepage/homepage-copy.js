@@ -1,4 +1,4 @@
 export const copy = {
-  title: `React Lego`,
-  blurb: `The building blocks for a React app`
+  title: `Footy 16-17`,
+  blurb: `lets make some points`
 };

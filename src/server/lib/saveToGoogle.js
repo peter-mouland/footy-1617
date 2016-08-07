@@ -12,8 +12,7 @@ function getInfoAndWorksheets() {
   return new Promise((resolve, reject)=>{
     doc.getInfo(function(err, info) {
       if (err) reject(err);
-      // console.log('Loaded doc: '+info.title+' by '+info.author.email);
-      // console.log(`info`, info)
+      console.log('Loaded doc: '+info.title+' by '+info.author.email);
       resolve(info)
     });
   })
@@ -33,32 +32,60 @@ function addNewStatsSheets() {
   });
 }
 
-function addStats(sheet, players) {
-  console.log(`players to add: ${players.length}`);
-  const promises = players.map((player, i)=> {
-    return new Promise((resolve, reject)=> {
-      sheet.addRow({
-        code: player.id,
-        position:  player.pos,
-        player: player.fullName,
-        club: player.tName,
-        starts: player.ffPoints.starts,
-        subs: player.ffPoints.subs,
-        goals: player.ffPoints.goals,
-        asts: player.ffPoints.asts,
-        cs: player.ffPoints.cs,
-        con: player.ffPoints.con,
-        penSvd: player.ffPoints.penSvd,
-        yells: player.ffPoints.yells,
-        reds: player.ffPoints.reds,
-        total: player.ffPoints.total
-      }, () => {
-        console.log(i, player.fullName);
-        resolve()
+const buildRow = (player) => {
+  return {
+    code: player.id,
+    position:  player.pos,
+    player: player.fullName,
+    club: player.tName,
+    starts: player.ffPoints.starts,
+    subs: player.ffPoints.subs,
+    goals: player.ffPoints.goals,
+    asts: player.ffPoints.asts,
+    cs: player.ffPoints.cs,
+    con: player.ffPoints.con,
+    penSvd: player.ffPoints.penSvd,
+    yells: player.ffPoints.yells,
+    reds: player.ffPoints.reds,
+    total: player.ffPoints.total
+  };
+}
+
+const addrowsSync = (sheet, rows) => {
+  if (!rows.length) return ;
+  const player = buildRow(rows[0]);
+  sheet.addRow(player, (err) => {
+    if (err) {
+      console.log(`err`, err)
+      throw new Error(err);
+    } else {
+      console.log(`${rows.length}`, player.player);
+      rows.shift();
+      addrowsSync(sheet, rows)
+    }
+  });
+};
+
+const addrowsASync = (sheet, rows) => {
+  let completed = 0;
+  const promises = rows.map((row) => {
+    new Promise((resolve, reject) => {
+      const player = buildRow(row);
+      sheet.addRow(player, (err) => {
+        if (err) reject(err);
+        console.log(`${completed}`, player.player);
+        resolve(player)
       });
     });
   });
   return Promise.all(promises);
+};
+
+function addStats(sheet, players) {
+  return new Promise((resolve, reject)=> {
+    addrowsSync(sheet, players);
+    resolve()
+  })
 }
 
 export default (data) => {
@@ -66,7 +93,7 @@ export default (data) => {
     .then(getInfoAndWorksheets)
     .then(addNewStatsSheets)
     .then((sheet) => addStats(sheet, data))
-    .then(()=>console.log(`done.`))
+    .then(() => console.log('done.'))
     .catch(e => console.log(e))
 };
 

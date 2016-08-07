@@ -45,7 +45,7 @@ class Homepage extends React.Component {
       },
       body: JSON.stringify(data)
     }).then(checkStatus)
-      .then(parseJSON)
+      // .then(parseJSON)
       .then(function(data) {
         console.log('request succeeded with JSON response', data)
       }).catch(function(error) {
