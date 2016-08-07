@@ -30,13 +30,17 @@ class Homepage extends React.Component {
     super(props);
     this.sendToGoogle = this.sendToGoogle.bind(this);
     this.state = {
-      saved: false
+      isSaving: false,
+      isUpdating: false,
+      savedOn: null
     }
   }
 
   sendToGoogle() {
-    if (this.state.saved) return;
     const data = this.props.stats.data;
+    this.setState({
+      isSaving: true
+    });
     fetch('/save-data', {
       method: 'POST',
       headers: {
@@ -45,15 +49,36 @@ class Homepage extends React.Component {
       },
       body: JSON.stringify(data)
     }).then(checkStatus)
-      // .then(parseJSON)
-      .then(function(data) {
-        console.log('request succeeded with JSON response', data)
-      }).catch(function(error) {
+      .then((data) => {
+        console.log('request succeeded with JSON response', data);
+        this.setState({
+          isSaving: false,
+          savedOn: new Date()
+        });
+      }).catch((error) => {
       console.log('request failed', error)
     });
+  }
+
+  updatePosFromGoogle() {
     this.setState({
-      saved: true
-    })
+      isUpdating: true
+    });
+    fetch('/update-player-positions', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }).then(checkStatus)
+      .then((data) => {
+        console.log('request succeeded with JSON response', data);
+        this.setState({
+          isUpdating: false
+        });
+      }).catch((error) => {
+      console.log('request failed', error)
+    });
   }
 
   componentDidMount() {
@@ -65,7 +90,12 @@ class Homepage extends React.Component {
 
   render() {
     const { data, status, error} = this.props.stats;
-    if (status.isLoading || status.isTimeout) {
+    const { isSaving, isUpdating, savedOn } = this.state;
+    if (isSaving) {
+      return <h3>Saving to Google...</h3>;
+    } else if (isUpdating ) {
+      return <h3>Updates Players from Google...</h3>;
+    } else if (status.isError ) {
       return <h3>Loading Player Stats...</h3>;
     } else if (status.isError ) {
       return <div>
@@ -82,13 +112,15 @@ class Homepage extends React.Component {
         </banner>
 
         <div>
-          <h2>unknown players</h2>
+          <h2>Unknown Players ({data.unknown.length}) <small>last updated: {data.updatedFromGoogleOn}</small></h2>
+          <button onClick={this.updatePosFromGoogle} >Update Players from Google</button>
           <ul>
             {data.unknown.map(u => (
               <li key={u}>{u}</li>
             ))}
           </ul>
-          <h2>players points</h2>
+          <h2>Players Points <small>last updated: {savedOn}</small></h2>
+          <button onClick={this.sendToGoogle} >Send Points to Google</button>
           <table>
             <thead>
               <tr>
@@ -118,7 +150,6 @@ class Homepage extends React.Component {
             </tbody>
           </table>
         </div>
-        <a onClick={this.sendToGoogle}>send-to-google</a>
       </div>
     );
   }

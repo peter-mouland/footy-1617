@@ -7,6 +7,7 @@ import compression from 'compression';
 import Error500 from './templates/Error500';
 import { routingApp, setRoutes } from './router';
 import saveToGoogle from './lib/saveToGoogle';
+import updatePlayerPositions from './lib/update-player-positions';
 import webpackConfig from '../config/webpack.config.dev.babel';
 
 const webpackEntries = Object.keys(webpackConfig.entry);
@@ -42,8 +43,18 @@ Object.assign(express.response, {
 });
 
 setRoutes(assets);
+server.post('/update-player-positions', (req, res, next) =>{
+  updatePlayerPositions()
+    .then((response)=>{
+      console.log(`response`, response)
+      res.status(200).send(response);
+    })
+    .catch((e) => {
+      res.sendStatus(500, e)
+    })
+});
+
 server.post('/save-data', (req, res, next) =>{
-  // console.log(req.body)
   saveToGoogle(req.body.players)
     .then((response)=>{
       console.log(`response`, response)

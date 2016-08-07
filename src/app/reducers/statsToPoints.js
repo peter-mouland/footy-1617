@@ -8,9 +8,11 @@ const CLEAN_SHEETS = 7;
 const CONCEEDED = 8;
 const SAVED_PENALTIES = 10;
 
+// todo: shouldnt have to update object here
 export default function points(data, timeFrame){
   this.players = this.calculatePlayers(data.players, timeFrame);
   this.unknown = data.unknown;
+  this.updatedFromGoogleOn = data.updatedFromGoogleOn;
 };
 
 points.prototype.calculatePlayers = function(players, timeFrame = 'season'){

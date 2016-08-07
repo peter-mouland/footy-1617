@@ -23,6 +23,7 @@ export default {
           }
         });
         return {
+          updatedFromGoogleOn: ffResults.updatedFromGoogleOn,
           unknown: unknownPlayers,
           players: mergedPlayers
         };
