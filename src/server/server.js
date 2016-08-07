@@ -45,7 +45,12 @@ setRoutes(assets);
 server.post('/save-data', (req, res, next) =>{
   // console.log(req.body)
   saveToGoogle(req.body.players)
-  res.sendStatus(200)
+    .then(()=>{
+      res.sendStatus(200);
+    })
+    .catch((e) => {
+      res.sendStatus(500, e)
+    })
 });
 server.use('/', routingApp);
 

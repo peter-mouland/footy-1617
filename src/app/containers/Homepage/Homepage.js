@@ -29,9 +29,13 @@ class Homepage extends React.Component {
   constructor(props){
     super(props);
     this.sendToGoogle = this.sendToGoogle.bind(this);
+    this.state = {
+      saved: false
+    }
   }
 
   sendToGoogle() {
+    if (this.state.saved) return;
     const data = this.props.stats.data;
     fetch('/save-data', {
       method: 'POST',
@@ -47,7 +51,9 @@ class Homepage extends React.Component {
       }).catch(function(error) {
       console.log('request failed', error)
     });
-    this.sendToGoogle = null;
+    this.setState({
+      saved: true
+    })
   }
 
   componentDidMount() {
