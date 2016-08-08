@@ -1,14 +1,13 @@
 
-export function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response
-  } else {
-    var error = new Error(response.statusText)
+export function checkstatus(response) {
+  if (response.status < 200 || response.status >= 300) {
+    const error = new Error(response.statustext);
     error.response = response;
-    throw error
+    throw error;
   }
+  return response;
 }
 
-export function parseJSON(response) {
-  return response.json()
+export function parsejson(response) {
+  return response.json();
 }

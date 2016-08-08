@@ -3,7 +3,7 @@ require('babel-core/register')({
 });
 require('babel-polyfill');
 const hook = require('node-hook').hook;
-hook('.scss', (source, filename) => {});
+hook('.scss', (source, filename) => {}); // eslint-disable-line
 
 require('./config/environment');
 

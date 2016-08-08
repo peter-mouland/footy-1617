@@ -1,18 +1,22 @@
 import fetch from 'isomorphic-fetch';
-import { checkStatus } from './utils'
+import debug from 'debug';
+
+import { checkStatus } from './utils';
+
+const log = debug('footy:save-player-stats');
 
 export default (data) => {
   return fetch('/save-player-stats', {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   })
   .then(checkStatus)
   .catch((error) => {
-    console.log('request failed', error)
+    log('request failed', error);
   });
-}
+};
 

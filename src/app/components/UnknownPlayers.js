@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 
 import { updatePlayerPositions } from '../actions';
 
-export default class UnknownPayers  extends React.Component {
+class UnknownPayers extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.updatePlayerPositions = this.updatePlayerPositions.bind(this);
     this.state = {
       isUpdating: false,
       updatedOn: null
-    }
+    };
   }
 
   updatePlayerPositions() {
@@ -39,16 +39,16 @@ export default class UnknownPayers  extends React.Component {
         <h2>Unknown Players ({players.length}) <small>last updated: {String(updatedOn)}</small></h2>
         {Update}
         <ul>
-        {players.map(u => (
-          <li key={u}>{u}</li>
+        {players.map(player => (
+          <li key={player}>{player}</li>
         ))}
         </ul>
       </div>
     );
   }
-};
+}
 
 export default connect(
   null,
-  {  updatePlayerPositions }
+  { updatePlayerPositions }
 )(UnknownPayers);

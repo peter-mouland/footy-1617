@@ -1,34 +1,33 @@
 #!/usr/bin/env node
-var fs = require('fs');
-var mkdirp = require("mkdirp");
-var getDirName = require("path").dirname;
+import fs from 'fs';
+import mkdirp from 'mkdirp';
+import path from 'path';
+import debug from 'debug';
+import GoogleSpreadsheet from 'google-spreadsheet';
 
+import creds from './google-generated-creds.json';
 
-var GoogleSpreadsheet = require('google-spreadsheet');
-var doc = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY');
+const log = debug('footy:update-player-positions');
+const getDirName = path.dirName;
+const doc = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY');
 
-const setAuth = () => {
-  const creds = require('./google-generated-creds.json');
-  return new Promise((resolve, reject) => {
-    doc.useServiceAccountAuth(creds, resolve);
-  });
-};
+const setAuth = () => new Promise((resolve) => doc.useServiceAccountAuth(creds, resolve));
 
 function getPlayerList() {
-  return new Promise((resolve, reject)=>{
-    doc.getInfo(function(err, info) {
+  return new Promise((resolve, reject) => {
+    doc.getInfo((err, info) => {
       if (err) reject(err);
-      console.log('Loaded doc: '+info.title+' by '+info.author.email);
+      log(`Loaded doc: ${info.title} by ${info.author.email}`);
       const playerListSheet = info.worksheets
         .find(sheet => sheet.title.toLowerCase() === 'player list');
-      resolve(playerListSheet)
+      resolve(playerListSheet);
     });
-  })
+  });
 }
 
-function sheetToJson(sheet){
-  return new Promise((resolve, reject)=>{
-    sheet.getRows(function(err, info) {
+function sheetToJson(sheet) {
+  return new Promise((resolve, reject) => {
+    sheet.getRows((err, info) => {
       if (err) reject(err);
       const players = info.reduce((prev, item) => {
         const player = {
@@ -42,32 +41,30 @@ function sheetToJson(sheet){
         return Object.assign(prev, player);
       }, {});
       players.updatedOn = new Date();
-      resolve(players)
+      resolve(players);
     });
-  })
+  });
+}
+
+const writeJson = (url, json) => {
+  return mkdirp(getDirName(url), (err) => {
+    if (err) return log(err);
+    return fs.writeFile(url, JSON.stringify(json, null, 2), (stringyErr) => {
+      if (stringyErr) log(stringyErr);
+      log(`${url} saved`);
+    });
+  });
+};
+
+function save(result) {
+  return writeJson('src/app/api/ff.json', result);
 }
 
 export default () => {
-   return setAuth()
+  return setAuth()
     .then(getPlayerList)
     .then(sheetToJson)
     .then(save)
-    .then(() => console.log('done.'))
-    .catch(e => console.log(e));
-};
-
-
-
-
-function save(result) {
-  return writeJson('src/app/api/ff.json', result)
-}
-const writeJson = (url, json) => {
-  return mkdirp(getDirName(url), function (err) {
-    if (err) return console.log(err);
-    fs.writeFile(url, JSON.stringify(json, null, 2), function(err){
-      if (err) console.log(err);
-      console.log(url + ' saved');
-    });
-  });
+    .then(() => log('done.'))
+    .catch(e => log(e));
 };

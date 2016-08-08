@@ -4,8 +4,7 @@
   "description": "",
   "main": "src/server-entry.js",
   "scripts": {
-    "update-players": "./scripts/update-player-positions.js",
-    "prestart": "npm run update-players && npm run build",
+    "prestart": "npm run build",
     "prestart:dev": "npm run build:dev ",
     "build": "webpack --config src/config/webpack.config.prod.babel.js",
     "build:dev": "webpack --config src/config/webpack.config.dev.babel.js",

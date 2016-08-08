@@ -26,8 +26,8 @@ server.use((req, res, next) => {
   res.header('Expires', 0);
   next();
 });
-server.use(bodyParser.json({limit: '50mb'}));
-server.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+server.use(bodyParser.json({ limit: '50mb' }));
+server.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 server.use(compression());
 server.enable('view cache');
 server.enable('strict routing');
@@ -44,24 +44,24 @@ Object.assign(express.response, {
 
 setRoutes(assets);
 
-server.post('/update-player-positions', (req, res, next) =>{
+server.post('/update-player-positions', (req, res) => {
   updatePlayerPositions()
-    .then(()=>{
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((e) => {
-      res.sendStatus(500, e)
-    })
+      res.sendStatus(500, e);
+    });
 });
 
-server.post('/save-player-stats', (req, res, next) =>{
+server.post('/save-player-stats', (req, res) => {
   saveToGoogle(req.body)
-    .then((response)=>{
+    .then((response) => {
       res.status(200).send(response);
     })
     .catch((e) => {
-      res.sendStatus(500, e)
-    })
+      res.sendStatus(500, e);
+    });
 });
 
 server.use('/', routingApp);

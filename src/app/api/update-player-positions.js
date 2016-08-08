@@ -1,17 +1,21 @@
 import fetch from 'isomorphic-fetch';
-import { checkStatus } from './utils'
+import debug from 'debug';
+
+import { checkStatus } from './utils';
+
+const log = debug('footy:update-player-positions');
 
 export default () => {
   return fetch('/update-player-positions', {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     }
   })
   .then(checkStatus)
   .catch((error) => {
-    console.log('request failed', error)
+    log('request failed', error);
   });
-}
+};
 
