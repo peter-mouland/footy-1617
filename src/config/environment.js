@@ -1,6 +1,6 @@
 const debug = require('debug');
 debug.enable(process.env.DEBUG);
-const log = debug('lego: Environment:');
+const log = debug('footy: Environment:');
 
 log({
   PORT: process.env.PORT,

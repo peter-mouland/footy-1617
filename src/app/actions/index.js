@@ -16,6 +16,7 @@ export function fetchPlayers() {
 export function savePlayerStats(players) {
   return {
     type: SAVE_PLAYER_STATS,
+    timeoutMs: 90000,
     promise: api.savePlayerStats(players)
   };
 }

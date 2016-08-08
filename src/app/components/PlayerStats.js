@@ -4,7 +4,7 @@ import debug from 'debug';
 
 import { savePlayerStats } from '../actions';
 
-const log = debug('lego:Homepage.js'); //eslint-disable-line
+const log = debug('footy:Homepage.js'); //eslint-disable-line
 
 class PlayerStats extends React.Component {
 
@@ -34,7 +34,7 @@ class PlayerStats extends React.Component {
     const { players } = this.props;
     const { isSaving, savedOn } = this.state;
     const Save = (isSaving)
-      ? <h3>Saving to Google...</h3>
+      ? <em>Saving to Google... this may take a minute or two.</em>
       : <button onClick={this.savePlayerStats} >Send Points to Google</button>;
 
     return (

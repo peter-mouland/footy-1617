@@ -31,7 +31,7 @@ class UnknownPayers extends React.Component {
     const { players } = this.props;
     const { isUpdating, updatedOn } = this.state;
     const Update = (isUpdating)
-      ? <strong>Retrieving Players Positions...</strong>
+      ? <em>Retrieving Players Positions...</em>
       : <button onClick={this.updatePlayerPositions} >Update Players Positions from Google</button>;
 
     return (

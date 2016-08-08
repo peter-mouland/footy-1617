@@ -2,7 +2,7 @@ import React from 'react';
 import debug from 'debug';
 import { copy } from './search-copy';
 
-debug('lego:SendToGoogle.jsx');
+debug('footy:SendToGoogle.jsx');
 
 export default class Homepage extends React.Component {
 

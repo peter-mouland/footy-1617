@@ -16,7 +16,7 @@ const assets = {
   styles: webpackEntries.map(entry => `/${entry}.css`)
 };
 const server = express();
-const log = debug('lego:server.js');
+const log = debug('footy:server.js');
 log('starting');
 
 server.set('etag', false);

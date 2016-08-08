@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const log = debug('lego:fetchComponentData');
+const log = debug('footy:fetchComponentData');
 
 export default function fetchComponentData(dispatch, components, params) {
   const componentsWithNeeds = [];

@@ -8,7 +8,7 @@ import GoogleSpreadsheet from 'google-spreadsheet';
 import creds from './google-generated-creds.json';
 
 const log = debug('footy:update-player-positions');
-const getDirName = path.dirName;
+const getDirName = path.dirname;
 const doc = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY');
 
 const setAuth = () => new Promise((resolve) => doc.useServiceAccountAuth(creds, resolve));

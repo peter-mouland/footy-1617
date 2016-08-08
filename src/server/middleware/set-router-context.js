@@ -8,7 +8,7 @@ import { makeRoutes } from '../../app/routes';
 import fetchComponentData from '../lib/fetchComponentData';
 
 const setRouterContext = (req, res, next) => {
-  const log = debug('lego:set-router-context');
+  const log = debug('footy:set-router-context');
 
   const store = configureStore();
   const routes = makeRoutes(store);

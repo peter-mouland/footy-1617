@@ -8,7 +8,7 @@ import Homepage from './containers/Homepage/Homepage';
 import SendToGoogle from './containers/SendToGoogle/SendToGoogle';
 import NotFound from './containers/NotFound/NotFound';
 
-const log = debug('lego:routes');
+const log = debug('footy:routes');
 
 export const routes = {
   homepage: {

@@ -7,7 +7,7 @@ import UnknownPlayers from '../../components/UnknownPlayers';
 import { copy } from './homepage-copy';
 import { fetchPlayers } from '../../actions';
 
-const log = debug('lego:Homepage.js'); //eslint-disable-line
+const log = debug('footy:Homepage.js'); //eslint-disable-line
 
 class Homepage extends React.Component {
 

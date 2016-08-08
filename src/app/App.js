@@ -4,7 +4,7 @@ import { Router } from 'react-router';
 import { makeRoutes } from './routes';
 import debug from 'debug';
 
-const log = debug('lego:App');
+const log = debug('footy:App');
 
 export default class Root extends Component {
 

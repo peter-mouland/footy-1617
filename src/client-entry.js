@@ -10,7 +10,7 @@ import debug from 'debug';
 import './styles/app.scss';
 
 debug.enable(process.env.DEBUG);
-const log = debug('lego:client-entry');
+const log = debug('footy:client-entry');
 log('Client environment', process.env);
 
 // exported to be used in tests

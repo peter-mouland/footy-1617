@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const log = debug('lego:promiseMiddleware');
+const log = debug('footy:promiseMiddleware');
 const status = {
   isLoading: false,
   isTimeout: false,
@@ -13,12 +13,11 @@ function delay(time) {
 
 export default function promiseMiddleware() {
   return next => action => {
-    const { promise, type, ...rest } = action;
+    const { promise, type, timeoutMs = 15000, ...rest } = action;
     log('FETCH with promise', !!promise);
 
     if (!promise) return next(action);
 
-    const timeoutMs = 30000;
     const SUCCESS = type;
     const FETCH = `${type}_FETCH`;
     const FAILURE = `${type}_FETCH_FAILURE`;
