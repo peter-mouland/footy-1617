@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-import { FETCH_PLAYERS } from '../actions';
+import { FETCH_PLAYERS, SAVE_PLAYER_STATS, UPDATE_PLAYER_POSITIONS } from '../actions';
 
 import statsToPoints from './statsToPoints';
 
@@ -12,15 +12,30 @@ function stats(state = {}, action) {
         data: new statsToPoints(action.data, action.timeFrame),
         status: action.status
       };
-    default:
+    case SAVE_PLAYER_STATS:
       return {
         ...state,
-        ...action
+        status: action.status
       };
+    default:
+      return state
+  }
+}
+
+function positions(state = {}, action) {
+  switch (action.type) {
+    case UPDATE_PLAYER_POSITIONS:
+      return {
+        ...state,
+        status: action.status
+      };
+    default:
+      return state
   }
 }
 
 export default combineReducers({
+  positions,
   stats,
   routing
 });

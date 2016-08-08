@@ -41,14 +41,14 @@ function sheetToJson(sheet){
         };
         return Object.assign(prev, player);
       }, {});
-      players.updatedFromGoogleOn = new Date();
+      players.updatedOn = new Date();
       resolve(players)
     });
   })
 }
 
 export default () => {
-   setAuth()
+   return setAuth()
     .then(getPlayerList)
     .then(sheetToJson)
     .then(save)

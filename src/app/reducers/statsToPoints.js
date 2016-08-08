@@ -12,7 +12,7 @@ const SAVED_PENALTIES = 10;
 export default function points(data, timeFrame){
   this.players = this.calculatePlayers(data.players, timeFrame);
   this.unknown = data.unknown;
-  this.updatedFromGoogleOn = data.updatedFromGoogleOn;
+  this.updatedOn = data.updatedOn;
 };
 
 points.prototype.calculatePlayers = function(players, timeFrame = 'season'){

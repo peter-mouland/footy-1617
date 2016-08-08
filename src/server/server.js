@@ -43,10 +43,20 @@ Object.assign(express.response, {
 });
 
 setRoutes(assets);
+
 server.post('/update-player-positions', (req, res, next) =>{
   updatePlayerPositions()
+    .then(()=>{
+      res.sendStatus(200);
+    })
+    .catch((e) => {
+      res.sendStatus(500, e)
+    })
+});
+
+server.post('/save-player-stats', (req, res, next) =>{
+  saveToGoogle(req.body)
     .then((response)=>{
-      console.log(`response`, response)
       res.status(200).send(response);
     })
     .catch((e) => {
@@ -54,16 +64,6 @@ server.post('/update-player-positions', (req, res, next) =>{
     })
 });
 
-server.post('/save-data', (req, res, next) =>{
-  saveToGoogle(req.body.players)
-    .then((response)=>{
-      console.log(`response`, response)
-      res.status(200).send(response);
-    })
-    .catch((e) => {
-      res.sendStatus(500, e)
-    })
-});
 server.use('/', routingApp);
 
 export default server;

@@ -1,5 +1,7 @@
-import ffPlayers from './ff-players'
-import skyPlayers from './sky-players'
+import ffPlayers from './fetch-ff-players';
+import skyPlayers from './fetch-sky-players';
+import savePlayerStats from './save-player-stats';
+import updatePlayerPositions from './update-player-positions';
 
 export default {
   fetchPlayers() {
@@ -23,10 +25,18 @@ export default {
           }
         });
         return {
-          updatedFromGoogleOn: ffResults.updatedFromGoogleOn,
+          updatedOn: ffResults.updatedOn,
           unknown: unknownPlayers,
           players: mergedPlayers
         };
       });
+  },
+
+  savePlayerStats(data) {
+    return savePlayerStats(data);
+  },
+
+  updatePlayerPositions() {
+    return updatePlayerPositions()
   }
 }
