@@ -31,8 +31,8 @@ class UnknownPayers extends React.Component {
       });
   }
 
-  updatePosition(player, pos){
-    this.refs[`btn-${player.code}-${pos}`].className += ' unknown-player__btn--selected'
+  updatePosition(player, pos) {
+    this.refs[`btn-${player.code}-${pos}`].className += ' unknown-player__btn--selected';
   }
 
   render() {

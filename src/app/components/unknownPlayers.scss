@@ -1,3 +1,5 @@
+$row-bg: #EAEAEA;
+$btm--selected: #ADFF2F;
 
 .unknown-player__list {
   margin: 0;
@@ -10,7 +12,7 @@
   padding: 5px;
 
   &:nth-child(even) {
-    background: #eaeaea;
+    background: $row-bg;
   }
 }
 
@@ -19,6 +21,6 @@
   margin-left: 20px;
 
   &--selected {
-    background: greenyellow;
+    background: $btm--selected;
   }
 }

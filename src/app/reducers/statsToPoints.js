@@ -62,9 +62,9 @@ function forConceeded(ga, position) { // -1
   return ga * multiplier;
 }
 
-function forPenaltiesSaved(ps) { // -1
-  return ps * 5;
-}
+// function forPenaltiesSaved(ps) { // -1
+//   return ps * 5;
+// }
 
 
 // todo: shouldnt have to update object here
@@ -75,18 +75,27 @@ export default function StatsToPoints(data, timeFrame = 'season') {
 }
 
 StatsToPoints.prototype.calculatePlayer = function calculatePlayer(stats, pos) {
-  const goals = forGoals(stats[GOALS], pos);
-  const yells = forYellowCards(stats[YELLOW_CARDS], pos);
-  const reds = forRedCards(stats[RED_CARDS], pos);
   const starts = forStarting(stats[STARTING_XI], pos);
   const subs = forSub(stats[SUBS], pos);
+  const goals = forGoals(stats[GOALS], pos);
   const asts = forAssists(stats[ASSISTS], pos);
   const cs = forCleanSheet(stats[CLEAN_SHEETS], pos);
   const con = forConceeded(stats[CONCEEDED], pos);
-  const penSvd = forPenaltiesSaved(stats[SAVED_PENALTIES], pos);
+  // const penSvd = forPenaltiesSaved(stats[SAVED_PENALTIES], pos);
+  const yells = forYellowCards(stats[YELLOW_CARDS], pos);
+  const reds = forRedCards(stats[RED_CARDS], pos);
   const total = goals + yells + reds + starts + subs + asts + cs + con;
   return {
-    starts, subs, goals, asts, cs, con, penSvd, yells, reds, total
+    starts: stats[STARTING_XI],
+    subs: stats[SUBS],
+    goals: stats[GOALS],
+    asts: stats[ASSISTS],
+    cs: stats[CLEAN_SHEETS],
+    con: stats[CONCEEDED],
+    penSvd: stats[SAVED_PENALTIES],
+    yells: stats[YELLOW_CARDS],
+    reds: stats[RED_CARDS],
+    total
   };
 };
 

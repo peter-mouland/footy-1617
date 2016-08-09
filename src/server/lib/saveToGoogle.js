@@ -26,7 +26,7 @@ function addNewStatsSheets(data) {
   return new Promise((resolve, reject) => {
     doc.addWorksheet({
       title: new Date(),
-      headers: headers,
+      headers,
       rowCount: data.length + 1,
       colCount: headers.length
     }, (err, sheet) => {
@@ -73,31 +73,31 @@ const buildRowArray = (player) => {
     player.ffPoints.yells,
     player.ffPoints.reds,
     player.ffPoints.total
-  ]
+  ];
 };
 
 const addrows = (sheet, players) => {
   const playerCount = players.length;
-  log(`Retrieving ${(playerCount+1)} * ${headers.length} Cells...`);
+  log(`Retrieving ${(playerCount + 1)} * ${headers.length} Cells...`);
   return new Promise((resolve, reject) => {
     sheet.getCells({
       'return-empty': true,
       'min-row': 1 + 1,
       'max-row': playerCount + 1
-    }, function(err, cells) {
+    }, (err, cells) => {
       if (err) reject(err);
-      log(`Calculating new Cells...`);
+      log('Calculating new Cells...');
       const playersArray = players.map(buildRowArray);
       cells.forEach((cell, i) => {
         try {
-          cell.value = String(playersArray[cell.row - 2][cell.col]);
+          cell.value = String(playersArray[cell.row - 2][cell.col]); // eslint-disable-line
         } catch (e) {
-          log(`NOT FOUND ${i} : R${cell.row} C${cell.col} playersArray:${playersArray.length}`)
+          log(`NOT FOUND ${i} : R${cell.row} C${cell.col} playersArray:${playersArray.length}`);
         }
       });
-      log(`Updating Cells...`);
-      sheet.bulkUpdateCells(cells, () =>{
-        log(`finished updating`);
+      log('Updating Cells...');
+      sheet.bulkUpdateCells(cells, () => {
+        log('finished updating');
         resolve();
       });
     });
