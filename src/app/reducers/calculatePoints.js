@@ -8,15 +8,15 @@ const CLEAN_SHEETS = 7;
 const CONCEEDED = 8;
 const SAVED_PENALTIES = 10;
 
-function forStarting(starts) { // starting a match 3 point
+export function forStarting(starts) { // starting a match 3 point
   return starts * 3;
 }
 
-function forSub(subs) { // sub = 1 point
+export function forSub(subs) { // sub = 1 point
   return subs * 1;
 }
 
-function forGoals(goals, position) { // depends on position
+export function forGoals(goals, position) { // depends on position
   let multiplier = 0;
   if (position === 'GK') {
     multiplier = 10;
@@ -30,19 +30,19 @@ function forGoals(goals, position) { // depends on position
   return goals * multiplier;
 }
 
-function forAssists(assists) { // assist = 3 points
+export function forAssists(assists) { // assist = 3 points
   return assists * 3;
 }
 
-function forYellowCards(yc) { // -2
-  return yc * -2;
+export function forYellowCards(yc) { // -2
+  return parseInt(yc * -2, 10);
 }
 
-function forRedCards(rc) { // -5
-  return rc * -5;
+export function forRedCards(rc) { // -5
+  return parseInt(rc * -5, 10);
 }
 
-function forCleanSheet(cs, position) { // 5
+export function forCleanSheet(cs, position) { // 5
   let multiplier;
   if ((position === 'FB' || position === 'CB') || position === 'GK') {
     multiplier = 5;
@@ -52,29 +52,21 @@ function forCleanSheet(cs, position) { // 5
   return cs * multiplier;
 }
 
-function forConceeded(ga, position) { // -1
+export function forConceeded(ga, position) { // -1
   let multiplier;
   if ((position === 'FB' || position === 'CB') || position === 'GK') {
     multiplier = -1;
   } else {
     multiplier = 0;
   }
-  return ga * multiplier;
+  return parseInt(ga * multiplier, 10);
 }
 
 // function forPenaltiesSaved(ps) { // -1
 //   return ps * 5;
 // }
 
-
-// todo: shouldnt have to update object here
-export default function StatsToPoints(data, timeFrame = 'season') {
-  this.players = this.calculatePlayers(data.players, timeFrame);
-  this.unknown = data.unknown;
-  this.updatedOn = data.updatedOn;
-}
-
-StatsToPoints.prototype.calculatePlayer = function calculatePlayer(stats, pos) {
+export function forPlayer(stats, pos) {
   const starts = forStarting(stats[STARTING_XI], pos);
   const subs = forSub(stats[SUBS], pos);
   const goals = forGoals(stats[GOALS], pos);
@@ -97,14 +89,14 @@ StatsToPoints.prototype.calculatePlayer = function calculatePlayer(stats, pos) {
     reds: stats[RED_CARDS],
     total
   };
-};
+}
 
-StatsToPoints.prototype.calculatePlayers = function calculatePlayers(players, timeFrame) {
+export default function forPlayers(players, timeFrame = 'season') {
   return players.map((player) => {
-    const ffPoints = this.calculatePlayer(player.stats[timeFrame], player.pos);
+    const ffPoints = forPlayer(player.stats[timeFrame], player.pos);
     return {
       ...player,
       ffPoints
     };
   });
-};
+}

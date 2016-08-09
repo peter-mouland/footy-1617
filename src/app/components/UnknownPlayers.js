@@ -10,7 +10,7 @@ class UnknownPayers extends React.Component {
 
   constructor(props) {
     super(props);
-    this.updatePlayerPositions = this.updatePlayerPositions.bind(this);
+    this.SavePlayerPositions = this.SavePlayerPositions.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
     this.state = {
       isUpdating: false,
@@ -18,7 +18,7 @@ class UnknownPayers extends React.Component {
     };
   }
 
-  updatePlayerPositions() {
+  SavePlayerPositions() {
     this.setState({
       isUpdating: true
     });
@@ -37,15 +37,16 @@ class UnknownPayers extends React.Component {
 
   render() {
     const { players } = this.props;
-    const { isUpdating, updatedOn } = this.state;
-    const Update = (isUpdating)
+    const { isSaving, updatedOn } = this.state;
+
+    const Save = (isSaving)
       ? <em>Retrieving Players Positions...</em>
-      : <button onClick={this.updatePlayerPositions} >Update Players Positions from Google</button>;
+      : <button onClick={this.SavePlayerPositions} >Save Players Positions</button>;
 
     return (
       <div>
         <h2>Unknown Players ({players.length}) <small>last updated: {String(updatedOn)}</small></h2>
-        {Update}
+        {Save}
         <ul className="unknown-player__list">
         {players.map(player => (
           <li id={player.code} key={player.code} className="unknown-player__item">
