@@ -4,7 +4,9 @@ import { FETCH_PLAYERS, SAVE_PLAYER_STATS, UPDATE_PLAYER_POSITIONS } from '../ac
 
 import StatsToPoints from './statsToPoints';
 
-function stats(state = {}, action) {
+const defaultStatsState = { data: { unknown: [], players: [] }, status: {} };
+
+function stats(state = defaultStatsState, action) {
   switch (action.type) {
     case FETCH_PLAYERS:
       return {

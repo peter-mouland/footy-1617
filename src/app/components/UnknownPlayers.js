@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { updatePlayerPositions } from '../actions';
 import './unknownPlayers.scss';
 
-const availablePositions = ['GK', 'FB', 'CB', 'WM', 'CM', 'STR'];
+const availablePositions = ['GK', 'FB', 'CB', 'WM', 'CM', 'STR', 'park'];
 
 class UnknownPayers extends React.Component {
 
@@ -48,7 +48,7 @@ class UnknownPayers extends React.Component {
         {Update}
         <ul className="unknown-player__list">
         {players.map(player => (
-          <li key={player.code} className="unknown-player__item">
+          <li id={player.code} key={player.code} className="unknown-player__item">
             {player.fullName}, {player.club}
             {availablePositions.map(pos => (
               <button className="unknown-player__btn" key={pos} ref={`btn-${player.code}-${pos}`}

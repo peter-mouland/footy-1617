@@ -14,14 +14,18 @@ export default {
           const key = player.fName
             ? `${player.sName}, ${player.fName}`
             : `${player.sName}`;
-          if (!ffResults[key]) {
-            unknownPlayers.push(player);
-          }
-          return {
+
+          const ffPlayerDetails = {
             ...player,
             fullName: key,
             code: player.id,
             club: player.tName,
+          };
+          if (!ffResults[key]) {
+            unknownPlayers.push(ffPlayerDetails);
+          }
+          return {
+            ...ffPlayerDetails,
             pos: ffResults[key] ? ffResults[key].pos : null
           };
         });

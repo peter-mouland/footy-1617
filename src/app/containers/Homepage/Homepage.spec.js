@@ -1,8 +1,14 @@
-import { expect, shallow, React } from '../../../../tests/support/test.helper';
-import Homepage from './Homepage';
-import { copy } from './homepage-copy';
+import {expect, shallow, React} from '../../../../tests/support/test.helper';
+import { WrappedComponent as Homepage }  from './Homepage';
+import {copy} from './homepage-copy';
 
-const baseProps = {}
+const baseProps = {
+  stats: {
+    data: {},
+    status: {}
+  }
+};
+
 describe('Settings Container', () => {
   it('should have an id of homepage', () => {
     const wrapper = shallow(<Homepage { ...baseProps } />);

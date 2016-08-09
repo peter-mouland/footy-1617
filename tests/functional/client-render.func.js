@@ -1,10 +1,10 @@
-import { mount, expect } from '../support/test.helper';
-import { history, router } from '../../src/client-entry';
+import { mount, expect, React } from '../support/test.helper';
+import Root, { history } from '../../src/app/Root';
 import Homepage from '../../src/app/containers/Homepage/Homepage';
 
 describe('Client Render', function () {
   beforeEach(() => {
-    this.wrapper = mount(router);
+    this.wrapper = mount(Root);
     history.push('/');
   });
 
@@ -20,13 +20,6 @@ describe('Client Render', function () {
     it('should render the 404 route', () => {
       history.push('/not-found');
       expect(this.wrapper.find('#not-found').length).to.equal(1);
-    });
-  });
-
-  describe('search', () => {
-    it('should render the search page', () => {
-      history.push('/search');
-      expect(this.wrapper.find('#search').length).to.equal(1);
     });
   });
 });

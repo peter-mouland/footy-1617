@@ -37,6 +37,10 @@ class PlayerStats extends React.Component {
       ? <em>Saving to Google... this may take a minute or two.</em>
       : <button onClick={this.savePlayerStats} >Send Points to Google</button>;
 
+    if (!players.length) {
+      return (<strong>No Players!</strong>);
+    }
+
     return (
         <div>
           <h2>Players Points <small>last updated: {String(savedOn)}</small></h2>

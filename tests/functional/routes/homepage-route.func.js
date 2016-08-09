@@ -1,11 +1,12 @@
 import { mount, expect } from '../../support/test.helper';
-import { history, router } from '../../../src/client-entry';
+import Root, { history } from '../../../src/app/Root';
+import { routes } from '../../../src/app/routes';
 import { copy } from '../../../src/app/containers/Homepage/homepage-copy';
 
-describe('SendToGoogle Route', function () {
+describe('Homepage Route', function () {
 
   before(() => {
-    this.wrapper = mount(router);
+    this.wrapper = mount(Root);
     history.push('/');
   });
 
@@ -20,20 +21,18 @@ describe('SendToGoogle Route', function () {
 
     it(`should contain the 'main' layout`, () => {
       expect(this.wrapper.find('.layout.layout--main')).to.be.present();
-      expect(this.wrapper.find('.layout__nav')).to.be.present();
       expect(this.wrapper.find('.layout__content')).to.be.present();
-      expect(this.wrapper.find('.layout__footer')).to.be.present();
     });
 
     it('Should contain a title', () => {
-      expect(document.title).to.equal(copy.title);
+      expect(document.title).to.equal(routes.homepage.title);
     });
 
     it('should have a nav', () => {
       expect(this.wrapper.find('nav')).to.be.present();
     });
 
-    it('should have a footer', () => {
+    it.skip('should have a footer', () => {
       expect(this.wrapper.find('footer')).to.be.present();
     });
 
