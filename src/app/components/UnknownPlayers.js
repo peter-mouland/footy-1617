@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import bemHelper from 'react-bem-helper';
 
-import { updatePlayerPositions } from '../actions';
+import { savePlayerPositions } from '../actions';
 import './unknownPlayers.scss';
 
+const bem = bemHelper({ name: 'unknown-players' });
 const availablePositions = ['GK', 'FB', 'CB', 'WM', 'CM', 'STR', 'park'];
 
 class UnknownPayers extends React.Component {
@@ -13,53 +15,76 @@ class UnknownPayers extends React.Component {
     this.SavePlayerPositions = this.SavePlayerPositions.bind(this);
     this.updatePosition = this.updatePosition.bind(this);
     this.state = {
-      isUpdating: false,
-      updatedOn: null
+      isSaving: false,
+      updatedOn: null,
+      playersToUpdate: {},
+      playersUpdated: {}
     };
   }
 
   SavePlayerPositions() {
     this.setState({
-      isUpdating: true
+      isSaving: true
     });
-    this.props.updatePlayerPositions()
+    this.props.savePlayerPositions(this.state.playersToUpdate)
       .then(() => {
+        const playersUpdated = Object.assign(this.state.playersUpdated, this.state.playersToUpdate);
         this.setState({
-          isUpdating: false,
-          updatedOn: new Date()
+          isSaving: false,
+          updatedOn: new Date(),
+          playersUpdated,
+          playersToUpdate: {}
         });
       });
   }
 
   updatePosition(player, pos) {
-    this.refs[`btn-${player.code}-${pos}`].className += ' unknown-player__btn--selected';
+    this.setState({
+      playersToUpdate: {
+        ...this.state.playersToUpdate,
+        [player.fullName]: {
+          code: player.code,
+          pos,
+          fullName: player.fullName,
+          club: player.club
+        }
+      }
+    });
   }
 
   render() {
     const { players } = this.props;
-    const { isSaving, updatedOn } = this.state;
+    const { isSaving, updatedOn, playersToUpdate, playersUpdated } = this.state;
 
     const Save = (isSaving)
       ? <em>Retrieving Players Positions...</em>
       : <button onClick={this.SavePlayerPositions} >Save Players Positions</button>;
 
     return (
-      <div>
+      <div { ...bem() }>
         <h2>Unknown Players ({players.length}) <small>last updated: {String(updatedOn)}</small></h2>
         {Save}
-        <ul className="unknown-player__list">
-        {players.map(player => (
-          <li id={player.code} key={player.code} className="unknown-player__item">
-            {player.fullName}, {player.club}
-            {availablePositions.map(pos => (
-              <button className="unknown-player__btn" key={pos} ref={`btn-${player.code}-${pos}`}
-                      onClick={() => this.updatePosition(player, pos)}
-              >
-                {pos}
-              </button>
-            ))}
-          </li>
-        ))}
+        <ul { ...bem('list') }>
+        {players.map(player => {
+          return (
+            <li { ...bem('item', { updated: playersUpdated[player.fullName] }) }
+                id={player.code} key={player.code}
+            >
+              {player.fullName}, {player.club}
+              {availablePositions.map(pos => {
+                const update = playersToUpdate[player.fullName];
+                const selected = update && update.pos === pos;
+                return (
+                  <button { ...bem('btn', { selected }) }
+                          key={pos} onClick={() => this.updatePosition(player, pos)}
+                  >
+                    {pos}
+                  </button>
+                );
+              })}
+            </li>
+          );
+        })}
         </ul>
       </div>
     );
@@ -68,5 +93,5 @@ class UnknownPayers extends React.Component {
 
 export default connect(
   null,
-  { updatePlayerPositions }
+  { savePlayerPositions }
 )(UnknownPayers);

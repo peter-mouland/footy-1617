@@ -5,7 +5,7 @@ import path from 'path';
 import debug from 'debug';
 import GoogleSpreadsheet from 'google-spreadsheet';
 
-import creds from './google-generated-creds.json';
+import creds from './google-sheets/google-generated-creds.json';
 
 const log = debug('footy:update-player-positions');
 const getDirName = path.dirname;
@@ -46,18 +46,21 @@ function sheetToJson(sheet) {
   });
 }
 
-const writeJson = (url, json) => {
-  return mkdirp(getDirName(url), (err) => {
+const writeJson = (file, json, resolve) => {
+  return mkdirp(getDirName(file), (err) => {
     if (err) return log(err);
-    return fs.writeFile(url, JSON.stringify(json, null, 2), (stringyErr) => {
+    return fs.writeFile(file, JSON.stringify(json, null, 2), (stringyErr) => {
       if (stringyErr) log(stringyErr);
-      log(`${url} saved`);
+      log(`${file} saved`);
+      resolve();
     });
   });
 };
 
 function save(result) {
-  return writeJson('src/app/api/ff.json', result);
+  return new Promise((resolve) => {
+    writeJson('src/app/api/ff.json', result, resolve);
+  });
 }
 
 export default () => {

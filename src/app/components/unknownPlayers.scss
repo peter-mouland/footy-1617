@@ -1,22 +1,32 @@
 $row-bg: #EAEAEA;
 $btm--selected: #ADFF2F;
 
-.unknown-player__list {
+.unknown-players__list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.unknown-player__item {
+.unknown-players__item {
   clear: both;
   padding: 5px;
+  transition: .5s ease-in-out;
+  opacity: 1;
+  max-height: 2em;
 
   &:nth-child(even) {
     background: $row-bg;
   }
+
+  &--updated {
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
 }
 
-.unknown-player__btn {
+.unknown-players__btn {
   float: right;
   margin-left: 20px;
 

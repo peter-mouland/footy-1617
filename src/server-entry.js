@@ -8,7 +8,11 @@ hook('.scss', (source, filename) => {}); // eslint-disable-line
 require('./config/environment');
 
 const server = require('./server/server');
+const createFFJson = require('./server/lib/update-player-positions');
 
-server.listen(process.env.PORT, () => {
-  console.log(`listening at http://localhost:${process.env.PORT}`); // eslint-disable-line
+createFFJson().then(() => {
+  server.listen(process.env.PORT, () => {
+    console.log(`listening at http://localhost:${process.env.PORT}`); // eslint-disable-line
+  });
 });
+

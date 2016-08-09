@@ -1,7 +1,7 @@
 import ffPlayers from './fetch-ff-players';
 import skyPlayers from './fetch-sky-players';
 import savePlayerStats from './save-player-stats';
-import updatePlayerPositions from './update-player-positions';
+import savePlayerPositions from './save-player-positions';
 
 export default {
   fetchPlayers() {
@@ -37,11 +37,6 @@ export default {
       });
   },
 
-  savePlayerStats(data) {
-    return savePlayerStats(data);
-  },
-
-  updatePlayerPositions() {
-    return updatePlayerPositions();
-  }
+  savePlayerStats,
+  savePlayerPositions,
 };

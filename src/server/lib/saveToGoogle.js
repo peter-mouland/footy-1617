@@ -1,7 +1,7 @@
 import GoogleSpreadsheet from 'google-spreadsheet';
 import debug from 'debug';
 
-import creds from './google-generated-creds.json';
+import creds from './google-sheets/google-generated-creds.json';
 
 const log = debug('footy:saveToGoogle');
 const doc = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY');

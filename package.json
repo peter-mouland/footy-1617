@@ -66,6 +66,7 @@
     "postcss-loader": "^0.9.1",
     "purifycss-loader": "^1.0.1",
     "react": "^15.1.0",
+    "react-bem-helper": "^1.1.0",
     "react-document-meta": "^2.0.2",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
