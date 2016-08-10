@@ -19,18 +19,16 @@ const playerListSheet = spreadsheet.getWorksheet('player list');
 
 function updateJsonPositions(data) {
   const ff = require('../../app/api/ff.json');// eslint-disable-line
-  return Object.assign({}, ff, data, { updatedOn: new Date() });
-}
-
-function cleatFFJsonCache() {
-  delete require.cache[require.resolve('../../app/api/ff.json')]; // eslint-disable-line
+  const jsonData = Object.assign({}, ff, data);
+  return json.save(jsonData, 'src/app/api/ff.json')
+    .then(() => {
+      delete require.cache[require.resolve('../../app/api/ff.json')]; // eslint-disable-line
+    });
 }
 
 export default (data) => {
-  const rows = createRows(data);
-  const jsonData = updateJsonPositions(data);
-  const updateGoogle = playerListSheet.addRows(rows);
-  const updateJson = json.save(jsonData, 'src/app/api/ff.json').then(cleatFFJsonCache);
+  const updateGoogle = playerListSheet.addRows(createRows(data));
+  const updateJson = updateJsonPositions(data);
   return Promise
     .all([updateGoogle, updateJson])
     .then(() => log('done.'))

@@ -19,7 +19,8 @@ const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZc
 const playerListSheet = spreadsheet.getWorksheet('player list');
 
 playerListSheet
-    .toJson(createJsonObj)
+  .toJson(createJsonObj)
+  .whenComplete
     .then((jsonData) => json.save(jsonData, 'src/app/api/ff.json'))
     .then(() => log('done.'))
     .catch(e => log(e));

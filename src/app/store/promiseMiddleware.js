@@ -42,6 +42,7 @@ export default function promiseMiddleware() {
       next({ ...rest, status: { ...status, isTimeout: true }, type: TIMEOUT });
     });
 
-    return Promise.race([fetchData, dataTimeout]);
+    return Promise.race([fetchData, dataTimeout])
+      .then((data) => data, reason => log(reason));
   };
 }
