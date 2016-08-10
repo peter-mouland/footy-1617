@@ -14,9 +14,10 @@ export default (data) => {
     },
     body: JSON.stringify(data)
   })
-  .then(checkStatus)
-  .catch((error) => {
-    log('request failed', error);
-  });
+    .then(checkStatus)
+    .then(() => data)
+    .catch((error) => {
+      log('request failed', error);
+    });
 };
 

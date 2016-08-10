@@ -5,8 +5,6 @@ import savePlayerPositions from './save-player-positions';
 
 export default {
   fetchPlayers() {
-    const unknownPlayers = [];
-
     return Promise.all([ffPlayers(), skyPlayers()])
       .then((results) => {
         const [ffResults, skyResults] = results;
@@ -21,22 +19,18 @@ export default {
             code: player.id,
             club: player.tName,
           };
-          if (!ffResults[key]) {
-            unknownPlayers.push(ffPlayerDetails);
-          }
           return {
             ...ffPlayerDetails,
-            pos: ffResults[key] ? ffResults[key].pos : null
+            pos: ffResults[key] ? ffResults[key].pos : 'unknown'
           };
         });
         return {
           updatedOn: ffResults.updatedOn,
-          unknown: unknownPlayers,
           players: mergedPlayers
         };
       });
   },
 
   savePlayerStats,
-  savePlayerPositions,
+  savePlayerPositions
 };

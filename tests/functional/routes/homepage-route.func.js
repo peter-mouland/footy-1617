@@ -45,7 +45,7 @@ describe('Homepage Route', function () {
     });
     it('should have a blurb', () => {
       const blurb = this.wrapper.find('p');
-      expect(blurb).to.have.text(copy.blurb);
+      expect(blurb.first()).to.have.text(copy.blurb);
     });
   });
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import debug from 'debug';
 
 import PlayerStats from '../../components/PlayerStats';
-import UnknownPlayers from '../../components/UnknownPlayers';
+import Players from '../../components/Players';
 import { copy } from './homepage-copy';
 import { fetchPlayers } from '../../actions';
 
@@ -38,7 +38,7 @@ class Homepage extends React.Component {
           <p>{copy.blurb}</p>
         </banner>
         <div>
-          <UnknownPlayers players={data.unknown} />
+          <Players />
           <PlayerStats players={data.players} />
         </div>
       </div>
