@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/server-entry.js",
   "scripts": {
-    "prestart": "npm run build",
+    "create-ffjson": "babel-node ./scripts/update-player-positions.js",
+    "prestart": "npm run create-ffjson && npm run build",
     "prestart:dev": "npm run build:dev ",
     "build": "webpack --config src/config/webpack.config.prod.babel.js",
     "build:dev": "webpack --config src/config/webpack.config.dev.babel.js",
@@ -35,6 +36,7 @@
   "dependencies": {
     "async": "^2.0.1",
     "autoprefixer": "^6.3.1",
+    "babel-cli": "^6.11.4",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",

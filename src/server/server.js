@@ -8,7 +8,6 @@ import Error500 from './templates/Error500';
 import { routingApp, setRoutes } from './router';
 import saveToGoogle from './lib/saveToGoogle';
 import savePlayerPositions from './lib/save-player-positions';
-import updatePlayerPositions from './lib/update-player-positions';
 import webpackConfig from '../config/webpack.config.dev.babel';
 
 const webpackEntries = Object.keys(webpackConfig.entry);
@@ -41,16 +40,6 @@ Object.assign(express.response, {
     log('render500', e);
     return this.status(500).send(this.renderPageToString(<Error500 error={ e } />));
   }
-});
-
-server.post('/update-player-positions', (req, res) => {
-  updatePlayerPositions()
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((e) => {
-      res.sendStatus(500, e);
-    });
 });
 
 server.post('/save-player-positions', (req, res) => {

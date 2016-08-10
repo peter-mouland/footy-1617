@@ -16,7 +16,6 @@ class UnknownPayers extends React.Component {
     this.updatePosition = this.updatePosition.bind(this);
     this.state = {
       isSaving: false,
-      updatedOn: null,
       playersToUpdate: {},
       playersUpdated: {}
     };
@@ -31,7 +30,6 @@ class UnknownPayers extends React.Component {
         const playersUpdated = Object.assign(this.state.playersUpdated, this.state.playersToUpdate);
         this.setState({
           isSaving: false,
-          updatedOn: new Date(),
           playersUpdated,
           playersToUpdate: {}
         });
@@ -54,7 +52,7 @@ class UnknownPayers extends React.Component {
 
   render() {
     const { players } = this.props;
-    const { isSaving, updatedOn, playersToUpdate, playersUpdated } = this.state;
+    const { isSaving, playersToUpdate, playersUpdated } = this.state;
 
     const Save = (isSaving)
       ? <em>Retrieving Players Positions...</em>
@@ -62,7 +60,7 @@ class UnknownPayers extends React.Component {
 
     return (
       <div { ...bem() }>
-        <h2>Unknown Players ({players.length}) <small>last updated: {String(updatedOn)}</small></h2>
+        <h2>Unknown Players ({players.length})</h2>
         {Save}
         <ul { ...bem('list') }>
         {players.map(player => {
