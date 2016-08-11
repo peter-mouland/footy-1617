@@ -36,7 +36,7 @@ class PlayerStats extends React.Component {
     this.setState({
       isSaving: true
     });
-    this.props.savePlayerStats(this.props.players)
+    this.props.savePlayerStats(this.props.stats.data.players)
       .then(() => {
         this.setState({
           isSaving: false,
@@ -48,7 +48,6 @@ class PlayerStats extends React.Component {
   render() {
     const { data, status, error } = this.props.stats;
     const { isSaving, oops } = this.state;
-    const { players } = data;
 
     if (oops) {
       return <h3>can't get data in single page apps. please refresh!</h3>;
@@ -65,7 +64,9 @@ class PlayerStats extends React.Component {
       ? <em>Saving to Google... this may take a minute or two.</em>
       : <button onClick={this.savePlayerStats} >Send Points to Google</button>;
 
-    if (!players.length) {
+    if (!data) {
+      return (<strong>No data. yet...</strong>);
+    } else if (!data.players.length) {
       return (<strong>No Players!</strong>);
     }
 
@@ -80,14 +81,14 @@ class PlayerStats extends React.Component {
               <th>position</th>
               <th>player</th>
               <th>club</th>
-              {Object.keys(players[0].ffPoints).map((key, i) => (
+              {Object.keys(data.players[0].ffPoints).map((key, i) => (
                 <th key={i}>{key}</th>
               ))}
             </tr>
             </thead>
             <tbody>
             {
-              players.map(player => (
+              data.players.map(player => (
                 <tr key={player.id}>
                   <td>{player.code || player.id}</td>
                   <td>{player.pos}</td>

@@ -1,16 +1,20 @@
-import GoogleSpreadsheet from './google-sheets';
 import debug from 'debug';
 
 const log = debug('footy:saveToGoogle');
-import creds from './google-sheets/google-generated-creds.json';
-
-const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY', creds);
 const headers = [
   'code', 'position', 'player', 'club', 'starts', 'subs', 'goals', 'asts', 'cs',
   'con', 'penSvd', 'yells', 'reds', 'total'
 ];
+
+const getTitle = () => {
+  const date = new Date();
+  const opts = { weekday: 'short', hour: '2-digit', minute: '2-digit' };
+  const day = date.toLocaleDateString('en-GB', opts);
+  return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${day}`;
+};
+
 const createWorksheetOptions = (data) => ({
-  title: new Date(),
+  title: getTitle(),
   headers,
   rowCount: data.length + 1,
   colCount: headers.length
@@ -42,7 +46,7 @@ const createRows = (data) => data.map((player) => {
   ];
 });
 
-export default (data) => {
+export default (spreadsheet, data) => {
   return spreadsheet
     .addWorksheet(createWorksheetOptions(data))
     .addRowsBulk(createRows(data), createRowOptions(data))

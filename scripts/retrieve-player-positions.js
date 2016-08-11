@@ -5,7 +5,7 @@ import GoogleSpreadsheet from '../src/server/lib/google-sheets';
 import creds from '../src/server/lib/google-sheets/google-generated-creds.json';
 import json from '../src/server/lib/json';
 
-const log = debug('footy:update-player-positions');
+const log = debug('footy:retrieve-player-positions');
 
 const createJsonObj = (item) => ({
   [item.player]: {

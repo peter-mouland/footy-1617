@@ -73,7 +73,6 @@ class Payers extends React.Component {
   render() {
     const { data, status, error } = this.props.stats;
     const { isSaving, position, oops } = this.state;
-    const { players } = data;
 
     if (oops) {
       return <h3>can't get data in single page apps. please refresh!</h3>;
@@ -86,12 +85,17 @@ class Payers extends React.Component {
       </div>;
     }
 
-
     const Save = (isSaving)
       ? <em>Saving Players Positions...</em>
       : <button onClick={this.SavePlayerPositions} >Save Players Positions</button>;
 
-    const filteredPlayers = players.filter(player => player.pos === position);
+    if (!data) {
+      return (<strong>No data. yet...</strong>);
+    } else if (!data.players || !data.players.length) {
+      return (<strong>No Players!</strong>);
+    }
+
+    const filteredPlayers = data.players.filter(player => player.pos === position);
     return (
       <div { ...bem() }>
         <h2>Players by position</h2>

@@ -9,4 +9,3 @@ export const ICONS = path.join(SRC, 'icons');
 export const STYLES = path.join(SRC, 'styles');
 export const TESTS = path.join(ROOT, 'tests');
 export const ASSET_FILE = path.join(SERVER, 'webpack-assets.json');
-export const SKY_PLAYER_STATS = 'https://fantasyfootball.skysports.com/cache/json_players.json';

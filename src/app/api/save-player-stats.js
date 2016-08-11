@@ -6,7 +6,7 @@ import { checkStatus } from './utils';
 const log = debug('footy:save-player-stats');
 
 export default (data) => {
-  return fetch('/save-player-stats', {
+  return fetch('/api/save-player-stats', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

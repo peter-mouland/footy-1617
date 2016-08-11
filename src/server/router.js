@@ -6,6 +6,7 @@ import slashes from 'connect-slashes';
 const log = debug('footy:router');
 const oneDay = 1000 * 60 * 60 * 24;
 import { DIST } from '../config/paths';
+import apiRouter from './api';
 
 export const routingApp = express();
 
@@ -20,6 +21,7 @@ export function setRoutes(assets) {
 
   routingApp
     .use('/', express.static(DIST, { maxAge: oneDay }))
+    .use('/api', apiRouter)
     .use(slashes())
     .get('*', setRouterContext, renderApp(assets));
 }

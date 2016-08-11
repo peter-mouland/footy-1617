@@ -1,5 +1,6 @@
 import api from '../api';
 
+export const FETCH_ARCHIVES = 'FETCH_ARCHIVES';
 export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const SAVE_PLAYER_STATS = 'SAVE_PLAYER_STATS';
 export const SAVE_PLAYER_POSITIONS = 'SAVE_PLAYER_POSITIONS';
@@ -12,7 +13,13 @@ export function fetchPlayers() {
   };
 }
 
-// post stats to google
+export function fetchArchives() {
+  return {
+    type: FETCH_ARCHIVES,
+    promise: api.fetchArchives()
+  };
+}
+
 export function savePlayerStats(players) {
   return {
     type: SAVE_PLAYER_STATS,

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-import { FETCH_PLAYERS, SAVE_PLAYER_STATS, SAVE_PLAYER_POSITIONS } from '../actions';
+import * as actions from '../actions';
 
 import calculatePoints from './calculatePoints';
 
@@ -16,7 +16,7 @@ const newPlayers = (players, data) => {
 
 function stats(state = defaultStatsState, action) {
   switch (action.type) {
-    case FETCH_PLAYERS:
+    case actions.FETCH_PLAYERS:
       return {
         ...state,
         data: {
@@ -25,12 +25,12 @@ function stats(state = defaultStatsState, action) {
         },
         status: action.status
       };
-    case SAVE_PLAYER_STATS:
+    case actions.SAVE_PLAYER_STATS:
       return {
         ...state,
         status: action.status
       };
-    case SAVE_PLAYER_POSITIONS:
+    case actions.SAVE_PLAYER_POSITIONS:
       return {
         ...state,
         data: {
@@ -44,7 +44,23 @@ function stats(state = defaultStatsState, action) {
   }
 }
 
+function archives(state = defaultStatsState, action) {
+  switch (action.type) {
+    case actions.FETCH_ARCHIVES:
+      return {
+        ...state,
+        data: {
+          ...action.data
+        },
+        status: action.status
+      };
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
+  archives,
   stats,
   routing
 });

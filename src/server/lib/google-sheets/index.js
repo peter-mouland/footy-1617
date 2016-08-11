@@ -69,15 +69,38 @@ export default function Connect(id, creds) {
   return this;
 }
 
+Connect.prototype.refresh = function refresh() {
+  const promise = onceResolved(this.connections)
+    .then(() => getInfo(this.doc))
+    .then(workbook => {
+      this.workbook = workbook;
+      return workbook;
+    });
+  this.whenComplete = promise;
+  return this;
+};
+
+Connect.prototype.getWorksheets = function getWorksheet() {
+  const promise = onceResolved(this.connections)
+    .then(() => {
+      this.worksheets = this.workbook.worksheets;
+      return this.worksheets;
+    });
+  if (!this.worksheetsQueue) this.worksheetsQueue = {};
+  this.worksheetsQueue.all = promise;
+  this.whenComplete = promise;
+  return this;
+};
+
 Connect.prototype.getWorksheet = function getWorksheet(id) {
   const promise = onceResolved(this.connections)
     .then(() => {
       this.worksheet = this.workbook.worksheets.find(sheet => sheet.title.toLowerCase() === id);
       return this.worksheet;
     });
-  if (!this.worksheets) this.worksheets = {};
+  if (!this.worksheetsQueue) this.worksheetsQueue = {};
   this.worksheetId = id;
-  this.worksheets[id] = promise;
+  this.worksheetsQueue[id] = promise;
   this.whenComplete = promise;
   return this;
 };
@@ -88,11 +111,12 @@ Connect.prototype.addWorksheet = function ConnectAddWorksheet(opts) {
       return addWorksheet(this.doc, opts)
         .then(sheet => {
           this.worksheet = sheet;
+          this.refresh();
         });
     });
-  if (!this.worksheets) this.worksheets = {};
+  if (!this.worksheetsQueue) this.worksheetsQueue = {};
   this.worksheetId = String(new Date());
-  this.worksheets[this.worksheetId] = promise;
+  this.worksheetsQueue[this.worksheetId] = promise;
   this.whenComplete = promise;
   return this;
 };
@@ -107,7 +131,7 @@ function addRows(worksheet, rows, cb) {
 }
 
 Connect.prototype.addRows = function ConnectAddRows(rows) {
-  const promise = onceResolved(this.worksheets)
+  const promise = onceResolved(this.worksheetsQueue)
     .then(() => {
       return new Promise((resolve) => addRows(this.worksheet, rows, resolve));
     });
@@ -119,7 +143,7 @@ Connect.prototype.addRows = function ConnectAddRows(rows) {
 };
 
 Connect.prototype.addRowsBulk = function ConnectAddRowsBulk(rows, opts) {
-  const promise = onceResolved(this.worksheets)
+  const promise = onceResolved(this.worksheetsQueue)
     .then(() => {
       return getCells(this.worksheet, opts)
         .then((cells) => {
@@ -142,7 +166,7 @@ Connect.prototype.addRowsBulk = function ConnectAddRowsBulk(rows, opts) {
 };
 
 Connect.prototype.toJson = function toJson(creator) {
-  const promise = onceResolved(this.worksheets).then(() => {
+  const promise = onceResolved(this.worksheetsQueue).then(() => {
     return getRows(this.worksheet).then((rows) => {
       return rows.reduce((prev, item) => {
         const row = creator(item);
