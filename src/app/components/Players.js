@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import bemHelper from 'react-bem-helper';
 
 import { savePlayerPositions } from '../actions';
+import { PositionLinks, PositionButtons } from './Positions/Positions';
 import './players.scss';
 
 const bem = bemHelper({ name: 'unknown-players' });
-const availablePositions = ['unknown', 'GK', 'FB', 'CB', 'WM', 'CM', 'STR', 'park'];
 
 class Payers extends React.Component {
 
@@ -19,7 +19,7 @@ class Payers extends React.Component {
       isSaving: false,
       playersToUpdate: {},
       playersUpdated: {},
-      position: 'unknown'
+      position: ''
     };
   }
 
@@ -55,21 +55,6 @@ class Payers extends React.Component {
     });
   }
 
-  positionButtons(player) {
-    if (player.pos !== 'unknown') return null;
-    return availablePositions.map(pos => {
-      const update = this.state.playersToUpdate[player.fullName];
-      const selected = (!update && player.pos === pos) || (update && update.pos === pos);
-      return (
-        <button { ...bem('btn', { selected }) }
-                key={pos} onClick={() => this.updatePosition(player, pos)}
-        >
-          {pos}
-        </button>
-      );
-    });
-  }
-
   render() {
     const { data } = this.props.stats;
     const { isSaving, position } = this.state;
@@ -81,23 +66,26 @@ class Payers extends React.Component {
     const filteredPlayers = data.players.filter(player => player.pos === position);
     return (
       <div { ...bem() }>
-        <h2>Players ({position}: {filteredPlayers.length})</h2>
-        {Save}
-        <p>
-          <strong>change view:</strong>
-          {availablePositions.map(pos =>
-            <a href={'#'} { ...bem('pos-link') } key={pos} onClick={(e) => this.changePos(e, pos)}>
-              {pos}
-            </a>
-          )}
-        </p>
+        <h2>Players by position</h2>
+        <div>
+          <strong>View:</strong>
+          <PositionLinks onClick={ this.changePos } selectedPos={ position } />
+        </div>
+        {filteredPlayers.length ? Save : null}
         <ul { ...bem('list') }>
         {filteredPlayers
           .map(player => {
+            const update = this.state.playersToUpdate[player.fullName];
+            const selectedPos = (!update && player.pos) || (update && update.pos);
             return (
               <li { ...bem('item') } id={player.code} key={player.code} >
                 {player.fullName}, {player.club}
-                {this.positionButtons(player)}
+                {
+                  (player.pos === 'unknown') ?
+                    <PositionButtons selectedPos={ selectedPos }
+                                 onClick={ (e, pos) => this.updatePosition(player, pos) } />
+                    : null
+                }
               </li>
             );
           })

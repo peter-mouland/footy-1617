@@ -1,0 +1,5 @@
+.clearfix::after {
+  content: '';
+  display: inline-table;
+  clear: both;
+}

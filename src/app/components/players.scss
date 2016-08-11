@@ -1,9 +1,4 @@
 $row-bg: #EAEAEA;
-$btm--selected: #ADFF2F;
-
-.unknown-players__pos-link {
-  margin: 2px 4px;
-}
 
 .unknown-players__list {
   margin: 0;
@@ -27,14 +22,5 @@ $btm--selected: #ADFF2F;
     max-height: 0;
     padding: 0;
     overflow: hidden;
-  }
-}
-
-.unknown-players__btn {
-  float: right;
-  margin-left: 20px;
-
-  &--selected {
-    background: $btm--selected;
   }
 }
