@@ -4,7 +4,8 @@ import { FETCH_PLAYERS, SAVE_PLAYER_STATS, SAVE_PLAYER_POSITIONS } from '../acti
 
 import calculatePoints from './calculatePoints';
 
-const defaultStatsState = { data: { players: [] }, status: {} };
+// const defaultStatsState = { data: { players: [] }, status: {} };
+const defaultStatsState = { };
 
 const newPlayers = (players, data) => {
   return players.map(player => ({

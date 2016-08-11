@@ -2,11 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import debug from 'debug';
 
-import { savePlayerStats } from '../actions';
+import { savePlayerStats, fetchPlayers } from '../../actions';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
 
 class PlayerStats extends React.Component {
+
+  static needs = [fetchPlayers];
 
   constructor(props) {
     super(props);
@@ -15,6 +17,19 @@ class PlayerStats extends React.Component {
       isSaving: false,
       savedOn: null
     };
+  }
+
+  componentDidMount() {
+    if (this.props.stats.data) return;
+    this.props.fetchPlayers().then((response) => {
+      if (!response.data) {
+        this.setState({ oops: true });
+      } else {
+        this.setState(response.data);
+      }
+    }).catch((err) => {
+      throw new Error(err);
+    });
   }
 
   savePlayerStats() {
@@ -31,8 +46,21 @@ class PlayerStats extends React.Component {
   }
 
   render() {
-    const { players } = this.props;
-    const { isSaving, savedOn } = this.state;
+    const { data, status, error } = this.props.stats;
+    const { isSaving, oops } = this.state;
+    const { players } = data;
+
+    if (oops) {
+      return <h3>can't get data in single page apps. please refresh!</h3>;
+    } else if (!data || status.isLoading) {
+      return <h3>Loading Player Stats...</h3>;
+    } else if (status.isError) {
+      return <div>
+        <h3>ERROR Loading Player Stats...</h3>
+        <p>{error.message}</p>
+      </div>;
+    }
+
     const Save = (isSaving)
       ? <em>Saving to Google... this may take a minute or two.</em>
       : <button onClick={this.savePlayerStats} >Send Points to Google</button>;
@@ -43,7 +71,7 @@ class PlayerStats extends React.Component {
 
     return (
         <div>
-          <h2>Players Points <small>last updated: {String(savedOn)}</small></h2>
+          <h2>Players Points</h2>
           {Save}
           <table>
             <thead>
@@ -78,8 +106,14 @@ class PlayerStats extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    stats: state.stats
+  };
+}
+
 export default connect(
-  null,
-  { savePlayerStats }
+  mapStateToProps,
+  { savePlayerStats, fetchPlayers }
 )(PlayerStats);
 

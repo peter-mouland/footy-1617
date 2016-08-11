@@ -2,13 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import bemHelper from 'react-bem-helper';
 
-import { savePlayerPositions } from '../actions';
-import { PositionLinks, PositionButtons } from './Positions/Positions';
+import { savePlayerPositions, fetchPlayers } from '../../actions';
+import { PositionLinks, PositionButtons } from '../../components/Positions/Positions';
 import './players.scss';
 
 const bem = bemHelper({ name: 'unknown-players' });
 
 class Payers extends React.Component {
+
+  static needs = [fetchPlayers];
 
   constructor(props) {
     super(props);
@@ -21,6 +23,19 @@ class Payers extends React.Component {
       playersUpdated: {},
       position: ''
     };
+  }
+
+  componentDidMount() {
+    if (this.props.stats.data) { return; }
+    this.props.fetchPlayers().then((response) => {
+      if (!response.data) {
+        this.setState({ oops: true });
+      } else {
+        this.setState(response.data);
+      }
+    }).catch((err) => {
+      throw new Error(err);
+    });
   }
 
   SavePlayerPositions() {
@@ -56,14 +71,27 @@ class Payers extends React.Component {
   }
 
   render() {
-    const { data } = this.props.stats;
-    const { isSaving, position } = this.state;
+    const { data, status, error } = this.props.stats;
+    const { isSaving, position, oops } = this.state;
+    const { players } = data;
+
+    if (oops) {
+      return <h3>can't get data in single page apps. please refresh!</h3>;
+    } else if (!data || status.isLoading) {
+      return <h3>Loading Player Positions...</h3>;
+    } else if (status.isError) {
+      return <div>
+        <h3>ERROR Loading Player Positions...</h3>
+        <p>{error.message}</p>
+      </div>;
+    }
+
 
     const Save = (isSaving)
       ? <em>Saving Players Positions...</em>
       : <button onClick={this.SavePlayerPositions} >Save Players Positions</button>;
 
-    const filteredPlayers = data.players.filter(player => player.pos === position);
+    const filteredPlayers = players.filter(player => player.pos === position);
     return (
       <div { ...bem() }>
         <h2>Players by position</h2>
@@ -104,5 +132,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { savePlayerPositions }
+  { savePlayerPositions, fetchPlayers }
 )(Payers);

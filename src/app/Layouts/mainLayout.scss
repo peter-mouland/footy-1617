@@ -15,6 +15,14 @@ $col2-width: 66% !default;
   height: $nav-height;
 }
 
+.layout__nav-link {
+  margin: 20px 5px;
+
+  &--selected {
+    text-decoration: none;
+  }
+}
+
 .layout__content {
   height: $content-height;
 }

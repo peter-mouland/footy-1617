@@ -1,5 +1,6 @@
 import React from 'react';
 import bemHelper from 'react-bem-helper';
+// import { Link } from 'react-router';
 
 import './positions.scss';
 
