@@ -1,6 +1,7 @@
 import debug from 'debug';
 import GoogleSpreadsheet from './google-sheets';
 import json from './json';
+import creds from './google-sheets/google-generated-creds.json';
 
 const log = debug('footy:save-player-positions');
 
@@ -14,7 +15,7 @@ const buildRowObject = (item) => {
 };
 
 const createRows = (data) => Object.keys(data).map(row => buildRowObject(data[row]));
-const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY');
+const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY', creds);
 const playerListSheet = spreadsheet.getWorksheet('player list');
 
 function updateJsonPositions(data) {

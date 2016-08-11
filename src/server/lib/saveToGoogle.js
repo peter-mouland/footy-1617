@@ -2,8 +2,9 @@ import GoogleSpreadsheet from './google-sheets';
 import debug from 'debug';
 
 const log = debug('footy:saveToGoogle');
+import creds from './google-sheets/google-generated-creds.json';
 
-const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY');
+const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY', creds);
 const headers = [
   'code', 'position', 'player', 'club', 'starts', 'subs', 'goals', 'asts', 'cs',
   'con', 'penSvd', 'yells', 'reds', 'total'

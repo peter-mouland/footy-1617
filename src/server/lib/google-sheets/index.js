@@ -1,11 +1,9 @@
 import GoogleSpreadsheet from 'google-spreadsheet';
 import debug from 'debug';
 
-import creds from './google-generated-creds.json';
-
 const log = debug('footy:google/connector');
 
-const setAuth = (doc) => new Promise((resolve) => {
+const setAuth = (doc, creds) => new Promise((resolve) => {
   doc.useServiceAccountAuth(creds, () => resolve(doc));
 });
 
@@ -53,9 +51,9 @@ const bulkUpdateCells = (doc, cells) => new Promise((resolve, reject) => {
 
 const onceResolved = (obj) => Promise.all(Object.keys(obj).map(key => obj[key]));
 
-export default function Connect(id) {
+export default function Connect(id, creds) {
   this.doc = new GoogleSpreadsheet(id);
-  const promise = setAuth(this.doc)
+  const promise = setAuth(this.doc, creds)
     .then(getInfo)
     .then(workbook => {
       this.workbook = workbook;

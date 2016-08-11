@@ -26,7 +26,8 @@
     "npm": "^3.9.3"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "test:unit"
   ],
   "pre-push": [
     "test"
