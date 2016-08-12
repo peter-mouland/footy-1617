@@ -49,9 +49,12 @@ class StatsSnapshots extends React.Component {
       <div>
         <h2>Stats-Snapshot</h2>
           {
-            data.statsSnapshots.map(archive => (
-              <div key={archive.id}><strong>{archive.title}</strong>
-                <a href="#">View Snapshot</a> | <a href="#">Tag as 'Week End'</a></div>
+            data.statsSnapshots.map(snapshot => (
+              <div key={snapshot.id}>
+                <strong>{snapshot.title}</strong>
+                <span>{snapshot.weekEndTag ? '(week end)' : null}</span>
+                <a href="#">View Snapshot</a> | <a href="#">Tag as 'Week End'</a>
+              </div>
             ))
           }
       </div>

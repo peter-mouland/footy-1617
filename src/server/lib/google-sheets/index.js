@@ -151,6 +151,21 @@ Connect.prototype.addRows = function ConnectAddRows(rows) {
   return this;
 };
 
+Connect.prototype.getRows = function ConnectGetRows() {
+  const promise = onceResolved(this.worksheetsQueue)
+    .then(() => getRows(this.worksheet));
+  this.updateQueues('rowsQueue', promise);
+  return this;
+};
+
+
+Connect.prototype.getCells = function ConnectCellsRows(opts) {
+  const promise = onceResolved(this.worksheetsQueue)
+    .then(() => getCells(this.worksheet, opts));
+  this.updateQueues('rowsQueue', promise);
+  return this;
+};
+
 Connect.prototype.addRowsBulk = function ConnectAddRowsBulk(rows, opts) {
   const promise = onceResolved(this.worksheetsQueue)
     .then(() => {

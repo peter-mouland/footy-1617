@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const log = debug('footy:saveToGoogle');
+const log = debug('footy:save-player-stats');
 const headers = [
   'code', 'position', 'player', 'club', 'starts', 'subs', 'goals', 'asts', 'cs',
   'con', 'penSvd', 'yells', 'reds', 'total'

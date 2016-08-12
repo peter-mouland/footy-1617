@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 
 import fetchSkyPlayers from './fetch-sky-players';
 import fetchStatsSnapshots from './fetch-stats-snapshots';
+import saveWeekEndTag from './save-week-end-tag';
 import savePlayerStats from './save-player-stats';
 import savePlayerPositions from './save-player-positions';
 import GoogleSpreadsheet from '../lib/google-sheets';
@@ -47,6 +48,12 @@ apiRouter.post('/save-player-positions', (req, res) => {
 
 apiRouter.post('/save-player-stats', (req, res) => {
   savePlayerStats(spreadsheet, req.body)
+    .then((results) => sendStatus(200, res, results))
+    .catch((e) => sendStatus(500, res, e));
+});
+
+apiRouter.post('/save-week-end-tag', (req, res) => {
+  saveWeekEndTag(spreadsheet, req.body)
     .then((results) => sendStatus(200, res, results))
     .catch((e) => sendStatus(500, res, e));
 });

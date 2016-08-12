@@ -4,6 +4,7 @@ export const FETCH_STATS_SNAPSHOTS = 'FETCH_STATS_SNAPSHOTS';
 export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const SAVE_PLAYER_STATS = 'SAVE_PLAYER_STATS';
 export const SAVE_PLAYER_POSITIONS = 'SAVE_PLAYER_POSITIONS';
+export const SAVE_WEEK_END_TAG = 'SAVE_WEEK_END_TAG';
 
 export function fetchPlayers() {
   return {
@@ -25,6 +26,13 @@ export function savePlayerStats(players) {
     type: SAVE_PLAYER_STATS,
     timeoutMs: 90000,
     promise: api.savePlayerStats(players)
+  };
+}
+
+export function saveWeekEndTag(worksheetTitle) {
+  return {
+    type: SAVE_WEEK_END_TAG,
+    promise: api.saveWeekEndTag(worksheetTitle)
   };
 }
 

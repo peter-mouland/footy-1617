@@ -46,6 +46,14 @@ function stats(state = defaultStatsState, action) {
 
 function statsSnapshots(state = defaultStatsState, action) {
   switch (action.type) {
+    case actions.SAVE_WEEK_END_TAG:
+      return {
+        ...state,
+        data: {
+          ...action.data
+        },
+        status: action.status
+      };
     case actions.FETCH_STATS_SNAPSHOTS:
       return {
         ...state,
