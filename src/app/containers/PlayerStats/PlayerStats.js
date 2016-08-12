@@ -14,15 +14,14 @@ class PlayerStats extends React.Component {
     super(props);
     this.savePlayerStats = this.savePlayerStats.bind(this);
     this.state = {
-      isSaving: false,
-      savedOn: null
+      isSaving: false
     };
   }
 
   componentDidMount() {
     if (this.props.stats.data) return;
     this.props.fetchPlayers().then((response) => {
-      if (!response.data) {
+      if (!response) {
         this.setState({ oops: true });
       } else {
         this.setState(response.data);
@@ -50,8 +49,9 @@ class PlayerStats extends React.Component {
     const { isSaving, oops } = this.state;
 
     if (oops) {
-      return <h3>can't get data in single page apps. please refresh!</h3>;
-    } else if (!data || status.isLoading) {
+      return <strong>oops</strong>;
+    }
+    if (!data || status.isLoading) {
       return <h3>Loading Player Stats...</h3>;
     } else if (status.isError) {
       return <div>

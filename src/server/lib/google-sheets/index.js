@@ -7,48 +7,18 @@ const setAuth = (doc, creds) => new Promise((resolve) => {
   doc.useServiceAccountAuth(creds, () => resolve(doc));
 });
 
-const getInfo = (doc) => new Promise((resolve, reject) => {
-  doc.getInfo((err, sheet) => {
-    if (err) reject(err);
-    resolve(sheet);
-  });
+const mkPromise = (cb, arg1) => new Promise((resolve, reject) => {
+  const resolveOrReject = (err, res) => { if (err) { reject(err); } resolve(res); };
+  const args = arg1 ? [arg1, resolveOrReject] : [resolveOrReject];
+  return cb(...args);
 });
 
-const getRows = (doc) => new Promise((resolve, reject) => {
-  doc.getRows((err, rows) => {
-    if (err) reject(err);
-    resolve(rows);
-  });
-});
-
-const getCells = (doc, opts) => new Promise((resolve, reject) => {
-  doc.getCells(opts, (err, cells) => {
-    if (err) reject(err);
-    resolve(cells);
-  });
-});
-
-const addRow = (doc, row) => new Promise((resolve, reject) => {
-  doc.addRow(row, (err, upd) => {
-    if (err) reject(err);
-    resolve(upd);
-  });
-});
-
-const addWorksheet = (doc, opts) => new Promise((resolve, reject) => {
-  doc.addWorksheet(opts, (err, upd) => {
-    if (err) reject(err);
-    resolve(upd);
-  });
-});
-
-const bulkUpdateCells = (doc, cells) => new Promise((resolve, reject) => {
-  doc.bulkUpdateCells(cells, (err, upd) => {
-    if (err) reject(err);
-    resolve(upd);
-  });
-});
-
+const getInfo = (doc) => mkPromise(doc.getInfo);
+const getRows = (doc) => mkPromise(doc.getRows);
+const getCells = (doc, opts) => mkPromise(doc.getCells, opts);
+const addRow = (doc, opts) => mkPromise(doc.addRow, opts);
+const addWorksheet = (doc, opts) => mkPromise(doc.addWorksheet, opts);
+const bulkUpdateCells = (doc, opts) => mkPromise(doc.bulkUpdateCells, opts);
 const onceResolved = (obj) => Promise.all(Object.keys(obj).map(key => obj[key]));
 
 export default function Connect(id, creds) {
@@ -62,12 +32,17 @@ export default function Connect(id, creds) {
     .catch(e => {
       log(e);
     });
-  if (!this.connections) this.connections = {};
-  this.connectionsId = id;
-  this.connections[id] = promise;
-  this.whenComplete = promise;
+  this.updateQueues('connections', promise, id);
   return this;
 }
+
+Connect.prototype.updateQueues = function updateQueues(queue, promise, id = String(new Date())) {
+  if (!this[queue]) this[queue] = {};
+  const queueId = `queue${id}`;
+  this[queueId] = id;
+  this[queue][this[queueId]] = promise;
+  this.then = promise.then.bind(promise);
+};
 
 Connect.prototype.refresh = function refresh() {
   const promise = onceResolved(this.connections)
@@ -76,7 +51,7 @@ Connect.prototype.refresh = function refresh() {
       this.workbook = workbook;
       return workbook;
     });
-  this.whenComplete = promise;
+  this.then = promise.bind(promise);
   return this;
 };
 
@@ -86,9 +61,7 @@ Connect.prototype.getWorksheets = function getWorksheet() {
       this.worksheets = this.workbook.worksheets;
       return this.worksheets;
     });
-  if (!this.worksheetsQueue) this.worksheetsQueue = {};
-  this.worksheetsQueue.all = promise;
-  this.whenComplete = promise;
+  this.updateQueues('worksheetsQueue', promise, 'all');
   return this;
 };
 
@@ -98,10 +71,7 @@ Connect.prototype.getWorksheet = function getWorksheet(id) {
       this.worksheet = this.workbook.worksheets.find(sheet => sheet.title.toLowerCase() === id);
       return this.worksheet;
     });
-  if (!this.worksheetsQueue) this.worksheetsQueue = {};
-  this.worksheetId = id;
-  this.worksheetsQueue[id] = promise;
-  this.whenComplete = promise;
+  this.updateQueues('worksheetQueue', promise, id);
   return this;
 };
 
@@ -114,10 +84,7 @@ Connect.prototype.addWorksheet = function ConnectAddWorksheet(opts) {
           this.refresh();
         });
     });
-  if (!this.worksheetsQueue) this.worksheetsQueue = {};
-  this.worksheetId = String(new Date());
-  this.worksheetsQueue[this.worksheetId] = promise;
-  this.whenComplete = promise;
+  this.updateQueues('addWorksheetQueue', promise);
   return this;
 };
 
@@ -135,10 +102,7 @@ Connect.prototype.addRows = function ConnectAddRows(rows) {
     .then(() => {
       return new Promise((resolve) => addRows(this.worksheet, rows, resolve));
     });
-  if (!this.addRowsQueue) this.addRowsQueue = {};
-  this.addRowsQueueId = String(new Date());
-  this.addRowsQueue[this.addRowsQueueId] = promise;
-  this.whenComplete = promise;
+  this.updateQueues('addRowsQueue', promise);
   return this;
 };
 
@@ -158,10 +122,7 @@ Connect.prototype.addRowsBulk = function ConnectAddRowsBulk(rows, opts) {
           return bulkUpdateCells(this.worksheet, cells);
         });
     });
-  if (!this.addRowsQueue) this.addRowsQueue = {};
-  this.addRowsQueueId = String(new Date());
-  this.addRowsQueue[this.addRowsQueueId] = promise;
-  this.whenComplete = promise;
+  this.updateQueues('addRowsQueue', promise);
   return this;
 };
 
@@ -174,9 +135,6 @@ Connect.prototype.toJson = function toJson(creator) {
       }, {});
     });
   });
-  if (!this.toJsonQueue) this.toJsonQueue = {};
-  this.toJsonQueueId = String(new Date());
-  this.toJsonQueue[this.toJsonQueueId] = promise;
-  this.whenComplete = promise;
+  this.updateQueues('toJsonQueue', promise);
   return this;
 };

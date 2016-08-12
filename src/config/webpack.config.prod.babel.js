@@ -9,6 +9,7 @@ import './environment';
 import { SRC, DIST } from './paths';
 
 export default {
+  devtool: 'source-map',
   entry: {
     app: [
       `${SRC}/client-entry.js`
@@ -24,7 +25,12 @@ export default {
     new PurifyCssPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({ minimize: true }),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      sourceMap: true,
+      compress: {
+        drop_debugger: true // eslint-disable-line
+      } }),
     new webpack.DefinePlugin({
       'process.env': {
         BROWSER: JSON.stringify(true),

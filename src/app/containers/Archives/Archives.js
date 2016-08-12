@@ -12,24 +12,15 @@ class Archives extends React.Component {
 
   componentDidMount() {
     if (this.props.archives.data) return;
-    this.props.fetchArchives().then((response) => {
-      if (!response.data) {
-        this.setState({ oops: true });
-      } else {
-        this.setState(response.data);
-      }
-    }).catch((err) => {
+    this.props.fetchArchives().catch((err) => {
       throw new Error(err);
     });
   }
 
   render() {
     const { data, status, error } = this.props.archives;
-    const { oops } = this.state;
 
-    if (oops) {
-      return <h3>can't get data in single page apps. please refresh!</h3>;
-    } else if (!data || status.isLoading) {
+    if (!data || status.isLoading) {
       return <h3>Loading Archives...</h3>;
     } else if (status.isError) {
       return <div>

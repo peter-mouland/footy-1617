@@ -32,7 +32,7 @@ Object.assign(express.response, {
     return `<!doctype html>${renderToString(page)}`;
   },
   render500(e) {
-    log('render500', e);
+    log('error', e);
     return this.status(500).send(this.renderPageToString(<Error500 error={ e } />));
   }
 });

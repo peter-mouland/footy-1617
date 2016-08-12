@@ -50,7 +50,6 @@ export default (spreadsheet, data) => {
   return spreadsheet
     .addWorksheet(createWorksheetOptions(data))
     .addRowsBulk(createRows(data), createRowOptions(data))
-    .whenComplete
     .then(() => log('done.'))
     .catch(e => log(e));
 };

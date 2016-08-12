@@ -18,6 +18,7 @@ class Payers extends React.Component {
     this.updatePosition = this.updatePosition.bind(this);
     this.changePos = this.changePos.bind(this);
     this.state = {
+      oops: false,
       isSaving: false,
       playersToUpdate: {},
       playersUpdated: {},
@@ -27,8 +28,9 @@ class Payers extends React.Component {
 
   componentDidMount() {
     if (this.props.stats.data) { return; }
+    this.state.loading = true;
     this.props.fetchPlayers().then((response) => {
-      if (!response.data) {
+      if (!response) {
         this.setState({ oops: true });
       } else {
         this.setState(response.data);
@@ -72,11 +74,12 @@ class Payers extends React.Component {
 
   render() {
     const { data, status, error } = this.props.stats;
-    const { isSaving, position, oops } = this.state;
+    const { oops, isSaving, position } = this.state;
 
     if (oops) {
-      return <h3>can't get data in single page apps. please refresh!</h3>;
-    } else if (!data || status.isLoading) {
+      return <strong>oops</strong>;
+    }
+    if (!data || status.isLoading) {
       return <h3>Loading Player Positions...</h3>;
     } else if (status.isError) {
       return <div>
