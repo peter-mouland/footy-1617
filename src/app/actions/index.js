@@ -1,6 +1,6 @@
 import api from '../api';
 
-export const FETCH_ARCHIVES = 'FETCH_ARCHIVES';
+export const FETCH_STATS_SNAPSHOTS = 'FETCH_STATS_SNAPSHOTS';
 export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const SAVE_PLAYER_STATS = 'SAVE_PLAYER_STATS';
 export const SAVE_PLAYER_POSITIONS = 'SAVE_PLAYER_POSITIONS';
@@ -13,10 +13,10 @@ export function fetchPlayers() {
   };
 }
 
-export function fetchArchives() {
+export function fetchStatsSnapshots() {
   return {
-    type: FETCH_ARCHIVES,
-    promise: api.fetchArchives()
+    type: FETCH_STATS_SNAPSHOTS,
+    promise: api.fetchStatsSnapshots()
   };
 }
 

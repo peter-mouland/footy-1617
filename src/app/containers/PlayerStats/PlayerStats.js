@@ -61,12 +61,16 @@ class PlayerStats extends React.Component {
 
     const Save = (isSaving)
       ? <em>Saving to Google... this may take a minute or two.</em>
-      : <button onClick={this.savePlayerStats} >Send Points to Google</button>;
+      : <button onClick={this.savePlayerStats} >Save Stats-Snapshot</button>;
 
 
     return (
         <div>
           <h2>Players Points</h2>
+          <div>
+            <strong>View:</strong>
+            Season Total | Current Week
+          </div>
           {Save}
           <table>
             <thead>

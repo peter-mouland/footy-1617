@@ -7,7 +7,7 @@ import { localUrl } from '../utils';
 const log = debug('footy:save-player-positions');
 
 export default () => {
-  return fetch(`${localUrl}/api/archives`, {
+  return fetch(`${localUrl}/api/stats-snapshots`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -18,7 +18,7 @@ export default () => {
     .then((res) => {
       return res.json().then((json) => {
         return {
-          archives: json
+          statsSnapshots: json
         };
       });
     })

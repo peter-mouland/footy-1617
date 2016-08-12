@@ -3,7 +3,7 @@ import debug from 'debug';
 import bodyParser from 'body-parser';
 
 import fetchSkyPlayers from './fetch-sky-players';
-import fetchArchives from './fetch-archives';
+import fetchStatsSnapshots from './fetch-stats-snapshots';
 import savePlayerStats from './save-player-stats';
 import savePlayerPositions from './save-player-positions';
 import GoogleSpreadsheet from '../lib/google-sheets';
@@ -33,8 +33,8 @@ apiRouter.get('/sky-players', (req, res) => {
     .catch((e) => sendStatus(500, res, e));
 });
 
-apiRouter.get('/archives', (req, res) => {
-  fetchArchives(spreadsheet)
+apiRouter.get('/stats-snapshots', (req, res) => {
+  fetchStatsSnapshots(spreadsheet)
     .then((results) => sendStatus(200, res, results))
     .catch((e) => sendStatus(500, res, e));
 });

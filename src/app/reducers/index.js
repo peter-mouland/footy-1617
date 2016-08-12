@@ -44,9 +44,9 @@ function stats(state = defaultStatsState, action) {
   }
 }
 
-function archives(state = defaultStatsState, action) {
+function statsSnapshots(state = defaultStatsState, action) {
   switch (action.type) {
-    case actions.FETCH_ARCHIVES:
+    case actions.FETCH_STATS_SNAPSHOTS:
       return {
         ...state,
         data: {
@@ -60,7 +60,7 @@ function archives(state = defaultStatsState, action) {
 }
 
 export default combineReducers({
-  archives,
+  statsSnapshots,
   stats,
   routing
 });

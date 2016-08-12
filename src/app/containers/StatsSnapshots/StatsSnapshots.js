@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import debug from 'debug';
 
-import { fetchArchives } from '../../actions';
+import { fetchStatsSnapshots } from '../../actions';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
 
-class Archives extends React.Component {
+class StatsSnapshots extends React.Component {
 
-  static needs = [fetchArchives];
+  static needs = [fetchStatsSnapshots];
 
   constructor(props) {
     super(props);
@@ -18,8 +18,8 @@ class Archives extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.archives.data) return;
-    this.props.fetchArchives().then((response) => {
+    if (this.props.statsSnapshots.data) return;
+    this.props.fetchStatsSnapshots().then((response) => {
       if (!response) {
         this.setState({ oops: true });
       }
@@ -29,27 +29,27 @@ class Archives extends React.Component {
   }
 
   render() {
-    const { data, status, error } = this.props.archives;
+    const { data, status, error } = this.props.statsSnapshots;
     const { oops } = this.state;
 
     if (oops) {
       return <strong>oops</strong>;
     } else if (!data || status.isLoading) {
-      return <h3>Loading Archives...</h3>;
+      return <h3>Loading Stats-Snapshots...</h3>;
     } else if (status.isError) {
       return <div>
-        <h3>ERROR Loading Archives...</h3>
+        <h3>ERROR Loading Stats-Snapshots...</h3>
         <p>{error.message}</p>
       </div>;
-    } else if (!data.archives || !data.archives.length) {
-      return (<strong>No Archives!</strong>);
+    } else if (!data.statsSnapshots || !data.statsSnapshots.length) {
+      return (<strong>No Stats-Snapshots!</strong>);
     }
 
     return (
       <div>
-        <h2>archives</h2>
+        <h2>Stats-Snapshot</h2>
           {
-            data.archives.map(archive => (
+            data.statsSnapshots.map(archive => (
               <div key={archive.id}>{archive.title}  >  view | set as week end</div>
             ))
           }
@@ -60,12 +60,12 @@ class Archives extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    archives: state.archives
+    statsSnapshots: state.statsSnapshots
   };
 }
 
 export default connect(
   mapStateToProps,
-  { fetchArchives }
-)(Archives);
+  { fetchStatsSnapshots }
+)(StatsSnapshots);
 

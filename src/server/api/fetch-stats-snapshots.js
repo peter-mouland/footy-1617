@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const log = debug('footy:fetch-player-archives');
+const log = debug('footy:fetch-stats-snapshots');
 
 export default (spreadsheet) => {
   const sheets = spreadsheet.getWorksheets();

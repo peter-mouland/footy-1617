@@ -6,7 +6,7 @@ import objectAssign from 'object-assign';
 import MainLayout from './Layouts/MainLayout';
 import PlayersByPosition from './containers/PlayersByPosition/PlayersByPosition';
 import PlayerStats from './containers/PlayerStats/PlayerStats';
-import Archives from './containers/Archives/Archives';
+import StatsSnapshots from './containers/StatsSnapshots/StatsSnapshots';
 import Homepage from './containers/Homepage/Homepage';
 import NotFound from './containers/NotFound/NotFound';
 
@@ -33,11 +33,11 @@ export const routes = {
     title: `${siteTitle} - Player Stats`,
     component: PlayerStats
   },
-  archives: {
-    label: 'Archives',
-    path: '/archives',
-    title: `${siteTitle} - Archives`,
-    component: Archives
+  statsSnapshots: {
+    label: 'Stats-Snapshots',
+    path: '/stats-snapshots',
+    title: `${siteTitle} - Stats-Snapshots`,
+    component: StatsSnapshots
   },
   notFound: {
     label: 'Not Found',
@@ -56,7 +56,7 @@ export function makeRoutes() {
       <IndexRoute { ...indexRoute(routes.homepage) } />
       <Route { ...routes.playersByPosition } />
       <Route { ...routes.playerStats } />
-      <Route { ...routes.archives } />
+      <Route { ...routes.statsSnapshots } />
       <Route { ...routes.notFound } />
     </Route>
   );
