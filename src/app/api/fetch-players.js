@@ -1,4 +1,9 @@
 import fetch from 'isomorphic-fetch';
+import debug from 'debug';
+
+import { checkStatus } from './utils';
+
+const log = debug('footy:fetch-players');
 
 function skyPlayers() {
   return fetch('https://fantasyfootball.skysports.com/cache/json_players.json')

@@ -21,7 +21,6 @@ const playerListSheet = spreadsheet.getWorksheet('player list');
 
 playerListSheet
   .toJson(createJsonObj)
-  .whenComplete
     .then((jsonData) => json.save(jsonData, 'src/app/api/ff.json'))
     .then(() => log('done.'))
     .catch(e => log(e));
