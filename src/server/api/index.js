@@ -1,19 +1,21 @@
 import express from 'express';
 import debug from 'debug';
 import bodyParser from 'body-parser';
+
+import fetchSkyPlayers from './fetch-sky-players';
 import fetchArchives from './fetch-archives';
 import savePlayerStats from './save-player-stats';
 import savePlayerPositions from './save-player-positions';
 import GoogleSpreadsheet from '../lib/google-sheets';
 import creds from '../lib/google-sheets/google-generated-creds.json';
-const log = debug('footy:api/index');
 
+const log = debug('footy:api/index');
 const apiRouter = new express.Router();
+const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY', creds);
+const sendStatus = (code, res, results) => res.status(code).send(results);
+
 apiRouter.use(bodyParser.json({ limit: '50mb' }));
 apiRouter.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-
-
-const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY', creds);
 
 function errorHandler(err, req, res) {
   log(err);
@@ -25,34 +27,28 @@ function errorHandler(err, req, res) {
   res.end();
 }
 
+apiRouter.get('/sky-players', (req, res) => {
+  fetchSkyPlayers()
+    .then((results) => sendStatus(200, res, results))
+    .catch((e) => sendStatus(500, res, e));
+});
+
 apiRouter.get('/archives', (req, res) => {
   fetchArchives(spreadsheet)
-    .then((response) => {
-      res.status(200).send(response);
-    })
-    .catch((e) => {
-      res.sendStatus(500, e);
-    });
+    .then((results) => sendStatus(200, res, results))
+    .catch((e) => sendStatus(500, res, e));
 });
 
 apiRouter.post('/save-player-positions', (req, res) => {
   savePlayerPositions(spreadsheet, req.body)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((e) => {
-      res.sendStatus(500, e);
-    });
+    .then((results) => sendStatus(200, res, results))
+    .catch((e) => sendStatus(500, res, e));
 });
 
 apiRouter.post('/save-player-stats', (req, res) => {
   savePlayerStats(spreadsheet, req.body)
-    .then((response) => {
-      res.status(200).send(response);
-    })
-    .catch((e) => {
-      res.sendStatus(500, e);
-    });
+    .then((results) => sendStatus(200, res, results))
+    .catch((e) => sendStatus(500, res, e));
 });
 
 apiRouter.get('*', (req, res) => {

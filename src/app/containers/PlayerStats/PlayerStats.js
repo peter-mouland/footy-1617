@@ -23,8 +23,6 @@ class PlayerStats extends React.Component {
     this.props.fetchPlayers().then((response) => {
       if (!response) {
         this.setState({ oops: true });
-      } else {
-        this.setState(response.data);
       }
     }).catch((err) => {
       throw new Error(err);
@@ -50,25 +48,21 @@ class PlayerStats extends React.Component {
 
     if (oops) {
       return <strong>oops</strong>;
-    }
-    if (!data || status.isLoading) {
+    } else if (!data || status.isLoading) {
       return <h3>Loading Player Stats...</h3>;
     } else if (status.isError) {
       return <div>
         <h3>ERROR Loading Player Stats...</h3>
         <p>{error.message}</p>
       </div>;
+    } else if (!data.players.length) {
+      return (<strong>No Players!</strong>);
     }
 
     const Save = (isSaving)
       ? <em>Saving to Google... this may take a minute or two.</em>
       : <button onClick={this.savePlayerStats} >Send Points to Google</button>;
 
-    if (!data) {
-      return (<strong>No data. yet...</strong>);
-    } else if (!data.players.length) {
-      return (<strong>No Players!</strong>);
-    }
 
     return (
         <div>

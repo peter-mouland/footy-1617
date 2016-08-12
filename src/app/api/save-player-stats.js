@@ -2,11 +2,12 @@ import fetch from 'isomorphic-fetch';
 import debug from 'debug';
 
 import { checkStatus } from './utils';
+import { localUrl } from '../utils';
 
 const log = debug('footy:save-player-stats');
 
 export default (data) => {
-  return fetch('/api/save-player-stats', {
+  return fetch(`${localUrl}/api/save-player-stats`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

@@ -2,16 +2,26 @@ import fetch from 'isomorphic-fetch';
 import debug from 'debug';
 
 import { checkStatus } from './utils';
+import { localUrl } from '../utils';
 
 const log = debug('footy:fetch-players');
 
 function skyPlayers() {
-  return fetch('https://fantasyfootball.skysports.com/cache/json_players.json')
-    .then((response) => {
-      if (response.status >= 400) {
-        throw new Error('Bad response from server');
-      }
-      return response.json();
+  return fetch(`${localUrl}/api/sky-players`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(checkStatus)
+    .then((res) => {
+      return res.json().then((json) => {
+        return json;
+      });
+    })
+    .catch((error) => {
+      log('request failed', error);
     });
 }
 

@@ -10,27 +10,37 @@ class Archives extends React.Component {
 
   static needs = [fetchArchives];
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      oops: false,
+    };
+  }
+
   componentDidMount() {
     if (this.props.archives.data) return;
-    this.props.fetchArchives().catch((err) => {
+    this.props.fetchArchives().then((response) => {
+      if (!response) {
+        this.setState({ oops: true });
+      }
+    }).catch((err) => {
       throw new Error(err);
     });
   }
 
   render() {
     const { data, status, error } = this.props.archives;
+    const { oops } = this.state;
 
-    if (!data || status.isLoading) {
+    if (oops) {
+      return <strong>oops</strong>;
+    } else if (!data || status.isLoading) {
       return <h3>Loading Archives...</h3>;
     } else if (status.isError) {
       return <div>
         <h3>ERROR Loading Archives...</h3>
         <p>{error.message}</p>
       </div>;
-    }
-
-    if (!data) {
-      return (<strong>No data. yet...</strong>);
     } else if (!data.archives || !data.archives.length) {
       return (<strong>No Archives!</strong>);
     }
