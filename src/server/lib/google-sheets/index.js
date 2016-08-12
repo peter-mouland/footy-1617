@@ -7,18 +7,63 @@ const setAuth = (doc, creds) => new Promise((resolve) => {
   doc.useServiceAccountAuth(creds, () => resolve(doc));
 });
 
-const mkPromise = (cb, arg1) => new Promise((resolve, reject) => {
-  const resolveOrReject = (err, res) => { if (err) { reject(err); } resolve(res); };
-  const args = arg1 ? [arg1, resolveOrReject] : [resolveOrReject];
-  return cb(...args);
+const getInfo = (doc) => new Promise((resolve, reject) => {
+  doc.getInfo((err, sheet) => {
+    if (err) reject(err);
+    resolve(sheet);
+  });
 });
 
-const getInfo = (doc) => mkPromise(doc.getInfo);
-const getRows = (doc) => mkPromise(doc.getRows);
-const getCells = (doc, opts) => mkPromise(doc.getCells, opts);
-const addRow = (doc, opts) => mkPromise(doc.addRow, opts);
-const addWorksheet = (doc, opts) => mkPromise(doc.addWorksheet, opts);
-const bulkUpdateCells = (doc, opts) => mkPromise(doc.bulkUpdateCells, opts);
+const getRows = (doc) => new Promise((resolve, reject) => {
+  doc.getRows((err, rows) => {
+    if (err) reject(err);
+    resolve(rows);
+  });
+});
+
+const getCells = (doc, opts) => new Promise((resolve, reject) => {
+  doc.getCells(opts, (err, cells) => {
+    if (err) reject(err);
+    resolve(cells);
+  });
+});
+
+const addRow = (doc, row) => new Promise((resolve, reject) => {
+  doc.addRow(row, (err, upd) => {
+    if (err) reject(err);
+    resolve(upd);
+  });
+});
+
+const addWorksheet = (doc, opts) => new Promise((resolve, reject) => {
+  doc.addWorksheet(opts, (err, upd) => {
+    if (err) reject(err);
+    resolve(upd);
+  });
+});
+
+const bulkUpdateCells = (doc, cells) => new Promise((resolve, reject) => {
+  doc.bulkUpdateCells(cells, (err, upd) => {
+    if (err) reject(err);
+    resolve(upd);
+  });
+});
+
+
+// const mkPromise = (cb, arg1) => new Promise((resolve, reject) => {
+//   const resolveOrReject = (err, res) => { if (err) { reject(err); } resolve(res); };
+//   const args = arg1 ? [arg1, resolveOrReject] : [resolveOrReject];
+//   cb(...args);
+// });
+//
+// const getInfo = (doc) => mkPromise(doc.getInfo);
+// const getRows = (doc) => mkPromise(doc.getRows);
+// const getCells = (doc, opts) => mkPromise(doc.getCells, opts);
+// const addRow = (doc, opts) => mkPromise(doc.addRow, opts);
+// const addWorksheet = (doc, opts) => mkPromise(doc.addWorksheet, opts);
+// const bulkUpdateCells = (doc, opts) => mkPromise(doc.bulkUpdateCells, opts);
+
+
 const onceResolved = (obj) => Promise.all(Object.keys(obj).map(key => obj[key]));
 
 export default function Connect(id, creds) {
@@ -51,7 +96,7 @@ Connect.prototype.refresh = function refresh() {
       this.workbook = workbook;
       return workbook;
     });
-  this.then = promise.bind(promise);
+  this.then = promise.then.bind(promise);
   return this;
 };
 
