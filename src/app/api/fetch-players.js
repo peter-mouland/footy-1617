@@ -15,11 +15,7 @@ function skyPlayers() {
     }
   })
     .then(checkStatus)
-    .then((res) => {
-      return res.json().then((json) => {
-        return json;
-      });
-    })
+    .then((res) => res.json())
     .catch((error) => {
       log('request failed', error);
     });

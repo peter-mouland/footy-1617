@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import debug from 'debug';
 
-import { savePlayerStats, fetchPlayers } from '../../actions';
+import { savePlayerStats, fetchPlayers, fetchWeeklyStats } from '../../actions';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
 
@@ -69,7 +69,7 @@ class PlayerStats extends React.Component {
           <h2>Players Points</h2>
           <div>
             <strong>View:</strong>
-            Season Total | Current Week
+            Season Total | Weekly
           </div>
           {Save}
           <table>
@@ -113,6 +113,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { savePlayerStats, fetchPlayers }
+  { savePlayerStats, fetchPlayers, fetchWeeklyStats }
 )(PlayerStats);
 
