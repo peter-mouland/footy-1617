@@ -4,7 +4,6 @@ import * as actions from '../actions';
 
 import calculatePoints from './calculatePoints';
 
-// const defaultStatsState = { data: { players: [] }, status: {} };
 const defaultStatsState = { };
 
 const newPlayers = (players, data) => {
@@ -12,6 +11,12 @@ const newPlayers = (players, data) => {
     ...player,
     pos: !!data[player.fullName] ? data[player.fullName].pos : player.pos
   }));
+};
+
+const newTag = (rows, data) => {
+  return rows.map(row => {
+    return (row.id === data.id) ? data : row;
+  });
 };
 
 function stats(state = defaultStatsState, action) {
@@ -49,17 +54,13 @@ function statsSnapshots(state = defaultStatsState, action) {
     case actions.SAVE_WEEK_END_TAG:
       return {
         ...state,
-        data: {
-          ...action.data
-        },
+        data: newTag(state.data, action.data),
         status: action.status
       };
     case actions.FETCH_STATS_SNAPSHOTS:
       return {
         ...state,
-        data: {
-          ...action.data
-        },
+        data: action.data,
         status: action.status
       };
     default:

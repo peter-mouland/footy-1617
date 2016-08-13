@@ -7,23 +7,22 @@ import { localUrl } from '../utils';
 const log = debug('footy:save-week-end-tags');
 
 export default (data) => {
-  return fetch(`${localUrl}/api/save-week-end-tags`, {
+  return fetch(`${localUrl}/api/save-week-end-tag`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify([{ sheet: `'${data.title}` }])
   })
   .then(checkStatus)
-    .then((res) => {
-      return res.json().then((json) => {
-        log('json', json);
-        return {
-          tag: json
-        };
-      });
-    })
+  .then((res) => res.json())
+  .then(() => {
+    return {
+      ...data,
+      weekEndTag: true
+    };
+  })
   .catch((error) => {
     log('request failed', error);
   });

@@ -87,6 +87,7 @@ Connect.prototype.updateQueues = function updateQueues(queue, promise, id = Stri
   this[queueId] = id;
   this[queue][this[queueId]] = promise;
   this.then = promise.then.bind(promise);
+  this.catch = promise.catch.bind(promise);
 };
 
 Connect.prototype.refresh = function refresh() {
@@ -133,19 +134,28 @@ Connect.prototype.addWorksheet = function ConnectAddWorksheet(opts) {
   return this;
 };
 
-function addRows(worksheet, rows, cb) {
+function validate(row) {
+  Object.keys(row).forEach(key => {
+    if (key === 'title') {
+      throw new Error(`Invalid key: ${key}`);
+    }
+  });
+}
+
+function addRows(worksheet, rows, cb, errCb) {
   if (!rows.length) return cb(worksheet);
+  validate(rows[0]);
   return addRow(worksheet, rows[0]).then(() => {
     rows.shift();
     log(`${rows.length} remaining`);
-    return addRows(worksheet, rows, cb);
-  });
+    return addRows(worksheet, rows, cb, errCb);
+  }).catch(e => errCb(e));
 }
 
 Connect.prototype.addRows = function ConnectAddRows(rows) {
   const promise = onceResolved(this.worksheetsQueue)
     .then(() => {
-      return new Promise((resolve) => addRows(this.worksheet, rows, resolve));
+      return new Promise((resolve, reject) => addRows(this.worksheet, rows, resolve, reject));
     });
   this.updateQueues('rowsQueue', promise);
   return this;

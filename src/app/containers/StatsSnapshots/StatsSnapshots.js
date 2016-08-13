@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import debug from 'debug';
 
-import { fetchStatsSnapshots } from '../../actions';
+import { fetchStatsSnapshots, saveWeekEndTag } from '../../actions';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
 
@@ -15,6 +15,7 @@ class StatsSnapshots extends React.Component {
     this.state = {
       oops: false,
     };
+    this.tagAsWeekEnd = this.tagAsWeekEnd.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +27,17 @@ class StatsSnapshots extends React.Component {
     }).catch((err) => {
       throw new Error(err);
     });
+  }
+
+  tagAsWeekEnd(snapshot) {
+    this.setState({ saving: true });
+    this.props.saveWeekEndTag(snapshot)
+      .then((results) => {
+        if (!results) {
+          this.setState({ oops: true });
+        }
+        this.setState({ saving: false });
+      });
   }
 
   render() {
@@ -41,19 +53,20 @@ class StatsSnapshots extends React.Component {
         <h3>ERROR Loading Stats-Snapshots...</h3>
         <p>{error.message}</p>
       </div>;
-    } else if (!data.statsSnapshots || !data.statsSnapshots.length) {
-      return (<strong>No Stats-Snapshots!</strong>);
     }
 
     return (
       <div>
         <h2>Stats-Snapshot</h2>
           {
-            data.statsSnapshots.map(snapshot => (
+            data.map(snapshot => (
               <div key={snapshot.id}>
-                <strong>{snapshot.title}</strong>
-                <span>{snapshot.weekEndTag ? '(week end)' : null}</span>
-                <a href="#">View Snapshot</a> | <a href="#">Tag as 'Week End'</a>
+                <a href="#">{snapshot.title}</a>
+                {
+                  snapshot.weekEndTag
+                    ? <span>(week end)</span>
+                    : <button onClick={() => this.tagAsWeekEnd(snapshot)}>Tag as 'Week End'</button>
+                }
               </div>
             ))
           }
@@ -70,6 +83,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { fetchStatsSnapshots }
+  { fetchStatsSnapshots, saveWeekEndTag }
 )(StatsSnapshots);
 

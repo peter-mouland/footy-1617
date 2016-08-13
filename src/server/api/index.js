@@ -58,7 +58,7 @@ apiRouter.post('/save-week-end-tag', (req, res) => {
     .catch((e) => sendStatus(500, res, e));
 });
 
-apiRouter.get('*', (req, res) => {
+apiRouter.use('*', (req, res) => {
   const e = new Error();
   e.name = 'APIError';
   e.message = 'API Route Not Found';
