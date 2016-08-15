@@ -48,9 +48,9 @@ class PlayerStats extends React.Component {
 
     if (oops) {
       return <strong>oops</strong>;
-    } else if (status.isLoading || !players || !players.length) {
+    } else if ((status && status.isLoading) || !players || !players.length) {
       return <h3>Loading Player Stats...</h3>;
-    } else if (status.isError) {
+    } else if ((status && status.isError)) {
       return <div>
         <h3>ERROR Loading Player Stats...</h3>
         <p>{error.message}</p>
