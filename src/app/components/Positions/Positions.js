@@ -5,7 +5,7 @@ import bemHelper from 'react-bem-helper';
 import './positions.scss';
 
 const bem = bemHelper({ name: 'positions' });
-const availablePositions = ['unknown', 'GK', 'FB', 'CB', 'WM', 'CM', 'STR', 'park'];
+export const availablePositions = ['unknown', 'GK', 'FB', 'CB', 'WM', 'CM', 'STR', 'park'];
 
 export const PositionLinks = ({ selectedPos, onClick, className, ...props }) => {
   const positionLink = (pos) => {

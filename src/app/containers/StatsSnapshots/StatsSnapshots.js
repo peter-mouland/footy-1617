@@ -53,6 +53,8 @@ class StatsSnapshots extends React.Component {
         <h3>ERROR Loading Stats-Snapshots...</h3>
         <p>{error.message}</p>
       </div>;
+    } else if (!data.length) {
+      return <strong>No Stats-Snapshots saved!</strong>;
     }
 
     return (
