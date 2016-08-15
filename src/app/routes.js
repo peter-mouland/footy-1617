@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute, Link } from 'react-router';
 import debug from 'debug';
 import objectAssign from 'object-assign';
 
@@ -56,6 +56,12 @@ export const routes = {
 
 const indexRoute = (route) => objectAssign({}, route, { path: null });
 
+export const NavLink = ({ to, ...props }) => (
+  <Link to={ routes[to].path } { ...props }>
+    { routes[to].label }
+  </Link>
+);
+
 export function makeRoutes() {
   log('makeRoutes');
   return (
@@ -63,8 +69,8 @@ export function makeRoutes() {
       <IndexRoute { ...indexRoute(routes.homepage) } />
       <Route { ...routes.playersByPosition } />
       <Route { ...routes.playerStats } />
-      <Route { ...routes.weeklyPoints } />
       <Route { ...routes.statsSnapshots } />
+      <Route { ...routes.weeklyPoints } />
       <Route { ...routes.notFound } />
     </Route>
   );

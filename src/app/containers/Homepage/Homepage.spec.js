@@ -1,5 +1,6 @@
 import {expect, shallow, React} from '../../../../tests/support/test.helper';
-import { WrappedComponent as Homepage }  from './Homepage';
+// import { WrappedComponent as Homepage }  from './Homepage';
+import Homepage  from './Homepage';
 import {copy} from './homepage-copy';
 
 const baseProps = {
