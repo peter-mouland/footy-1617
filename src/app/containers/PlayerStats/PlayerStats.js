@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import debug from 'debug';
 
-import { savePlayerStats, fetchPlayers, fetchWeeklyStats } from '../../actions';
+import { savePlayerStats, fetchPlayers } from '../../actions';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
 
@@ -19,7 +19,7 @@ class PlayerStats extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.stats.data) return;
+    if (this.props.stats.players) return;
     this.props.fetchPlayers().then((response) => {
       if (!response) {
         this.setState({ oops: true });
@@ -33,7 +33,7 @@ class PlayerStats extends React.Component {
     this.setState({
       isSaving: true
     });
-    this.props.savePlayerStats(this.props.stats.data.players)
+    this.props.savePlayerStats(this.props.stats.players)
       .then(() => {
         this.setState({
           isSaving: false,
@@ -43,34 +43,29 @@ class PlayerStats extends React.Component {
   }
 
   render() {
-    const { data, status, error } = this.props.stats;
+    const { players, status, error } = this.props.stats;
     const { isSaving, oops } = this.state;
 
     if (oops) {
       return <strong>oops</strong>;
-    } else if (!data || status.isLoading) {
+    } else if (status.isLoading || !players || !players.length) {
       return <h3>Loading Player Stats...</h3>;
     } else if (status.isError) {
       return <div>
         <h3>ERROR Loading Player Stats...</h3>
         <p>{error.message}</p>
       </div>;
-    } else if (!data.players.length) {
-      return (<strong>No Players!</strong>);
+    } else if (!players) {
+      return <strong>No Players!</strong>;
     }
 
     const Save = (isSaving)
       ? <em>Saving to Google... this may take a minute or two.</em>
       : <button onClick={this.savePlayerStats} >Save Stats-Snapshot</button>;
 
-
     return (
         <div>
           <h2>Players Points</h2>
-          <div>
-            <strong>View:</strong>
-            Season Total | Weekly
-          </div>
           {Save}
           <table>
             <thead>
@@ -79,14 +74,14 @@ class PlayerStats extends React.Component {
               <th>position</th>
               <th>player</th>
               <th>club</th>
-              {Object.keys(data.players[0].ffPoints).map((key, i) => (
+              {Object.keys(players[0].ffPoints).map((key, i) => (
                 <th key={i}>{key}</th>
               ))}
             </tr>
             </thead>
             <tbody>
             {
-              data.players.map(player => (
+              players.map(player => (
                 <tr key={player.id}>
                   <td>{player.code || player.id}</td>
                   <td>{player.pos}</td>
@@ -113,6 +108,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { savePlayerStats, fetchPlayers, fetchWeeklyStats }
+  { savePlayerStats, fetchPlayers }
 )(PlayerStats);
 

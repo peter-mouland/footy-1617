@@ -6,6 +6,7 @@ import objectAssign from 'object-assign';
 import MainLayout from './Layouts/MainLayout';
 import PlayersByPosition from './containers/PlayersByPosition/PlayersByPosition';
 import PlayerStats from './containers/PlayerStats/PlayerStats';
+import WeeklyPoints from './containers/WeeklyPoints/WeeklyPoints';
 import StatsSnapshots from './containers/StatsSnapshots/StatsSnapshots';
 import Homepage from './containers/Homepage/Homepage';
 import NotFound from './containers/NotFound/NotFound';
@@ -33,6 +34,12 @@ export const routes = {
     title: `${siteTitle} - Player Stats`,
     component: PlayerStats
   },
+  weeklyPoints: {
+    label: 'Weekly Points',
+    path: '/weekly-points',
+    title: `${siteTitle} - Weekly Points`,
+    component: WeeklyPoints
+  },
   statsSnapshots: {
     label: 'Stats-Snapshots',
     path: '/stats-snapshots',
@@ -56,6 +63,7 @@ export function makeRoutes() {
       <IndexRoute { ...indexRoute(routes.homepage) } />
       <Route { ...routes.playersByPosition } />
       <Route { ...routes.playerStats } />
+      <Route { ...routes.weeklyPoints } />
       <Route { ...routes.statsSnapshots } />
       <Route { ...routes.notFound } />
     </Route>

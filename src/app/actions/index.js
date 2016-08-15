@@ -2,7 +2,7 @@ import api from '../api';
 
 export const FETCH_STATS_SNAPSHOTS = 'FETCH_STATS_SNAPSHOTS';
 export const FETCH_PLAYERS = 'FETCH_PLAYERS';
-export const FETCH_WEEKLY_STATS = 'FETCH_WEEKLY_STATS';
+export const FETCH_WEEKLY_POINTS = 'FETCH_WEEKLY_POINTS';
 export const SAVE_PLAYER_STATS = 'SAVE_PLAYER_STATS';
 export const SAVE_PLAYER_POSITIONS = 'SAVE_PLAYER_POSITIONS';
 export const SAVE_WEEK_END_TAG = 'SAVE_WEEK_END_TAG';
@@ -15,11 +15,11 @@ export function fetchPlayers() {
   };
 }
 
-export function fetchWeeklyStats() {
+export function fetchWeeklyPoints() {
   return {
-    type: FETCH_WEEKLY_STATS,
+    type: FETCH_WEEKLY_POINTS,
     timeFrame: 'season', // week / month / season
-    promise: api.fetchWeeklyStats()
+    promise: api.fetchWeeklyPoints()
   };
 }
 

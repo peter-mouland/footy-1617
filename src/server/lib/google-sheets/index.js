@@ -83,9 +83,7 @@ export default function Connect(id, creds) {
 
 Connect.prototype.updateQueues = function updateQueues(queue, promise, id = String(new Date())) {
   if (!this[queue]) this[queue] = {};
-  const queueId = `${queue}${id}`;
-  this[queueId] = id;
-  this[queue][this[queueId]] = promise;
+  this[queue][id] = promise;
   this.then = promise.then.bind(promise);
   this.catch = promise.catch.bind(promise);
 };
@@ -111,13 +109,13 @@ Connect.prototype.getWorksheets = function getWorksheet() {
   return this;
 };
 
-Connect.prototype.getWorksheet = function getWorksheet(id) {
+Connect.prototype.getWorksheet = function getWorksheet(title) {
   const promise = onceResolved(this.connectionsQueue)
     .then(() => {
-      this.worksheet = this.workbook.worksheets.find(sheet => sheet.title.toLowerCase() === id);
+      this.worksheet = this.workbook.worksheets.find(sheet => sheet.title === title);
       return this.worksheet;
     });
-  this.updateQueues('worksheetsQueue', promise, id);
+  this.updateQueues('worksheetsQueue', promise, title);
   return this;
 };
 
@@ -161,9 +159,9 @@ Connect.prototype.addRows = function ConnectAddRows(rows) {
   return this;
 };
 
-Connect.prototype.getRows = function ConnectGetRows() {
+Connect.prototype.getRows = function ConnectGetRows(sheet) {
   const promise = onceResolved(this.worksheetsQueue)
-    .then(() => getRows(this.worksheet));
+    .then(() => getRows(sheet || this.worksheet));
   this.updateQueues('rowsQueue', promise);
   return this;
 };

@@ -32,6 +32,7 @@ export default class MainLayout extends Component {
             <NavLink route={ routes.homepage } />
             <NavLink route={ routes.playersByPosition } />
             <NavLink route={ routes.playerStats } />
+            <NavLink route={ routes.weeklyPoints } />
             <NavLink route={ routes.statsSnapshots } />
           </span>
         </nav>

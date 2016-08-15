@@ -3,7 +3,7 @@ import debug from 'debug';
 import bodyParser from 'body-parser';
 
 import fetchSkyPlayers from './fetch-sky-players';
-import fetchWeeklyStats from './fetch-weekly-stats';
+import fetchWeeklyPoints from './fetch-weekly-points';
 import fetchStatsSnapshots from './fetch-stats-snapshots';
 import saveWeekEndTag from './save-week-end-tag';
 import savePlayerStats from './save-player-stats';
@@ -35,8 +35,8 @@ apiRouter.get('/sky-players', (req, res) => {
     .catch((e) => sendStatus(500, res, e));
 });
 
-apiRouter.get('/weekly-stats', (req, res) => {
-  fetchWeeklyStats(spreadsheet)
+apiRouter.get('/weekly-points', (req, res) => {
+  fetchWeeklyPoints(spreadsheet)
     .then((results) => sendStatus(200, res, results))
     .catch((e) => sendStatus(500, res, e));
 });

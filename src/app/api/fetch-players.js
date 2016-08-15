@@ -45,9 +45,6 @@ export default function fetchPlayers() {
           pos: ffResults[key] ? ffResults[key].pos : 'unknown'
         };
       });
-      return {
-        updatedOn: ffResults.updatedOn,
-        players: mergedPlayers
-      };
+      return mergedPlayers;
     });
 }

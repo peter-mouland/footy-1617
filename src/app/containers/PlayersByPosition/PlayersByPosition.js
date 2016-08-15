@@ -27,7 +27,7 @@ class Payers extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.stats.data) { return; }
+    if (this.props.stats.players) { return; }
     this.state.loading = true;
     this.props.fetchPlayers().then((response) => {
       if (!response) {
@@ -71,27 +71,25 @@ class Payers extends React.Component {
   }
 
   render() {
-    const { data, status, error } = this.props.stats;
+    const { players, status, error } = this.props.stats;
     const { oops, isSaving, position } = this.state;
 
     if (oops) {
       return <strong>oops</strong>;
-    } else if (!data || status.isLoading) {
+    } else if (!players || status.isLoading) {
       return <h3>Loading Player Positions...</h3>;
     } else if (status.isError) {
       return <div>
         <h3>ERROR Loading Player Positions...</h3>
         <p>{error.message}</p>
       </div>;
-    } else if (!data.players || !data.players.length) {
-      return (<strong>No Players!</strong>);
     }
 
     const Save = (isSaving)
       ? <em>Saving Players Positions...</em>
       : <button onClick={this.SavePlayerPositions} >Save Players Positions</button>;
 
-    const filteredPlayers = data.players.filter(player => player.pos === position);
+    const filteredPlayers = players.filter(player => player.pos === position);
     return (
       <div { ...bem() }>
         <h2>Players by position</h2>

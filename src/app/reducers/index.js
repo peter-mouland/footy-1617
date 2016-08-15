@@ -24,10 +24,13 @@ function stats(state = defaultStatsState, action) {
     case actions.FETCH_PLAYERS:
       return {
         ...state,
-        data: {
-          ...action.data,
-          players: calculatePoints(action.data.players, action.timeFrame),
-        },
+        players: calculatePoints(action.data, action.timeFrame),
+        status: action.status
+      };
+    case actions.FETCH_WEEKLY_POINTS:
+      return {
+        ...state,
+        weekly: action.data,
         status: action.status
       };
     case actions.SAVE_PLAYER_STATS:
@@ -38,10 +41,7 @@ function stats(state = defaultStatsState, action) {
     case actions.SAVE_PLAYER_POSITIONS:
       return {
         ...state,
-        data: {
-          ...state.data,
-          players: newPlayers(state.data.players, action.data)
-        },
+        players: newPlayers(state.data, action.data),
         status: action.status
       };
     default:
