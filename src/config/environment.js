@@ -21,6 +21,8 @@ if (!process.env.PORT) {
   process.env.PORT = 3000;
 }
 
+console.log(`argv.config`, argv.config)
+
 process.env.CONFIG_FILE = argv.config || process.env.NODE_ENV;
 
 log({
