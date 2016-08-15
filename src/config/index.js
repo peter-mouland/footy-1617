@@ -7,4 +7,4 @@ export default {
     ...prodConfig,
     ...devConfig,
   },
-}[process.env.CONFIG_FILE];
+}[process.env.CONFIG_FILE || 'production'];

@@ -44,14 +44,14 @@ class WeeklyPoints extends React.Component {
 
     if (oops) {
       return <strong>oops</strong>;
-    } else if (status && status.isLoading) {
-      return <h3>Loading Player Stats...</h3>;
+    } else if (!weekly || (status && status.isLoading)) {
+      return <h3>Loading Weekly Points...</h3>;
     } else if (status && status.isError) {
       return <div>
-        <h3>ERROR Loading Player Stats...</h3>
+        <h3>ERROR Loading Weekly Points...</h3>
         <p>{error.message}</p>
       </div>;
-    } else if (!weekly || !weekly.length) {
+    } else if ( !weekly.length) {
       return <strong>No weekly points yet!</strong>;
     }
 
