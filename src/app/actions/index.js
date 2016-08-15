@@ -3,7 +3,8 @@ import api from '../api';
 export const FETCH_STATS_SNAPSHOTS = 'FETCH_STATS_SNAPSHOTS';
 export const FETCH_PLAYERS = 'FETCH_PLAYERS';
 export const FETCH_WEEKLY_POINTS = 'FETCH_WEEKLY_POINTS';
-export const SAVE_PLAYER_STATS = 'SAVE_PLAYER_STATS';
+export const SAVE_WEEKLY_POINTS = 'SAVE_WEEKLY_POINTS';
+export const SAVE_STATS_SNAPSHOT = 'SAVE_STATS_SNAPSHOT';
 export const SAVE_PLAYER_POSITIONS = 'SAVE_PLAYER_POSITIONS';
 export const SAVE_WEEK_END_TAG = 'SAVE_WEEK_END_TAG';
 
@@ -30,11 +31,18 @@ export function fetchStatsSnapshots() {
   };
 }
 
-export function savePlayerStats(players) {
+export function saveWeeklyPoints(points) {
   return {
-    type: SAVE_PLAYER_STATS,
+    type: SAVE_WEEKLY_POINTS,
+    promise: api.saveWeeklyPoints(points)
+  };
+}
+
+export function saveStatsSnapshot(players) {
+  return {
+    type: SAVE_STATS_SNAPSHOT,
     timeoutMs: 90000,
-    promise: api.savePlayerStats(players)
+    promise: api.saveStatsSnapshot(players)
   };
 }
 

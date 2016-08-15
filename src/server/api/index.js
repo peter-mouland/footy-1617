@@ -2,18 +2,20 @@ import express from 'express';
 import debug from 'debug';
 import bodyParser from 'body-parser';
 
+import config from '../../config';
 import fetchSkyPlayers from './fetch-sky-players';
 import fetchWeeklyPoints from './fetch-weekly-points';
 import fetchStatsSnapshots from './fetch-stats-snapshots';
+import saveWeeklyPoints from './save-weekly-points';
 import saveWeekEndTag from './save-week-end-tag';
-import savePlayerStats from './save-player-stats';
+import saveStatsSnapshot from './save-stats-snapshot';
 import savePlayerPositions from './save-player-positions';
 import GoogleSpreadsheet from '../lib/google-sheets';
 import creds from '../lib/google-sheets/google-generated-creds.json';
 
 const log = debug('footy:api/index');
 const apiRouter = new express.Router();
-const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY', creds);
+const spreadsheet = new GoogleSpreadsheet(config.googleSheetKey, creds);
 const sendStatus = (code, res, results) => res.status(code).send(results);
 
 apiRouter.use(bodyParser.json({ limit: '50mb' }));
@@ -53,8 +55,14 @@ apiRouter.post('/save-player-positions', (req, res) => {
     .catch((e) => sendStatus(500, res, e));
 });
 
-apiRouter.post('/save-player-stats', (req, res) => {
-  savePlayerStats(spreadsheet, req.body)
+apiRouter.post('/save-weekly-points', (req, res) => {
+  saveWeeklyPoints(spreadsheet, req.body)
+    .then((results) => sendStatus(200, res, results))
+    .catch((e) => sendStatus(500, res, e));
+});
+
+apiRouter.post('/save-stats-snapshot', (req, res) => {
+  saveStatsSnapshot(spreadsheet, req.body)
     .then((results) => sendStatus(200, res, results))
     .catch((e) => sendStatus(500, res, e));
 });

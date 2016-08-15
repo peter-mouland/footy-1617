@@ -8,7 +8,8 @@ const buildRowObject = (item) => {
     code: item.code,
     pos: item.pos,
     player: item.fullName,
-    club: item.club
+    club: item.club,
+    new: item.pos !== 'park'
   };
 };
 
@@ -30,6 +31,7 @@ export default (spreadsheet, data) => {
   return Promise
     .all([updateGoogle, updateJson])
     .then(() => log('done.'))
+    .then(() => data)
     .catch(e => log(e));
 };
 

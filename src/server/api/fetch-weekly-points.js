@@ -30,6 +30,10 @@ export default (spreadsheet) => {
       const newS = latest.rows;
       sheets.forEach((sheet, sIterator) => {
         return sheet.rows.forEach((row, rIterator) => {
+          delete newS[rIterator].id;
+          delete newS[rIterator]._xml; // eslint-disable-line
+          delete newS[rIterator]._links; // eslint-disable-line
+          delete newS[rIterator]['app:edited'];
           newS[rIterator][`week${sIterator + 1}`] = (sIterator === 0)
             ? row.total
             : row.total - sheets[sIterator - 1].rows[rIterator].total;

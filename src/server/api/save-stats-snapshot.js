@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const log = debug('footy:save-player-stats');
+const log = debug('footy:save-stats-snapshot');
 const headers = [
   'code', 'position', 'player', 'club', 'starts', 'subs', 'goals', 'asts', 'cs',
   'con', 'penSvd', 'yells', 'reds', 'total'
@@ -10,7 +10,7 @@ const getTitle = () => {
   const date = new Date();
   const opts = { weekday: 'short', hour: '2-digit', minute: '2-digit' };
   const day = date.toLocaleDateString('en-GB', opts);
-  return `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${day}`;
+  return `snapshot: ${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${day}`;
 };
 
 const createWorksheetOptions = (data) => ({

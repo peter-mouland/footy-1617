@@ -33,7 +33,13 @@ function stats(state = defaultStatsState, action) {
         weekly: action.data,
         status: action.status
       };
-    case actions.SAVE_PLAYER_STATS:
+    case actions.SAVE_WEEKLY_POINTS:
+      return {
+        ...state,
+        weekly: action.data,
+        status: action.status
+      };
+    case actions.SAVE_STATS_SNAPSHOT:
       return {
         ...state,
         status: action.status
@@ -41,7 +47,7 @@ function stats(state = defaultStatsState, action) {
     case actions.SAVE_PLAYER_POSITIONS:
       return {
         ...state,
-        players: newPlayers(state.data, action.data),
+        players: newPlayers(state.players, action.data),
         status: action.status
       };
     default:

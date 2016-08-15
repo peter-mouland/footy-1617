@@ -4,7 +4,7 @@ import bemHelper from 'react-bem-helper';
 import debug from 'debug';
 
 import { availablePositions } from '../../components/Positions/Positions';
-import { savePlayerStats, fetchPlayers } from '../../actions';
+import { saveStatsSnapshot, fetchPlayers } from '../../actions';
 import './playerStats.scss';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
@@ -16,7 +16,7 @@ class PlayerStats extends React.Component {
 
   constructor(props) {
     super(props);
-    this.savePlayerStats = this.savePlayerStats.bind(this);
+    this.saveStatsSnapshot = this.saveStatsSnapshot.bind(this);
     this.posFilter = this.posFilter.bind(this);
     this.clubFilter = this.clubFilter.bind(this);
     this.state = {
@@ -45,11 +45,11 @@ class PlayerStats extends React.Component {
     this.setState({ clubFilter: e.target.value });
   }
 
-  savePlayerStats() {
+  saveStatsSnapshot() {
     this.setState({
       isSaving: true
     });
-    this.props.savePlayerStats(this.props.stats.players)
+    this.props.saveStatsSnapshot(this.props.stats.players)
       .then(() => {
         this.setState({
           isSaving: false,
@@ -77,7 +77,7 @@ class PlayerStats extends React.Component {
 
     const Save = (isSaving)
       ? <em>Saving ALL stats to Google... this may take a minute or two.</em>
-      : <button onClick={this.savePlayerStats} >Save Stats-Snapshot</button>;
+      : <button onClick={this.saveStatsSnapshot} >Save Stats-Snapshot</button>;
 
     const clubsObj = {};
     players.forEach(player => { clubsObj[player.tName] = true; });
@@ -126,7 +126,7 @@ class PlayerStats extends React.Component {
               : (
                 <tr key={player.id} { ...bem('player')}>
                   <td { ...bem('meta')} >{player.code || player.id}</td>
-                  <td { ...bem('meta')} >{player.pos}</td>
+                  <td { ...bem('meta', player.pos)} >{player.pos}</td>
                   <td { ...bem('meta')} >{player.fullName}</td>
                   <td { ...bem('meta')} >{player.tName}</td>
                   {Object.keys(player.ffPoints).map((key, i) => (
@@ -151,6 +151,6 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { savePlayerStats, fetchPlayers }
+  { saveStatsSnapshot, fetchPlayers }
 )(PlayerStats);
 

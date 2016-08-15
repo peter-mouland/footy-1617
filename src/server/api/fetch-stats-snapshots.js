@@ -8,7 +8,7 @@ export default (spreadsheet) => {
     .then((worksheets) => {
       return worksheets
         .filter(sheet => (
-          sheet.title !== 'player list' && sheet.title !== 'week end tags'
+          sheet.title.indexOf('snapshot') > -1
         ));
     })
     .catch(e => log(e));
