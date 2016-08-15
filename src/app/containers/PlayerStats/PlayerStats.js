@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import bemHelper from 'react-bem-helper';
 import debug from 'debug';
 
 import { availablePositions } from '../../components/Positions/Positions';
 import { savePlayerStats, fetchPlayers } from '../../actions';
+import './playerStats.scss';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
+const bem = bemHelper({ name: 'player-stats' });
 
 class PlayerStats extends React.Component {
 
@@ -81,12 +84,12 @@ class PlayerStats extends React.Component {
     const clubs = Object.keys(clubsObj).sort();
 
     return (
-      <div>
-        <h2>Players Points</h2>
+      <div { ...bem() }>
+        <h2>Players Stats</h2>
         {Save}
-        <table>
+        <table cellPadding={0} cellSpacing={0} { ...bem('table') }>
           <thead>
-          <tr>
+          <tr { ...bem('data-header')}>
             <th>code</th>
             <th>position</th>
             <th>player</th>
@@ -98,14 +101,14 @@ class PlayerStats extends React.Component {
           <tr>
             <th></th>
             <th>
-              <select onChange={this.posFilter} ref="posFilter">
+              <select onChange={this.posFilter}>
                 <option value={''}>all</option>
                 {availablePositions.map(pos => <option value={pos} key={pos}>{pos}</option>)}
               </select>
             </th>
             <th></th>
             <th>
-              <select onChange={this.clubFilter} ref="clubFilter">
+              <select onChange={this.clubFilter}>
                 <option value={''}>all</option>
                 {clubs.map(club => <option value={club} key={club}>{club}</option>)}
               </select>
@@ -118,18 +121,18 @@ class PlayerStats extends React.Component {
           players.map(player => {
             const isFiltered = (!!posFilter && posFilter !== player.pos)
               || (!!clubFilter && clubFilter !== player.tName);
-            return (isFiltered)
+            return isFiltered
               ? null
               : (
-              <tr key={player.id}>
-                <td>{player.code || player.id}</td>
-                <td>{player.pos}</td>
-                <td>{player.fullName}</td>
-                <td>{player.tName}</td>
-                {Object.keys(player.ffPoints).map((key, i) => (
-                  <td key={i}>{player.ffPoints[key]}</td>
-                ))}
-              </tr>
+                <tr key={player.id} { ...bem('player')}>
+                  <td { ...bem('meta')} >{player.code || player.id}</td>
+                  <td { ...bem('meta')} >{player.pos}</td>
+                  <td { ...bem('meta')} >{player.fullName}</td>
+                  <td { ...bem('meta')} >{player.tName}</td>
+                  {Object.keys(player.ffPoints).map((key, i) => (
+                    <td key={i} { ...bem('meta', 'stat')} >{player.ffPoints[key]}</td>
+                  ))}
+                </tr>
             );
           })
         }

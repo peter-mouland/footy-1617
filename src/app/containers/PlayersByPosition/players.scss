@@ -1,4 +1,5 @@
 $row-bg: #EAEAEA;
+$row-bg--hover: #CACACA;
 
 .unknown-players__list {
   margin: 0;
@@ -9,12 +10,16 @@ $row-bg: #EAEAEA;
 .unknown-players__item {
   clear: both;
   padding: 5px;
-  transition: .5s ease-in-out;
+  transition: padding, opacity, max-height .33s ease-in-out;
   opacity: 1;
   max-height: 2em;
 
   &:nth-child(even) {
     background: $row-bg;
+  }
+
+  &:hover {
+    background: $row-bg--hover;
   }
 
   &--updated {
