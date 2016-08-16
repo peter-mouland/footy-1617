@@ -51,7 +51,7 @@ class WeeklyPoints extends React.Component {
         <h3>ERROR Loading Weekly Points...</h3>
         <p>{error.message}</p>
       </div>;
-    } else if ( !weekly.length) {
+    } else if (!weekly.length) {
       return <strong>No weekly points yet!</strong>;
     }
 

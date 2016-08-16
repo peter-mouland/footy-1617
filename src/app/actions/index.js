@@ -34,6 +34,7 @@ export function fetchStatsSnapshots() {
 export function saveWeeklyPoints(points) {
   return {
     type: SAVE_WEEKLY_POINTS,
+    timeoutMs: 90000,
     promise: api.saveWeeklyPoints(points)
   };
 }

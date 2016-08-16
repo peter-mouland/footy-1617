@@ -46,15 +46,10 @@ class PlayerStats extends React.Component {
   }
 
   saveStatsSnapshot() {
-    this.setState({
-      isSaving: true
-    });
+    this.setState({ isSaving: true });
     this.props.saveStatsSnapshot(this.props.stats.players)
       .then(() => {
-        this.setState({
-          isSaving: false,
-          savedOn: new Date()
-        });
+        this.setState({ isSaving: false });
       });
   }
 

@@ -44,6 +44,7 @@ export default (spreadsheet, data) => {
     .addWorksheet(createWorksheetOptions(data, weeks))
     .addRowsBulk(createRows(data, weeks), createRowOptions(data))
     .then(() => log('done.'))
+    .then(() => data)
     .catch(e => log(e));
 };
 

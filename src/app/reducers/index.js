@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
+import debug from 'debug';
 import * as actions from '../actions';
 
 import calculatePoints from './calculatePoints';
 
+const log = debug('footy:reducers/index'); // eslint-disable-line
 const defaultStatsState = { };
 
 const newPlayers = (players, data) => {
@@ -20,6 +22,7 @@ const newTag = (rows, data) => {
 };
 
 function stats(state = defaultStatsState, action) {
+  log(action.type);
   switch (action.type) {
     case actions.FETCH_PLAYERS:
       return {
@@ -34,11 +37,6 @@ function stats(state = defaultStatsState, action) {
         status: action.status
       };
     case actions.SAVE_WEEKLY_POINTS:
-      return {
-        ...state,
-        weekly: action.data,
-        status: action.status
-      };
     case actions.SAVE_STATS_SNAPSHOT:
       return {
         ...state,
