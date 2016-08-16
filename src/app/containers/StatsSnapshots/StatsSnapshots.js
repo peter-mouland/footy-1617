@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import debug from 'debug';
 
 import { fetchStatsSnapshots, saveWeekEndTag } from '../../actions';
+import { NavLink } from '../../routes';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
 
@@ -54,7 +55,7 @@ class StatsSnapshots extends React.Component {
         <p>{error.message}</p>
       </div>;
     } else if (!data.length) {
-      return <strong>No Stats-Snapshots saved!</strong>;
+      return <div><h3>No Stats-Snapshots saved!</h3>Please save a Stats Snapshot from the <NavLink to="playerStats" /> page</div>;
     }
 
     return (
