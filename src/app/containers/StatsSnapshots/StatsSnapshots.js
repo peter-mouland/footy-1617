@@ -32,7 +32,7 @@ class StatsSnapshots extends React.Component {
 
   tagAsWeekEnd(snapshot) {
     this.setState({ saving: true });
-    this.props.saveWeekEndTag(snapshot)
+    this.props.saveWeekEndTag({ ...snapshot, weekEndTag: true })
       .then((results) => {
         if (!results) {
           this.setState({ oops: true });
@@ -55,7 +55,12 @@ class StatsSnapshots extends React.Component {
         <p>{error.message}</p>
       </div>;
     } else if (!data.length) {
-      return <div><h3>No Stats-Snapshots saved!</h3>Please save a Stats Snapshot from the <NavLink to="playerStats" /> page</div>;
+      return (
+        <div>
+          <h3>No Stats-Snapshots saved!</h3>
+          Please save a Stats Snapshot from the <NavLink to="playerStats" /> page
+        </div>
+      );
     }
 
     return (

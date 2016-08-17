@@ -47,10 +47,10 @@ export function saveStatsSnapshot(players) {
   };
 }
 
-export function saveWeekEndTag(worksheetTitle) {
+export function saveWeekEndTag(worksheet) {
   return {
     type: SAVE_WEEK_END_TAG,
-    promise: api.saveWeekEndTag(worksheetTitle)
+    promise: api.saveWeekEndTag(worksheet)
   };
 }
 

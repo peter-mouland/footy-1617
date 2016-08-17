@@ -3,7 +3,6 @@ import debug from 'debug';
 
 import { checkStatus } from './utils';
 import { localUrl } from '../utils';
-import mergePlayerInfo from './merge-player-info';
 
 const log = debug('footy:api/index');
 
@@ -28,15 +27,9 @@ const fetchUrl = (url, opts) => {
 const getJSON = (url) => fetchUrl(url, jsonOpts('GET'));
 const postJSON = (url, data) => fetchUrl(url, jsonOpts('POST', data));
 
-function ffPlayers() {
-  return require('./ff.json'); // eslint-disable-line
-}
-
 export default {
   fetchPlayers() {
-    return Promise.all([getJSON('api/sky-players'), ffPlayers()])
-      .then(([skyResults, ffResults]) => ({ skyResults, ffResults }))
-      .then(mergePlayerInfo);
+    return getJSON('api/player-stats');
   },
   fetchStatsSnapshots() {
     return getJSON('api/stats-snapshots');
@@ -51,11 +44,7 @@ export default {
     return postJSON('api/save-stats-snapshot', data);
   },
   saveWeekEndTag(data) {
-    return postJSON('api/save-week-end-tag', [{ sheet: data.title }])
-      .then(() => ({
-        ...data,
-        weekEndTag: true
-      }));
+    return postJSON('api/save-week-end-tag', data);
   },
   savePlayerPositions(data) {
     return postJSON('api/save-player-positions', data);

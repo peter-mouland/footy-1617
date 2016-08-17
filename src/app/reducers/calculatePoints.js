@@ -62,9 +62,9 @@ export function forConceeded(ga, position) { // -1
   return parseInt(ga * multiplier, 10);
 }
 
-// function forPenaltiesSaved(ps) { // -1
-//   return ps * 5;
-// }
+function forPenaltiesSaved(ps) { // -1
+  return ps * 5;
+}
 
 export function forPlayer(stats, pos) {
   const starts = forStarting(stats[STARTING_XI], pos);
@@ -73,10 +73,10 @@ export function forPlayer(stats, pos) {
   const asts = forAssists(stats[ASSISTS], pos);
   const cs = forCleanSheet(stats[CLEAN_SHEETS], pos);
   const con = forConceeded(stats[CONCEEDED], pos);
-  // const penSvd = forPenaltiesSaved(stats[SAVED_PENALTIES], pos);
+  const penSvd = forPenaltiesSaved(stats[SAVED_PENALTIES], pos);
   const yells = forYellowCards(stats[YELLOW_CARDS], pos);
   const reds = forRedCards(stats[RED_CARDS], pos);
-  const total = goals + yells + reds + starts + subs + asts + cs + con;
+  const total = goals + yells + reds + starts + subs + asts + cs + con + penSvd;
   return {
     starts: stats[STARTING_XI],
     subs: stats[SUBS],

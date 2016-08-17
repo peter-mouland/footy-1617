@@ -3,7 +3,6 @@ import debug from 'debug';
 import bodyParser from 'body-parser';
 
 import config from '../../config';
-import fetchSkyPlayers from './fetch-sky-players';
 import fetchWeeklyPoints from './fetch-weekly-points';
 import fetchStatsSnapshots from './fetch-stats-snapshots';
 import saveWeeklyPoints from './save-weekly-points';
@@ -11,6 +10,7 @@ import saveWeekEndTag from './save-week-end-tag';
 import saveStatsSnapshot from './save-stats-snapshot';
 import savePlayerPositions from './save-player-positions';
 import GoogleSpreadsheet from '../lib/google-sheets';
+import fetchPlayers from './fetch-players';
 import creds from '../lib/google-sheets/google-generated-creds.json';
 
 const log = debug('footy:api/index');
@@ -31,8 +31,8 @@ function errorHandler(err, req, res) {
   res.end();
 }
 
-apiRouter.get('/sky-players', (req, res) => {
-  fetchSkyPlayers()
+apiRouter.get('/player-stats', (req, res) => {
+  fetchPlayers()
     .then((results) => sendStatus(200, res, results))
     .catch((e) => sendStatus(500, res, e));
 });

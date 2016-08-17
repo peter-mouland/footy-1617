@@ -51,6 +51,7 @@ export default (spreadsheet, data) => {
     .addWorksheet(createWorksheetOptions(data))
     .addRowsBulk(createRows(data), createRowOptions(data))
     .then(() => log('done.'))
+    .then(() => data)
     .catch(e => log(e));
 };
 

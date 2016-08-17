@@ -16,11 +16,11 @@ const buildRowObject = (item) => {
 const createRows = (data) => Object.keys(data).map(row => buildRowObject(data[row]));
 
 function updateJsonPositions(data) {
-  const ff = require('../../app/api/ff.json');// eslint-disable-line
+  const ff = require('./ff.json');// eslint-disable-line
   const jsonData = Object.assign({}, ff, data);
-  return json.save(jsonData, 'src/app/api/ff.json')
+  return json.save(jsonData, 'src/server/api/ff.json')
     .then(() => {
-      delete require.cache[require.resolve('../../app/api/ff.json')]; // eslint-disable-line
+      delete require.cache[require.resolve('./ff.json')]; // eslint-disable-line
     });
 }
 

@@ -141,7 +141,7 @@ function validate(row) {
 }
 
 function addRows(worksheet, rows, cb, errCb) {
-  if (!rows.length) return cb(worksheet);
+  if (!rows.length) return cb();
   validate(rows[0]);
   return addRow(worksheet, rows[0]).then(() => {
     rows.shift();
@@ -153,7 +153,8 @@ function addRows(worksheet, rows, cb, errCb) {
 Connect.prototype.addRows = function ConnectAddRows(rows) {
   const promise = onceResolved(this.worksheetsQueue)
     .then(() => {
-      return new Promise((resolve, reject) => addRows(this.worksheet, rows, resolve, reject));
+      return new Promise((resolve, reject) =>
+        addRows(this.worksheet, rows.slice(0), () => resolve(rows), reject));
     });
   this.updateQueues('rowsQueue', promise);
   return this;

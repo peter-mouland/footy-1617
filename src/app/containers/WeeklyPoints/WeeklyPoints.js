@@ -53,7 +53,12 @@ class WeeklyPoints extends React.Component {
         <p>{error.message}</p>
       </div>;
     } else if (!weekly.length) {
-      return <div><h3>No weekly points yet!</h3>Please tag a <NavLink to="statsSnapshots" /> as a 'week end'</div>;
+      return (
+        <div>
+          <h3>No weekly points yet!</h3>
+          Please tag a <NavLink to="statsSnapshots" /> as a 'week end'
+        </div>
+      );
     }
 
     const Save = (isSaving)
