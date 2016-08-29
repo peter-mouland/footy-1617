@@ -1,5 +1,3 @@
-import reduce from 'lodash/reduce';
-import React from 'react';
 import find from 'lodash/find';
 import get from 'lodash/get';
 import { routes } from '../routes';
@@ -13,19 +11,6 @@ export const isBrowser = typeof navigator !== 'undefined' && navigator.indexOf('
 export const localUrl = isBrowser
   ? (new window.URL(window.location)).origin
   : `http://localhost:${process.env.PORT}`;
-
-/*
- replaceText('I like {cake} and {sweetcorn}', { cake: 'beer', sweetcorn: 'pie' })
- "I like beer and pie"
-*/
-function replaceText(text, replacers) {
-  return reduce(replacers, (textIn, val, key) => textIn.replace(`{${key}}`, val), text);
-}
-
-export const markup = (tag, copy, replacers) =>
-  [].concat(copy).map((text, i) =>
-    React.createElement(tag, { key: i }, replaceText(text, replacers))
-  );
 
 export function findRoute(pathname) {
   return find(routes, (route) =>

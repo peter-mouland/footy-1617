@@ -8,8 +8,6 @@ import { makeRoutes } from './routes';
 import configureStore from './store/configureStore';
 import { isBrowser } from './utils';
 
-import './app.scss';
-
 debug('footy:Root');
 
 // exported to be used in tests

@@ -7,6 +7,7 @@ import { routes, NavLink } from '../routes';
 import './mainLayout.scss';
 
 export default class MainLayout extends Component {
+
   static propTypes = {
     location: PropTypes.object
   };
@@ -24,7 +25,6 @@ export default class MainLayout extends Component {
       <div className="layout layout--main">
         <DocumentMeta title={ route.title } />
         <nav className="layout__nav">
-          <strong>View:</strong>
           <span>
             <NavLink to='homepage' { ...navLinkProps } />
             <NavLink to="playersByPosition" { ...navLinkProps } />

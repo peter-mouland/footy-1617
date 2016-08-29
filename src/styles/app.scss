@@ -6,3 +6,9 @@ body {
   padding: 0;
   margin: 0;
 }
+
+.clearfix::after {
+  content: '';
+  display: inline-table;
+  clear: both;
+}
