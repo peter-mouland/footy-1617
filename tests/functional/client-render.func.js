@@ -4,7 +4,7 @@ import Homepage from '../../src/app/containers/Homepage/Homepage';
 
 describe('Client Render', function () {
   beforeEach(() => {
-    this.wrapper = mount(Root);
+    this.wrapper = mount(<Root />);
     history.push('/');
   });
 

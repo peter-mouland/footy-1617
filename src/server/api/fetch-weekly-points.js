@@ -1,47 +1,51 @@
 import debug from 'debug';
-import statsSnapshots from './fetch-stats-snapshots';
 
 const log = debug('footy:fetch-weekly-points');
 
+const isSnapshot = (sheet) => sheet.title.indexOf('snapshot') > -1;
+const isWeekEndTags = (sheet) => sheet.title.indexOf('week end tags') > -1;
+const statsSnapshots = (spreadsheet) => {
+  const snapshotSheets = [];
+  const weekEndTags = [];
+  return spreadsheet
+    .getWorksheets()
+    .then((worksheets) => worksheets.forEach(sheet => {
+      isSnapshot(sheet) && snapshotSheets.push(sheet); // eslint-disable-line
+      isWeekEndTags(sheet) && weekEndTags.push(sheet); // eslint-disable-line
+    }))
+    .then(() => {
+      return spreadsheet.getCells(weekEndTags[0]).then(cells => cells.map(cell => cell.value));
+    })
+    .then((tags) => {
+      return Promise.all(
+        snapshotSheets
+          .filter(snapshot => (tags.indexOf(snapshot.title) > -1))
+          .sort((a, b) => a.title > b.title) // eslint-disable-line
+          .map(sheet => spreadsheet.getRows(sheet).then(rows => rows))
+      );
+    });
+};
+
 export default (spreadsheet) => {
-  const weekEndTitles = statsSnapshots(spreadsheet)
-    .then(snapshots => snapshots.filter(snapshot => !!snapshot.weekEndTag))
-    .then(snapshots => snapshots.map(snapshot => snapshot.title))
-    .catch(e => log(e));
-
-  const allSheets = spreadsheet.getWorksheets().catch(e => log(e));
-
-  const weeklyPoints = Promise.all([weekEndTitles, allSheets])
-    .then(([weekEnds, worksheets]) => {
-      return worksheets.filter(worksheet => weekEnds.indexOf(worksheet.title) > -1);
-    })
-    .then(sheets => {
-      const ps = sheets.map(sheet => {
-        const title = sheet.title;
-        return spreadsheet
-          .getRows(sheet)
-          .then(rows => ({ title, rows }));
-      });
-      return Promise.all(ps);
-    })
+  return statsSnapshots(spreadsheet)
     .then(sheets => {
       if (!sheets.length) return [];
-      const latest = sheets[sheets.length - 1];
-      const newS = latest.rows;
+      const latest = {};
+      const previousTotal = {};
+      sheets[sheets.length - 1].forEach(row => { latest[row.code] = row; });
       sheets.forEach((sheet, sIterator) => {
-        return sheet.rows.forEach((row, rIterator) => {
-          delete newS[rIterator].id;
-          delete newS[rIterator]._xml; // eslint-disable-line
-          delete newS[rIterator]._links; // eslint-disable-line
-          delete newS[rIterator]['app:edited'];
-          newS[rIterator][`week${sIterator + 1}`] = (sIterator === 0)
-            ? row.total
-            : row.total - sheets[sIterator - 1].rows[rIterator].total;
+        return sheet.forEach(row => {
+          delete latest[row.code].id;
+          delete latest[row.code]._xml; // eslint-disable-line
+          delete latest[row.code]._links; // eslint-disable-line
+          delete latest[row.code]['app:edited'];
+          latest[row.code][`week${sIterator + 1}`] = row.total - (previousTotal[row.code] || 0);
+          previousTotal[row.code] = row.total;
         });
       });
-      return newS;
+      return latest;
     })
+    .then(latest => Object.keys(latest).map(key => latest[key]))
     .catch(e => log(e));
-  return weeklyPoints;
 };
 

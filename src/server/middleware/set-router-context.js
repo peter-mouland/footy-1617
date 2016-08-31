@@ -13,7 +13,10 @@ const setRouterContext = (req, res, next) => {
   const store = configureStore();
   const routes = makeRoutes(store);
 
-  match({ routes, location: req.url }, (error, redirect, renderProps) => {
+  match({
+    routes,
+    location: req.url
+  }, (error, redirect, renderProps) => {
     log('match', req.url);
     if (error) {
       throw error;
@@ -22,7 +25,6 @@ const setRouterContext = (req, res, next) => {
     } else {
       // path * will return a 404
       const isNotFound = renderProps.routes.find((route) => route.path === '*');
-
       const setContext = () => {
         const InitialComponent = (
           <Provider store={store}>

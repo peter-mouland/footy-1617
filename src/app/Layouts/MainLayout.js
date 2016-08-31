@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import DocumentMeta from 'react-document-meta';
 
 import { findRoute } from '../utils';
-import { routes, NavLink } from '../routes';
+import { routes, LinkHelper } from '../routes';
 
 import './mainLayout.scss';
 
@@ -26,19 +26,19 @@ export default class MainLayout extends Component {
         <DocumentMeta title={ route.title } />
         <nav className="layout__nav">
           <span>
-            <NavLink to='homepage' { ...navLinkProps } />
-            <NavLink to="playersByPosition" { ...navLinkProps } />
-            <NavLink to="playerStats" { ...navLinkProps } />
-            <NavLink to="statsSnapshots" { ...navLinkProps } />
-            <NavLink to="weeklyPoints" { ...navLinkProps } />
+            <LinkHelper to='homepage' { ...navLinkProps } />
+            <LinkHelper to="playersByPosition" { ...navLinkProps } />
+            <LinkHelper to="playerStats" { ...navLinkProps } />
+            <LinkHelper to="statsSnapshots" { ...navLinkProps } />
+            <LinkHelper to="weeklyPoints" { ...navLinkProps } />
           </span>
         </nav>
         <div className="layout__content">
           {children}
         </div>
-        {/* <footer className="layout__footer">*/}
-          {/* footer*/}
-        {/* </footer>*/}
+        <footer className="layout__footer">
+          Hosted at <a href="http://github.com/peter-mouland/react-lego">github.com/peter-mouland/react-lego</a>
+        </footer>
       </div>
     );
   }

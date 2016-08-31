@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import debug from 'debug';
 
 import { fetchWeeklyPoints, saveWeeklyPoints } from '../../actions';
-import { NavLink } from '../../routes';
+import { LinkHelper } from '../../routes';
 
 const log = debug('footy:WeeklyPoints.js'); //eslint-disable-line
 
@@ -21,10 +21,11 @@ class WeeklyPoints extends React.Component {
 
   componentDidMount() {
     if (this.props.stats.weekly) return;
-    this.props.fetchWeeklyPoints().then((response) => {
-      if (!response) {
-        this.setState({ oops: true });
-      }
+    this.props.fetchWeeklyPoints().then(() => {
+      this.setState({
+        error: false,
+        dealing: false
+      });
     }).catch((err) => {
       throw new Error(err);
     });
@@ -56,7 +57,7 @@ class WeeklyPoints extends React.Component {
       return (
         <div>
           <h3>No weekly points yet!</h3>
-          Please tag a <NavLink to="statsSnapshots" /> as a 'week end'
+          Please tag a <LinkHelper to="statsSnapshots" /> as a 'week end'
         </div>
       );
     }

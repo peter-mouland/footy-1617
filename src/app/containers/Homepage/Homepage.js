@@ -1,7 +1,7 @@
 import React from 'react';
 import debug from 'debug';
 
-import { NavLink } from '../../routes';
+import { LinkHelper } from '../../routes';
 import { copy } from './homepage-copy';
 
 const log = debug('footy:Homepage.js'); //eslint-disable-line
@@ -11,16 +11,16 @@ const Help = () => (
     When the footy week ends, view the week points by :
     <ol>
       <li>
-        View <NavLink to="playersByPosition" /> and ensure all players have a saved position
+        View <LinkHelper to="playersByPosition" /> and ensure all players have a saved position
       </li>
       <li>
-        View <NavLink to="playerStats" /> and click `Save Stats-Snapshot`
+        View <LinkHelper to="playerStats" /> and click `Save Stats-Snapshot`
       </li>
       <li>
-        View <NavLink to="statsSnapshots" /> and choose which Stats-Snapshot to tag as a `week end`
+        View <LinkHelper to="statsSnapshots" /> and choose which Stats-Snapshot to tag as `week end`
       </li>
       <li>
-        View <NavLink to="weeklyPoints" />
+        View <LinkHelper to="weeklyPoints" />
       </li>
     </ol>
   </section>

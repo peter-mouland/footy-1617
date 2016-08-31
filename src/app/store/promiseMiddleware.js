@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const log = debug('footy:promiseMiddleware');
+const log = debug('lego:promiseMiddleware');
 const status = {
   isLoading: false,
   isTimeout: false,
@@ -13,7 +13,7 @@ function delay(time) {
 
 export default function promiseMiddleware() {
   return next => action => {
-    const { promise, type, timeoutMs = 15000, ...rest } = action;
+    const { promise, type, timeoutMs = 30000, ...rest } = action;
     log('FETCH with promise', !!promise);
 
     if (!promise) return next(action);
@@ -27,22 +27,26 @@ export default function promiseMiddleware() {
 
     const fetchData = promise
       .then(data => {
+        const response = { ...rest, status, data, type: SUCCESS };
         log('SUCCESS');
-        next({ ...rest, status, data, type: SUCCESS });
-        return true;
+        next(response);
+        return response;
       })
       .catch(error => {
+        const response = { ...rest, status: { ...status, isError: true }, error, type: FAILURE };
         log('FAILURE', error);
-        next({ ...rest, status: { ...status, isError: true }, error, type: FAILURE });
-        return false;
+        next(response);
+        return response;
       });
 
     const dataTimeout = delay(timeoutMs).then(() => {
       log('TIMEOUT');
-      next({ ...rest, status: { ...status, isTimeout: true }, type: TIMEOUT });
+      const response = { ...rest, status: { ...status, isTimeout: true }, type: TIMEOUT };
+      next(response);
+      return response;
     });
 
     return Promise.race([fetchData, dataTimeout])
-      .then((data) => data, reason => log(reason));
+      .then((response) => response.data, reason => log(reason));
   };
 }

@@ -41,4 +41,3 @@ setRoutes(assets);
 server.use('/', routingApp);
 
 export default server;
-

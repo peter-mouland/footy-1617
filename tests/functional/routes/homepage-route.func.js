@@ -1,4 +1,4 @@
-import { mount, expect } from '../../support/test.helper';
+import { mount, expect, React } from '../../support/test.helper';
 import Root, { history } from '../../../src/app/Root';
 import { routes } from '../../../src/app/routes';
 import { copy } from '../../../src/app/containers/Homepage/homepage-copy';
@@ -6,7 +6,7 @@ import { copy } from '../../../src/app/containers/Homepage/homepage-copy';
 describe('Homepage Route', function () {
 
   before(() => {
-    this.wrapper = mount(Root);
+    this.wrapper = mount(<Root />);
     history.push('/');
   });
 

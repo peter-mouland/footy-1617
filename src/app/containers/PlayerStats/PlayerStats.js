@@ -28,10 +28,11 @@ class PlayerStats extends React.Component {
 
   componentDidMount() {
     if (this.props.stats.players) return;
-    this.props.fetchPlayers().then((response) => {
-      if (!response) {
-        this.setState({ oops: true });
-      }
+    this.props.fetchPlayers().then(() => {
+      this.setState({
+        error: false,
+        dealing: false
+      });
     }).catch((err) => {
       throw new Error(err);
     });

@@ -168,9 +168,9 @@ Connect.prototype.getRows = function ConnectGetRows(sheet) {
 };
 
 
-Connect.prototype.getCells = function ConnectCellsRows(opts) {
+Connect.prototype.getCells = function ConnectCellsRows(sheet, opts) {
   const promise = onceResolved(this.worksheetsQueue)
-    .then(() => getCells(this.worksheet, opts));
+    .then(() => getCells(sheet || this.worksheet, opts));
   this.updateQueues('rowsQueue', promise);
   return this;
 };
