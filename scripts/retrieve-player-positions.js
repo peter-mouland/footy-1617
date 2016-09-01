@@ -16,7 +16,7 @@ const createJsonObj = (item) => ({
   }
 });
 
-const spreadsheet = new GoogleSpreadsheet('167qhKgUtQAUto19Jniveo0pzrz59l2A9uDZcV50noTY', creds);
+const spreadsheet = new GoogleSpreadsheet('1x2qD0aS6W-MeARu6QT0YthgLV91-Hmlip5_Gut2nEBI', creds);
 const playerListSheet = spreadsheet.getWorksheet('player list');
 
 playerListSheet
