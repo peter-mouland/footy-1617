@@ -109,19 +109,19 @@ class PlayerStats extends React.Component {
                 {clubs.map(club => <option value={club} key={club}>{club}</option>)}
               </select>
             </th>
-
           </tr>
         </thead>
         <tbody>
         {
-          players.map(player => {
-            const isFiltered = (!!posFilter && posFilter !== player.pos)
-              || (!!clubFilter && clubFilter !== player.tName);
-            return isFiltered
-              ? null
-              : (
-                <tr key={player.id} { ...bem('player')}>
-                  <td { ...bem('meta')} >{player.code || player.id}</td>
+          players
+            .filter(player => {
+              const isFiltered = (!!posFilter && posFilter !== player.pos)
+                || (!!clubFilter && clubFilter !== player.tName);
+              return !isFiltered;
+            })
+            .map(player => (
+              <tr key={player.code} { ...bem('player')}>
+                  <td { ...bem('meta')} >{player.code}</td>
                   <td { ...bem('meta', player.pos)} >{player.pos}</td>
                   <td { ...bem('meta')} >{player.fullName}</td>
                   <td { ...bem('meta')} >{player.tName}</td>
@@ -129,8 +129,7 @@ class PlayerStats extends React.Component {
                     <td key={i} { ...bem('meta', 'stat')} >{player.ffPoints[key]}</td>
                   ))}
                 </tr>
-            );
-          })
+            ))
         }
         </tbody>
       </table>

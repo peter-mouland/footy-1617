@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import bemHelper from 'react-bem-helper';
 import debug from 'debug';
 
 import { fetchWeeklyPoints, saveWeeklyPoints } from '../../actions';
 import { LinkHelper } from '../../routes';
+import { availablePositions } from '../../components/Positions/Positions';
 
 const log = debug('footy:WeeklyPoints.js'); //eslint-disable-line
+const bem = bemHelper({ name: 'player-stats' });
 
 const displayWeeks = (array, cb) => {
   return Object.keys(array)
@@ -23,6 +26,8 @@ class WeeklyPoints extends React.Component {
   constructor(props) {
     super(props);
     this.saveWeeklyPoints = this.saveWeeklyPoints.bind(this);
+    this.posFilter = this.posFilter.bind(this);
+    this.clubFilter = this.clubFilter.bind(this);
     this.state = {
       oops: false
     };
@@ -40,6 +45,14 @@ class WeeklyPoints extends React.Component {
     });
   }
 
+  posFilter(e) {
+    this.setState({ posFilter: e.target.value });
+  }
+
+  clubFilter(e) {
+    this.setState({ clubFilter: e.target.value });
+  }
+
   saveWeeklyPoints() {
     this.setState({ isSaving: true });
     this.props.saveWeeklyPoints(this.props.stats.weekly)
@@ -48,10 +61,9 @@ class WeeklyPoints extends React.Component {
       });
   }
 
-
   render() {
     const { weekly, status, error } = this.props.stats;
-    const { oops, isSaving } = this.state;
+    const { oops, isSaving, posFilter, clubFilter } = this.state;
 
     if (oops) {
       return <strong>oops</strong>;
@@ -71,17 +83,21 @@ class WeeklyPoints extends React.Component {
       );
     }
 
+    const clubsObj = {};
+    weekly.forEach(player => { clubsObj[player.club] = true; });
+    const clubs = Object.keys(clubsObj).sort();
+
     const Save = (isSaving)
       ? <em>Saving points... this may take a minute or two.</em>
       : <button onClick={this.saveWeeklyPoints} >Save weekly points</button>;
 
     return (
-        <div>
+        <div { ...bem() }>
           <h2>Weekly Points</h2>
           {Save}
-          <table>
+          <table cellPadding={0} cellSpacing={0} { ...bem('table') }>
             <thead>
-            <tr>
+            <tr { ...bem('data-header')}>
               <th>code</th>
               <th>position</th>
               <th>player</th>
@@ -89,21 +105,41 @@ class WeeklyPoints extends React.Component {
               <th>total</th>
               {displayWeeks(weekly[0], key => <th>{key}</th>)}
             </tr>
+            <tr>
+              <th></th>
+              <th>
+                <select onChange={this.posFilter}>
+                  <option value={''}>all</option>
+                  {availablePositions.map(pos => <option value={pos} key={pos}>{pos}</option>)}
+                </select>
+              </th>
+              <th></th>
+              <th>
+                <select onChange={this.clubFilter}>
+                  <option value={''}>all</option>
+                  {clubs.map(club => <option value={club} key={club}>{club}</option>)}
+                </select>
+              </th>
+            </tr>
             </thead>
             <tbody>
             {
-              weekly.map(player => {
-                return (
-                  <tr key={player.code}>
-                    <td>{player.code}</td>
-                    <td>{player.position}</td>
-                    <td>{player.player}</td>
-                    <td>{player.club}</td>
-                    <td>{player.total}</td>
+              weekly
+                .filter(player => {
+                  const isFiltered = (!!posFilter && posFilter !== player.position)
+                    || (!!clubFilter && clubFilter !== player.club);
+                  return !isFiltered;
+                })
+                .map(player => (
+                  <tr key={player.code} { ...bem('player')}>
+                    <td { ...bem('meta')} >{player.code}</td>
+                    <td { ...bem('meta', player.position)} >{player.position}</td>
+                    <td { ...bem('meta')} >{player.player}</td>
+                    <td { ...bem('meta')} >{player.club}</td>
+                    <td { ...bem('meta')} >{player.total}</td>
                     {displayWeeks(player, key => <td>{player[key]}</td>)}
                   </tr>
-                );
-              })
+              ))
             }
             </tbody>
           </table>
