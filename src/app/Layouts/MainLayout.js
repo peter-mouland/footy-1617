@@ -37,7 +37,7 @@ export default class MainLayout extends Component {
           {children}
         </div>
         <footer className="layout__footer">
-          Hosted at <a href="http://github.com/peter-mouland/react-lego">github.com/peter-mouland/react-lego</a>
+          Hosted at <a href="http://github.com/peter-mouland/footy1617">github.com/peter-mouland/footy1617</a>
         </footer>
       </div>
     );

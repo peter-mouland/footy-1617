@@ -7,6 +7,15 @@ import { LinkHelper } from '../../routes';
 
 const log = debug('footy:WeeklyPoints.js'); //eslint-disable-line
 
+const displayWeeks = (array, cb) => {
+  return Object.keys(array)
+    .sort((curr, prev) => curr < prev)
+    .map(key => {
+      if (key.indexOf('week') < 0) return null;
+      return cb(key, array[key]);
+    });
+};
+
 class WeeklyPoints extends React.Component {
 
   static needs = [fetchWeeklyPoints];
@@ -78,10 +87,7 @@ class WeeklyPoints extends React.Component {
               <th>player</th>
               <th>club</th>
               <th>total</th>
-              {Object.keys(weekly[0]).map((key, i) => {
-                if (key.indexOf('week') < 0) return null;
-                return <th key={i}>{key}</th>;
-              })}
+              {displayWeeks(weekly[0], key => <th>{key}</th>)}
             </tr>
             </thead>
             <tbody>
@@ -94,10 +100,7 @@ class WeeklyPoints extends React.Component {
                     <td>{player.player}</td>
                     <td>{player.club}</td>
                     <td>{player.total}</td>
-                    {Object.keys(player).map((key, i) => {
-                      if (key.indexOf('week') < 0) return null;
-                      return <td key={i}>{player[key]}</td>;
-                    })}
+                    {displayWeeks(player, key => <td>{player[key]}</td>)}
                   </tr>
                 );
               })
